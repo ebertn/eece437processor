@@ -105,8 +105,6 @@ initial begin
 		rfif.rsel2 = i;
 	end
 
-	$monitor("Test toggle all");
-
 	for (int i = 0; i < 32; i++) begin
 		rfif.WEN = 1;
 		rfif.wsel = i;

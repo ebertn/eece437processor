@@ -54,7 +54,7 @@ endmodule
 
 program test(input logic CLK,
 	output logic nRST, 
-	register_file_if.rf rfif);
+	register_file_if.tb rfif);
 
 parameter PERIOD = 10;
 int test_num;
@@ -104,6 +104,8 @@ initial begin
 		rfif.rsel1 = i;
 		rfif.rsel2 = i;
 	end
+
+	$monitor("Test toggle all");
 
 	for (int i = 0; i < 32; i++) begin
 		rfif.WEN = 1;

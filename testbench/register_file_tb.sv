@@ -54,7 +54,7 @@ endmodule
 
 program test(input logic CLK,
 	output logic nRST, 
-	register_file_if.rf rfif);
+	register_file_if.tb rfif);
 
 parameter PERIOD = 10;
 int test_num;
@@ -78,6 +78,7 @@ initial begin
 	#(2*PERIOD);
 	nRST = 0;
 	#(PERIOD);
+//      @(posedge CLK)
 	nRST = 1;
 
 	#(PERIOD);
@@ -87,6 +88,7 @@ initial begin
 	rfif.WEN = 1;
 	rfif.wsel = 0;
 	rfif.wdat = '1;
+//      assert()
 	#(2*PERIOD);
 
 	nRST = 0;

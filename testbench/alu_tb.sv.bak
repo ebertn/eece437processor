@@ -1,0 +1,158 @@
+// mapped timing needs this. 1ns is too fast
+`timescale 1 ns / 1 ns
+
+`include "alu_if.vh"
+
+`include "cpu_types_pkg.vh"
+
+module alu_tb;
+
+import cpu_types_pkg::*;
+
+  // interface
+  alu_if aluif ();
+  // test program
+  test PROG (aluif);
+
+  // DUT
+`ifndef MAPPED
+  alu DUT(aluif);
+`else
+  alu DUT(
+    .\aluif.portA (aluif.portA),
+    .\aluif.portB (aluif.portB),
+    .\aluif.aluOp (aluif.aluOp),
+    .\aluif.negative (aluif.negative),
+    .\aluif.overflow (aluif.overflow),
+    .\aluif.zero (aluif.zero)
+  );
+`endif
+
+endmodule
+
+program test(
+	alu_if.tb aluif);
+
+parameter PERIOD = 10;
+int test_num;
+
+import cpu_types_pkg::*;
+
+initial begin
+	$monitor("Starting testbench");
+
+	test_num = 0;
+	$monitor("Test SLL");
+	aluif.aluOp = ALU_SLL;
+	aluif.portA = 1;
+	aluif.portB = 8;
+
+	assert(aluif.outPort == (1 << 8));
+
+	#(PERIOD);
+
+	test_num += 1;
+	$monitor("Test SRL");
+	aluif.aluOp = ALU_SRL;
+	aluif.portA = 8;
+	aluif.portB = 2;
+
+	assert(aluif.outPort == (8 >> 2));
+
+	#(PERIOD);
+
+	test_num += 1;
+	$monitor("Test AND");
+	aluif.aluOp = ALU_AND;
+	aluif.portA = 8;
+	aluif.portB = 2;
+
+	assert(aluif.outPort == (8 & 2));
+
+	#(PERIOD);
+
+	test_num += 1;
+	$monitor("Test OR");
+	aluif.aluOp = ALU_OR;
+	aluif.portA = 8;
+	aluif.portB = 2;
+
+	assert(aluif.outPort == (8 | 2));
+
+	#(PERIOD);
+
+	test_num += 1;
+	$monitor("Test XOR");
+	aluif.aluOp = ALU_XOR;
+	aluif.portA = 8;
+	aluif.portB = 2;
+
+	assert(aluif.outPort == (8 ^ 2));
+
+	#(PERIOD);
+
+	test_num += 1;
+	$monitor("Test NOR");
+	aluif.aluOp = ALU_NOR;
+	aluif.portA = 8;
+	aluif.portB = 2;
+
+	assert(aluif.outPort == ~(8 | 2));
+
+	#(PERIOD);
+
+	test_num += 1;
+	$monitor("Test ADD");
+	aluif.aluOp = ALU_ADD;
+	aluif.portA = 8;
+	aluif.portB = 2;
+
+	assert(aluif.outPort == (8 + 2));
+	assert(aluif.overflow == 0);
+	assert(aluif.negative == 0);
+	assert(aluif.zero == 0);
+
+	#(PERIOD);
+
+	test_num += 1;
+	$monitor("Test SUB");
+	aluif.aluOp = ALU_SUB;
+	aluif.portA = 8;
+	aluif.portB = 2;
+
+	assert(aluif.outPort == (8 - 2));
+	assert(aluif.overflow == 0);
+	assert(aluif.negative == 0);
+	assert(aluif.zero == 0);
+
+	#(PERIOD);
+
+	test_num += 1;
+	$monitor("Test SLT");
+	aluif.aluOp = ALU_SLT;
+	aluif.portA = 8;
+	aluif.portB = 2;
+
+	assert(aluif.outPort == (8 - 2));
+	assert(aluif.overflow == 0);
+	assert(aluif.negative == 0);
+	assert(aluif.zero == 0);
+
+	#(PERIOD);
+
+	test_num += 1;
+	$monitor("Test SLT");
+	aluif.aluOp = ALU_SLT;
+	aluif.portA = 8;
+	aluif.portB = 2;
+
+	assert(aluif.outPort == (8 < 2));
+	assert(aluif.overflow == 0);
+	assert(aluif.negative == 0);
+	assert(aluif.zero == 0);
+
+	#(PERIOD);
+
+end
+
+endprogram

@@ -1,11 +1,12 @@
 org 0x0000
 
 ori $28, $0, 0xfffc
-sw $28, 0($0)
+ori $27, $0, 0xf000
+sw $28, 0($27)
 
 ori $2, $0, 4
 jal my_push
-ori $2, $0, 5
+ori $2, $0, 4
 jal my_push
 
 jal mult
@@ -32,15 +33,17 @@ mult:
   jr $30
 
 my_push:
-    lw $28, 0($0)
+    ori $27, $0, 0xf000
+    lw $28, 0($27)
     addi $28, $28, -4
     sw $2, 4($28)
-    sw $28, 0($0)
+    sw $28, 0($27)
     jr $31
 
 my_pop:
-    lw $28, 0($0)
+    ori $27, $0, 0xf000
+    lw $28, 0($27)
     lw $2, 4($28)
     addi $28, $28, 4
-    sw $28, 0($0)
+    sw $28, 0($27)
     jr $31

@@ -1,0 +1,365 @@
+// mapped timing needs this. 1ns is too fast
+`timescale 1 ns / 1 ns
+
+// interface include
+`include "cache_control_if.vh"
+`include "caches_if.vh"
+
+`include "cpu_types_pkg.vh"
+
+import cpu_types_pkg::*;
+
+module memory_control_tb;
+
+    parameter PERIOD = 10;
+    logic CLK = 0, nRST;
+
+    // clock
+    always #(PERIOD/2) CLK++;
+
+    // coherence interface
+    caches_if                 cif0();
+    // cif1 will not be used, but ccif expects it as an input
+    caches_if                 cif1();
+    cache_control_if    #(.CPUS(1))       ccif (cif0, cif1);
+    cpu_ram_if ramif();
+    // test program
+    test PROG (CLK, nRST, ccif);
+
+    // DUT
+    memory_control  mcDUT (CLK, nRST, ccif);
+    ram             ramDUT (CLK, nRST, ramif);
+
+    assign ramif.ramREN = ccif.ramREN;
+    assign ramif.ramWEN = ccif.ramWEN;
+    assign ramif.ramaddr = ccif.ramaddr;
+    assign ramif.ramstore = ccif.ramstore;
+    //assign ramif.ramload = ccif.ramload;
+    assign ccif.ramload = ramif.ramload;
+    //assign ramif.ramstate = ccif.ramstate;
+    assign ccif.ramstate = ramif.ramstate;
+
+endmodule : memory_control_tb
+
+program test (input logic CLK,
+    output logic nRST,
+    cache_control_if ccif);
+
+    import cpu_types_pkg::*;
+
+    parameter PERIOD = 10;
+    int test_num;
+    string test_name;
+
+    initial begin
+        $display("Starting memory control testbench");
+
+		test_num = -1;
+        nRST = 0;
+        @(posedge CLK)
+        nRST = 1;
+
+		@(posedge CLK);
+
+		cif0.dWEN = 0;
+        cif0.dREN = 0;
+		cif0.iREN = 0;
+
+		@(posedge CLK);
+
+		// TEST 0
+        test_num = 0;
+		//run_test(test_num, "Test data write", CLK, 0, '0, 32'h25, cif0);
+        test_name = "Test data write";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 1;
+        cif0.daddr = '0;
+        cif0.dstore = 32'h25;
+
+        @(posedge CLK);
+		@(posedge CLK);
+
+		cif0.dREN = 1;
+        cif0.dWEN = 0;
+
+		$display("dload: %h", cif0.dload);
+        assert(cif0.dload == 32'h25) $display("Passed");
+
+		@(posedge CLK) 
+		@(posedge CLK)
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 0;
+
+		// TEST 1
+        test_num += 1;
+		//run_test(test_num, "Test data write", CLK, 0, '0, 32'h25, cif0);
+        test_name = "Coverage data base";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 1;
+        cif0.daddr = '0;
+        cif0.dstore = '0;
+
+        @(posedge CLK);
+		@(posedge CLK);
+
+		cif0.dREN = 1;
+        cif0.dWEN = 0;
+
+		$display("dload: %h", cif0.dload);
+        assert(cif0.dload == '0) $display("Passed");
+
+		@(posedge CLK) 
+		@(posedge CLK)
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 0;
+
+		// TEST 2
+        test_num += 1;
+		//run_test(test_num, "Test data write", CLK, 0, '0, 32'h25, cif0);
+        test_name = "Coverage instr base";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 1;
+		cif0.dREN = 0;
+        cif0.dWEN = 0;
+        cif0.iaddr = '0;
+
+        @(posedge CLK);
+		@(posedge CLK);
+
+		$display("iload: %h", cif0.iload);
+        assert(cif0.iload == '0) $display("Passed");
+
+		@(posedge CLK) 
+		@(posedge CLK)
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 0;
+
+		// TEST 3
+        test_num += 1;
+		//run_test(test_num, "Test data write", CLK, 0, '0, 32'h25, cif0);
+        test_name = "Coverage data up";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 1;
+        cif0.daddr = '1;
+        cif0.dstore = '1;
+
+        @(posedge CLK);
+		@(posedge CLK);
+
+		cif0.dREN = 1;
+        cif0.dWEN = 0;
+
+		$display("dload: %h", cif0.dload);
+        assert(cif0.dload == '1) $display("Passed");
+
+		@(posedge CLK) 
+		@(posedge CLK) 
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 0;
+
+		// TEST 4
+        test_num += 1;
+		//run_test(test_num, "Test data write", CLK, 0, '0, 32'h25, cif0);
+        test_name = "Coverage instr up";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 1;
+		cif0.dREN = 0;
+        cif0.dWEN = 0;
+        cif0.iaddr = '1;
+
+        @(posedge CLK);
+		@(posedge CLK);
+
+		$display("iload: %h", cif0.iload);
+        assert(cif0.iload == '1) $display("Passed");
+
+		@(posedge CLK) 
+		@(posedge CLK) 
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 0;
+
+		// TEST 5
+        test_num += 1;
+		//run_test(test_num, "Test data write", CLK, 0, '0, 32'h25, cif0);
+        test_name = "Coverage data down";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 1;
+        cif0.daddr = '0;
+        cif0.dstore = '0;
+
+        @(posedge CLK);
+		@(posedge CLK);
+
+		cif0.dREN = 1;
+        cif0.dWEN = 0;
+
+		$display("dload: %h", cif0.dload);
+        assert(cif0.dload == '0) $display("Passed");
+
+		@(posedge CLK) 
+		@(posedge CLK) 
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 0;
+
+		// TEST 6
+        test_num += 1;
+		//run_test(test_num, "Test data write", CLK, 0, '0, 32'h25, cif0);
+        test_name = "Coverage instr down";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 1;
+		cif0.dREN = 0;
+        cif0.dWEN = 0;
+        cif0.iaddr = '0;
+
+        @(posedge CLK);
+		@(posedge CLK);
+
+		$display("iload: %h", cif0.iload);
+        assert(cif0.iload == '0) $display("Passed");
+
+		@(posedge CLK) 
+		@(posedge CLK) 
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 0;
+	
+		//@(posedge CLK)
+
+		// TEST 1
+        /*test_num += 1;
+        test_name = "Write all 0s to data";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 1;
+		cif0.daddr = '0;
+        cif0.dstore = '0;
+
+        @(posedge CLK)
+
+        cif0.dWEN = 0;
+        cif0.dREN = 1;
+		
+		$display("dload: %h", cif0.dload);
+        assert(cif0.dload == '0) $display("Passed");
+
+        @(posedge CLK);
+
+		cif0.dWEN = 0;
+        cif0.dREN = 0;
+		cif0.iREN = 0;
+
+		@(posedge CLK);
+
+        test_num += 1;
+        test_name = "Write all Fs to data";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 1;
+		cif0.dREN = 0;
+        cif0.dWEN = 1;
+        cif0.daddr = '0;
+        cif0.dstore = 32'hFFFFFFFF;
+
+        @(posedge CLK)
+
+        cif0.dWEN = 0;
+        cif0.dREN = 1;
+
+        assert(cif0.dload == 32'hFFFFFFFF) $display("Passed");
+
+		@(posedge CLK)
+
+        test_num += 1;
+        test_name = "Write 1 to addr 0";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 0;
+		cif0.dREN = 0;
+        cif0.dWEN = 1;
+        cif0.daddr = '0;
+        cif0.dstore = 1;
+
+        @(posedge CLK)
+
+        cif0.dWEN = 0;
+        cif0.dREN = 1;
+
+        assert(cif0.dload == 1) $display("Passed");
+
+        @(posedge CLK);
+
+        test_num += 1;
+        test_name = "Write 2 to addr 4";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 1;
+		cif0.dREN = 0;
+        cif0.dWEN = 1;
+        cif0.daddr = 4;
+        cif0.dstore = 32'hFFFFFFFF;
+
+        @(posedge CLK)
+
+        cif0.dWEN = 0;
+        cif0.dREN = 1;
+		
+		$display("daddr: %h", cif0.daddr);
+		$display("dload: %h", cif0.dload);
+        assert(cif0.dload == 2) $display("Passed");
+
+        @(posedge CLK);
+
+        test_num += 1;
+        test_name = "Priority test";
+        $display("Test %d: %s", test_num, test_name);
+
+        cif0.iREN = 1;
+		cif0.dREN = 0;
+        cif0.dWEN = 1;
+        cif0.daddr = '0;
+        cif0.dstore = 32'hFFFFFFFF;
+
+        @(posedge CLK)
+
+        cif0.dWEN = 0;
+        cif0.dREN = 1;
+
+        assert(cif0.dload == 32'hFFFFFFFF) $display("Passed");*/
+
+
+
+		
+
+    end
+
+endprogram : test

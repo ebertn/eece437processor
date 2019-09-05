@@ -39,7 +39,7 @@ parameter PERIOD = 10;
 int test_num;
 
 initial begin
-	$monitor("Starting testbench");
+	$monitor("Starting ALU testbench");
 
 	test_num = 0;
 	$monitor("Test SLL");

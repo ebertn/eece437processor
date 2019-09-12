@@ -34,11 +34,11 @@ always_comb begin
 
     case (aluif.aluOp)
         ALU_SLL: begin
-            aluif.outPort = aluif.portA << aluif.portB; 
+            aluif.outPort = aluif.portB << aluif.portA[0:4];
         end
 
         ALU_SRL: begin
-            aluif.outPort = aluif.portA >> aluif.portB; 
+            aluif.outPort = aluif.portB >> aluif.portA[0:4];
         end
 
         ALU_AND: begin
@@ -72,11 +72,11 @@ always_comb begin
         ALU_SLT: begin
             //aluif.outPort = aluif.portA[30:0] < aluif.portB[30:0] && aluif.portA[31] <= aluif.portB[31]; 
 
-            aluif.outPort = aluif.portA - aluif.portB; 
+            aluif.outPort = aluif.portA < aluif.portB;
         end
 
         ALU_SLTU: begin
-            aluif.outPort = {1'b0, aluif.portA} - {1'b0, aluif.portB}; 
+            aluif.outPort = {1'b0, aluif.portA} < {1'b0, aluif.portB};
         end
     endcase
 end

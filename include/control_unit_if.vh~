@@ -1,0 +1,28 @@
+`ifndef CONTROL_UNIT_IF_VH
+`define CONTROL_UNIT_IF_VH
+
+// all types
+`include "cpu_types_pkg.vh"
+
+interface control_unit_if;
+  // import types
+  import cpu_types_pkg::*;
+
+	logic iHit, Equal, dHit, PcSrc, PcCountEn, iMemRe, RegDst, dMemWr, MemToReg, AluSrc, ExtOp;
+	opcode_t InstrOp;
+	funct_t InstrFunc;
+ 	aluop_t AluOp;
+
+	// control unit ports
+	modport cu (
+	input   iHit, Equal, dHit, InstrOp, InstrFunc,
+	output  PcSrc, PcCountEn, iMemRe, RegDst, AluOp, dMemWr, MemToReg, Halt, dMemRe, AluSrc, ExtOp, regWEN
+	);
+	// control unit tb
+	modport tb (
+	input   PcSrc, PcCountEn, iMemRe, RegDst, AluOp, dMemWr, MemToReg, Halt, dMemRe, AluSrc, ExtOp, regWEN,
+	output  iHit, Equal, dHit, InstrOp
+	);
+endinterface
+
+`endif //CONTROL_UNIT_VH

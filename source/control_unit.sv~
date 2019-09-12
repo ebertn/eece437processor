@@ -1,0 +1,92 @@
+// control unit interface
+`include "control_unit_if.vh"
+
+// alu op, mips op, and instruction type
+`include "cpu_types_pkg.vh"
+
+module control_unit (
+  control_unit_if.cu cuif
+);
+	// import types
+	import cpu_types_pkg::*;
+
+	//modport cu (
+	//	input   iHit, Equal, dHit, InstrOp, InstrFunc,
+	//	output  PcSrc, PcCountEn, iMemRe, RegDst, AluOp, dMemWr, MemToReg, Halt, dMemRe, AluSrc, ExtOp
+	//);
+
+	always_comb begin
+
+		cuif.PcSrc = 0;
+		cuif.PcCountEn = 1;
+		cuif.iMemRe = 1;
+		cuif.AluOp = '0;
+		cuif.dMemWr = 0;
+		cuif.MemToReg = 0;
+		cuif.Halt = 0;
+		cuif.dMemRe = 0;
+		cuif.AluSrc = 0;
+		cuif.ExtOp = 0; // Default is zero ext
+		cuif.regWEN = 0;
+
+		if (cuif.InstrOp == RTYPE) begin
+			cuif.RegDst = 0;
+
+			case(cuif.InstrOp)
+			    // jtype
+				J: begin
+					cuif.PcSrc = 1;
+				end
+
+				JAL:begin
+					cuif.PcSrc = 1;
+				end
+
+				// itype
+				BEQ: begin
+					cuif.PcSrc = cuif.Equal;
+					cuif
+				end
+				BNE:
+				ADDI:
+				ADDIU:
+				SLTI:
+				SLTIU:
+				ANDI:
+				ORI:
+				XORI:
+				LUI:
+				LW:
+				LBU:
+				LHU:
+				SB:
+				SH:
+				SW:
+				LL:
+				SC:
+				HALT:
+				
+			endcase
+		end else begin
+			cuif.RegDst = 1;
+		
+			case(cuif.InstrFunc)
+				// rtype
+			    SLLV:
+				SRLV:
+				JR:
+				ADD:
+				ADDU:
+				SUB:
+				SUBU:
+				AND:
+				OR:
+				XOR:
+				NOR:
+				SLT:
+				SLTU:
+			endcase
+		end
+	end
+
+endmodule

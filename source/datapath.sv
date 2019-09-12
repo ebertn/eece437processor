@@ -41,13 +41,13 @@ module datapath (
     extender extDUT(extif);
 
     j_t jt;
-    assign jt = ruif.imemload;
+    assign jt = dpif.imemload;
 
     i_t it;
-    assign it = ruif.imemload;
+    assign it = dpif.imemload;
 
     r_t rt;
-    assign rt = ruif.imemload;
+    assign rt = dpif.imemload;
 
     // Rt, Rd, 5'b31 Mux
     always_comb begin
@@ -80,7 +80,7 @@ module datapath (
     always_comb begin
         case (cuif.MemToReg)
             0: data_out = aluif.outPort;
-            1: data_out = ruif.dMemLoad;
+            1: data_out = dpif.dmemload;
         endcase
     end
 
@@ -107,9 +107,26 @@ module datapath (
         endcase
     end
 
+    // PC Connections
     assign pcif.next_PC = next_PC;
     assign pcif.countEn = dpif.ihit && !dpif.halt;
+    //assign dpif.imemaddr = pcif.pc;
+
+    // Request Unit Connections
+    assign ruif.iMemRe = cuif.iMemRe;
+    assign ruif.dMemWr = cuif.dMemWr;
+    assign ruif.dMemRe = cuif.dMemRe;
+    assign ruif.ihit = dpif.ihit;
+    assign ruif.dhit = dpif.dhit;
+
+    // Datapath Input/Output Connections
+    assign dpif.halt = cuif.Halt;
+    assign dpif.imemREN = ruif.imemREN_out;
+    assign dpif.dmemREN = ruif.dmemREN_out;
+    assign dpif.dmemWEN = ruif.dmemWEN_out;
     assign dpif.imemaddr = pcif.pc;
+    assign dpif.dmemstore = rfif.rdat2;
+    assign dpif.dmemaddr = aluif.outPort;
 
     // next_PC, data_out Mux
     always_comb begin

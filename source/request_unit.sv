@@ -15,13 +15,13 @@ module request_unit (
 
     always_ff @(posedge CLK, negedge nRST) begin
         if (!nRST) begin
-            ruif.imemREN = '0;
-            ruif.dmemWEN = '0;
-            ruif.dmemREN = '0;
+            ruif.imemREN <= '0;
+            ruif.dmemWEN <= '0;
+            ruif.dmemREN <= '0;
         end else begin
-            ruif.imemREN = next_imemREN;
-            ruif.dmemWEN = next_dmemWEN;
-            ruif.dmemREN = next_dmemREN;
+            ruif.imemREN <= next_imemREN;
+            ruif.dmemWEN <= next_dmemWEN;
+            ruif.dmemREN <= next_dmemREN;
         end
     end
 

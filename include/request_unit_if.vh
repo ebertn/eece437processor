@@ -12,13 +12,13 @@ interface request_unit_if;
 
 	// alu ports
 	modport ru (
-	input   iMemRe, dMemWr, dMemRe, ihit, dhit, dMemStore,
+	input   iMemRe, dMemWr, dMemRe, ihit, dhit,
 	output  imemREN_out, dmemWEN_out, dmemREN_out
 	);
 	// alu tb
 	modport tb (
-	input   imemREN_out, dmemWEN_out, dmemREN_out
-	output  iMemRe, dMemWr, dMemRe, ihit, dhit, dMemStore,
+	input   imemREN_out, dmemWEN_out, dmemREN_out,
+	output  iMemRe, dMemWr, dMemRe, ihit, dhit
 	);
 endinterface
 

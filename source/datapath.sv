@@ -99,13 +99,17 @@ module datapath (
     // alu_out, dmemload Mux
     word_t next_PC;
     always_comb begin
-        case (cuif.MemToReg)
-            2'b00: next_PC = PC_plus4;
-            2'b01: next_PC = PC_plus_ext;
-            2'b10: next_PC = rfif.rdat1;
-            2'b11: next_PC = rfif.rdat1;
+        case ({cuif.JReg, cuif.PcSrc})
+            2'b00: next_PC = PC_plus4; // PC + 4
+            2'b01: next_PC = PC_plus_ext; // Branch
+            2'b10: next_PC = rfif.rdat1; // JR
+            2'b11: next_PC = ext_ls; // J/JAL
         endcase
     end
+
+    assign pcif.next_PC = next_PC;
+    assign pcif.countEn = dpif.ihit && !dpif.halt;
+    assign dpif.imemaddr = pcif.pc;
 
     // next_PC, data_out Mux
     always_comb begin

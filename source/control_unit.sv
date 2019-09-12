@@ -40,12 +40,14 @@ module control_unit (
 				J: begin
 					cuif.JType = 1;
 					cuif.PcSrc = 1;
+					{cuif.JReg,cuif.PcSrc} = 2'b11;
 				end
 
 				JAL: begin
 					cuif.JType = 1;
 					cuif.PcSrc = 1;
 					cuif.RegWEN = 1;
+					{cuif.JReg,cuif.PcSrc} = 2'b11;
 				end
 
 				// itype
@@ -152,8 +154,7 @@ module control_unit (
 				end
 
 				JR: begin
-					cuif.JReg = 1;
-					cuif.regWEN = 1;
+					{cuif.JReg,cuif.PcSrc} = 2'b10;
 				end
 
 				ADD: begin

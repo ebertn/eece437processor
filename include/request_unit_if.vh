@@ -8,17 +8,17 @@ interface request_unit_if;
   // import types
   import cpu_types_pkg::*;
 
-	logic iMemRe, dMemWr, dMemRe, ihit, dhit, imemREN, dmemWEN, dmemREN;
+	logic iMemRe, dMemWr, dMemRe, ihit, dhit, imemREN_out, dmemWEN_out, dmemREN_out;
 
 	// alu ports
 	modport ru (
-	input   iMemRe, iMemAddr, dMemWr, dMemRe, dMemAddr, dMemStore, Halt,
-	output  iHit, iMemLoad, dHit, dMemLoad
+	input   iMemRe, dMemWr, dMemRe, ihit, dhit, dMemStore,
+	output  imemREN_out, dmemWEN_out, dmemREN_out
 	);
 	// alu tb
 	modport tb (
-	input   iHit, iMemLoad, dHit, dMemLoad,
-	output  iMemRe, iMemAddr, dMemWr, dMemRe, dMemAddr, dMemStore, Halt
+	input   imemREN_out, dmemWEN_out, dmemREN_out
+	output  iMemRe, dMemWr, dMemRe, ihit, dhit, dMemStore,
 	);
 endinterface
 

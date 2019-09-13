@@ -86,7 +86,7 @@ module datapath (
 
     // PC + 4 Adder
     word_t PC_plus4;
-    assign PC_plus4 = pcif.pc + 32'd4;
+    assign PC_plus4 = pcif.count + 32'd4;
 
     // extif.out shift left 2
     word_t ext_ls;
@@ -108,7 +108,7 @@ module datapath (
     end
 
     // PC Connections
-    assign pcif.next_PC = next_PC;
+    assign pcif.next_count = next_PC;
     assign pcif.countEn = dpif.ihit && !dpif.halt;
     //assign dpif.imemaddr = pcif.pc;
 
@@ -121,9 +121,9 @@ module datapath (
 
     // Datapath Input/Output Connections
     assign dpif.halt = cuif.Halt;
-    assign dpif.imemREN = ruif.imemREN_out;
-    assign dpif.dmemREN = ruif.dmemREN_out;
-    assign dpif.dmemWEN = ruif.dmemWEN_out;
+    assign dpif.imemREN = ruif.imemREN;
+    assign dpif.dmemREN = ruif.dmemREN;
+    assign dpif.dmemWEN = ruif.dmemWEN;
     assign dpif.imemaddr = pcif.pc;
     assign dpif.dmemstore = rfif.rdat2;
     assign dpif.dmemaddr = aluif.outPort;

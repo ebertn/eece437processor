@@ -1,6 +1,3 @@
-include/cache_control_if.vh
-include/caches_if.vh
-include/cpu_ram_if.vh
-source/memory_control.sv
-source/ram.sv
-testbench/memory_control_tb.sv
+include/control_unit_if.vh
+source/control_unit.sv
+testbench/control_unit_tb.sv

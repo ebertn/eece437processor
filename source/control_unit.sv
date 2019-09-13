@@ -19,7 +19,7 @@ module control_unit (
 
 		cuif.PcSrc = 0;
 		cuif.iMemRe = 1;
-		cuif.AluOp = '0;
+		cuif.AluOp = ALU_SLL;
 		cuif.dMemWr = 0;
 		cuif.MemToReg = 0;
 		cuif.Halt = 0;
@@ -46,7 +46,7 @@ module control_unit (
 				JAL: begin
 					cuif.JType = 1;
 					cuif.PcSrc = 1;
-					cuif.RegWEN = 1;
+					cuif.regWEN = 1;
 					{cuif.JReg,cuif.PcSrc} = 2'b11;
 				end
 
@@ -82,7 +82,7 @@ module control_unit (
 				SLTIU: begin
 					cuif.AluOp = ALU_SLTU;
 					cuif.AluSrc = 1;
-					cuif.cuif.regWEN = 1;
+					cuif.regWEN = 1;
 				end
 
 				ANDI: begin
@@ -93,7 +93,7 @@ module control_unit (
 				end
 
 				ORI: begin
-					cuif.AluOp = ALU_AND;
+					cuif.AluOp = ALU_OR;
 					cuif.AluSrc = 1;
 					cuif.ExtOp = 0;
 					cuif.regWEN = 1;

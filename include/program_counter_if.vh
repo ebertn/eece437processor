@@ -9,17 +9,17 @@ interface program_counter_if;
 import cpu_types_pkg::*;
 
 logic countEn;
-word_t pc, next_PC;
+word_t count, next_count;
 
 // extender ports
 modport pc (
-input   countEn, next_PC,
-output  pc
+input   countEn, next_count,
+output  count
 );
 // extender tb
 modport tb (
-input   pc,
-output  countEn, next_PC
+input   count,
+output  countEn, next_count
 );
 endinterface
 

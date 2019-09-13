@@ -34,11 +34,11 @@ always_comb begin
 
     case (aluif.aluOp)
         ALU_SLL: begin
-            aluif.outPort = aluif.portB << aluif.portA[0:4];
+            aluif.outPort = aluif.portB << aluif.portA[4:0];
         end
 
         ALU_SRL: begin
-            aluif.outPort = aluif.portB >> aluif.portA[0:4];
+            aluif.outPort = aluif.portB >> aluif.portA[4:0];
         end
 
         ALU_AND: begin

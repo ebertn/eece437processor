@@ -31,13 +31,37 @@ module request_unit (
 
         //next_imemREN = 1; Set above for coverage (dumb)
 
-        if(ruif.ihit) begin
-            next_dmemWEN = ruif.dMemWr;
-            next_dmemREN = ruif.dMemRe;
-        end else if(ruif.dhit) begin
+
+//        if(ruif.ihit) begin
+//            next_dmemWEN = ruif.dMemWr;
+//            next_dmemREN = ruif.dMemRe;
+//        end else if(ruif.dhit) begin
+//            next_dmemWEN = 0;
+//            next_dmemREN = 0;
+//        end
+
+        if(ruif.dhit) begin
             next_dmemWEN = 0;
             next_dmemREN = 0;
+        end else if(ruif.ihit) begin
+            next_dmemWEN = ruif.dMemWr;
+            next_dmemREN = ruif.dMemRe;
         end
     end
+
+//    always_comb begin
+//        ruif.dmemWEN = ruif.dmemWEN;
+//        ruif.dmemREN = ruif.dmemREN;
+//
+//        ruif.imemREN = 1;
+//
+//        if(ruif.ihit) begin
+//            ruif.dmemWEN = ruif.dMemWr;
+//            ruif.dmemREN = ruif.dMemRe;
+//        end else if(ruif.dhit) begin
+//            ruif.dmemWEN = 0;
+//            ruif.dmemREN = 0;
+//        end
+//    end
 
 endmodule : request_unit

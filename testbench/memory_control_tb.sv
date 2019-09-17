@@ -1,11 +1,13 @@
 // mapped timing needs this. 1ns is too fast
 `timescale 1 ns / 1 ns
 
+`include "cpu_types_pkg.vh"
+
+
 // interface include
 `include "cache_control_if.vh"
 `include "caches_if.vh"
 
-`include "cpu_types_pkg.vh"
 
 import cpu_types_pkg::*;
 

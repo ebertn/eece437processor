@@ -1,10 +1,13 @@
 // mapped timing needs this. 1ns is too fast
-`timescale 1 ns / 1 ns
+
+
+`include "cpu_types_pkg.vh"
+
 
 // interface include
 `include "control_unit_if.vh"
 
-`include "cpu_types_pkg.vh"
+`timescale 1 ns / 1 ns
 
 import cpu_types_pkg::*;
 
@@ -30,8 +33,6 @@ endmodule
 program test (
     input logic CLK,
     control_unit_if cuif);
-
-    import cpu_types_pkg::*;
 
     parameter PERIOD = 10;
     int test_num;

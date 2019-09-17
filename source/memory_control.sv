@@ -46,6 +46,7 @@ module memory_control (
             if (ccif.dREN[i] || ccif.dWEN[i]) begin
                 {ccif.ramWEN, ccif.ramREN} = '0;
                 ccif.dwait[i] = ccif.ramstate != ACCESS;
+                ccif.iwait[i] = 1;
 
                 // Read
                 ccif.dload[i] = ccif.ramload;

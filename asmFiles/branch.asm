@@ -3,10 +3,10 @@
 
 org 0x0000
 
-ori $1, $0, 5
-ori $2, $0, 5
+ori $1, $0, 1
+ori $2, $0, 2
 
-beq $1, $2, test1
+beq $1, $2, test3
 
 test1:
 bne $1, $2, test2
@@ -15,6 +15,7 @@ halt
 test2:
 ori $3, $0, 10
 
+test3:
 halt
 
 

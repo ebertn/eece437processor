@@ -1,8 +1,10 @@
+`include "cpu_types_pkg.vh"
+
 // control unit interface
 `include "control_unit_if.vh"
 
 // alu op, mips op, and instruction type
-`include "cpu_types_pkg.vh"
+
 
 module control_unit (
   control_unit_if.cu cuif

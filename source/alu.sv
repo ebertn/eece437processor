@@ -1,27 +1,29 @@
-//`include "cpu_types_pkg.vh"
+`include "cpu_types_pkg.vh"
+
+`include "alu_if.vh"
 
 module alu (
   alu_if.alu aluif  
 );
 
-//import cpu_types_pkg::*;
+import cpu_types_pkg::*;
 
-// alu op width
-parameter AOP_W     = 4;
-
-// alu op type
-typedef enum logic [AOP_W-1:0] {
-	ALU_SLL     = 4'b0000,        
-	ALU_SRL     = 4'b0001,        
-	ALU_ADD     = 4'b0010,        
-	ALU_SUB     = 4'b0011,        
-	ALU_AND     = 4'b0100,        
-	ALU_OR      = 4'b0101,        
-	ALU_XOR     = 4'b0110,        
-	ALU_NOR     = 4'b0111,        
-	ALU_SLT     = 4'b1010,        
-	ALU_SLTU    = 4'b1011         
-} aluop_t; 
+//// alu op width
+//parameter AOP_W     = 4;
+//
+//// alu op type
+//typedef enum logic [AOP_W-1:0] {
+//	ALU_SLL     = 4'b0000,
+//	ALU_SRL     = 4'b0001,
+//	ALU_ADD     = 4'b0010,
+//	ALU_SUB     = 4'b0011,
+//	ALU_AND     = 4'b0100,
+//	ALU_OR      = 4'b0101,
+//	ALU_XOR     = 4'b0110,
+//	ALU_NOR     = 4'b0111,
+//	ALU_SLT     = 4'b1010,
+//	ALU_SLTU    = 4'b1011
+//} aluop_t;
 
 always_comb begin
 	aluif.zero = aluif.outPort == '0;

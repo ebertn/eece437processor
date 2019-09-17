@@ -62,8 +62,8 @@ module datapath (
     // Rs, 0 Mux
     always_comb begin
         case (cuif.RegZero)
-            0: rfif.wsel = rt.rt;
-            1: rfif.wsel = 5'd31;
+            0: rfif.rsel1 = rt.rs;
+            1: rfif.rsel1 = '0;
         endcase
     end
 
@@ -107,32 +107,52 @@ module datapath (
         endcase
     end
 
-    // PC Connections
+    // PC Inputs
     assign pcif.next_count = next_PC;
     assign pcif.countEn = dpif.ihit && !dpif.halt;
     //assign dpif.imemaddr = pcif.pc;
 
-    // Request Unit Connections
+    // Request Unit Inputs
     assign ruif.iMemRe = cuif.iMemRe;
     assign ruif.dMemWr = cuif.dMemWr;
     assign ruif.dMemRe = cuif.dMemRe;
     assign ruif.ihit = dpif.ihit;
     assign ruif.dhit = dpif.dhit;
 
-    // Datapath Input/Output Connections
+    // Datapath Inputs
     assign dpif.halt = cuif.Halt;
     assign dpif.imemREN = ruif.imemREN;
     assign dpif.dmemREN = ruif.dmemREN;
     assign dpif.dmemWEN = ruif.dmemWEN;
-    assign dpif.imemaddr = pcif.pc;
+    assign dpif.imemaddr = pcif.count;
     assign dpif.dmemstore = rfif.rdat2;
     assign dpif.dmemaddr = aluif.outPort;
+
+    // Register File Inputs
+    assign rfif.rsel2 = rt.rt;
+    assign rfif.WEN = cuif.regWEN;
+
+    // ALU Connections
+    assign aluif.portA = rfif.rdat1;
+    assign aluif.aluOp = cuif.AluOp;
+
+    // Control Unit Inputs
+    assign cuif.Equal = aluif.zero;
+    assign cuif.InstrOp = rt.opcode;
+    assign cuif.InstrFunc = rt.funct;
+
+    // Extender Inputs
+    assign extif.imm16 = it.imm;
+    assign extif.imm26 = jt.addr;
+    assign extif.JType = cuif.JType;
+    assign extif.ExtOp = cuif.ExtOp;
+    assign extif.UpperImm = cuif.UpperImm;
 
     // next_PC, data_out Mux
     always_comb begin
         case (cuif.JType)
             0: rfif.wdat = data_out;
-            1: rfif.wdat = next_PC;
+            1: rfif.wdat = PC_plus4;//next_PC;
         endcase
     end
 

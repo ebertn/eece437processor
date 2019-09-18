@@ -49,19 +49,4 @@ module request_unit (
         end
     end
 
-//    always_comb begin
-//        ruif.dmemWEN = ruif.dmemWEN;
-//        ruif.dmemREN = ruif.dmemREN;
-//
-//        ruif.imemREN = 1;
-//
-//        if(ruif.ihit) begin
-//            ruif.dmemWEN = ruif.dMemWr;
-//            ruif.dmemREN = ruif.dMemRe;
-//        end else if(ruif.dhit) begin
-//            ruif.dmemWEN = 0;
-//            ruif.dmemREN = 0;
-//        end
-//    end
-
 endmodule : request_unit

@@ -140,6 +140,8 @@ module datapath (
     assign cuif.Equal = aluif.zero;
     assign cuif.InstrOp = rt.opcode;
     assign cuif.InstrFunc = rt.funct;
+    assign cuif.dHit = dpif.dhit; // Maybe not needed
+    assign cuif.iHit = dpif.ihit; // Maybe not needed
 
     // Extender Inputs
     assign extif.imm16 = it.imm;

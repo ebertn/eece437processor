@@ -28,7 +28,7 @@ module control_unit (
 		cuif.dMemRe = 0;
 		cuif.AluSrc = 0;
 		cuif.ExtOp = 1; // Default is sign ext
-		cuif.regWEN = 0;
+		cuif.regWEN = cuif.iHit;
 		cuif.UpperImm = 0;
 		cuif.RegZero = 0;
 		cuif.JType = 0;
@@ -43,12 +43,13 @@ module control_unit (
 					cuif.JType = 1;
 					cuif.PcSrc = 1;
 					{cuif.JReg,cuif.PcSrc} = 2'b11;
+					cuif.regWEN = 0;
 				end
 
 				JAL: begin
 					cuif.JType = 1;
 					cuif.PcSrc = 1;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 					{cuif.JReg,cuif.PcSrc} = 2'b11;
 				end
 
@@ -56,56 +57,58 @@ module control_unit (
 				BEQ: begin
 					cuif.PcSrc = cuif.Equal;
 					cuif.AluOp = ALU_SUB;
+					cuif.regWEN = 0;
 				end
 
 				BNE: begin
 					cuif.PcSrc = !cuif.Equal;
 					cuif.AluOp = ALU_SUB;
+					cuif.regWEN = 0;
 				end
 
 				ADDI: begin
 					cuif.AluOp = ALU_ADD;
 					cuif.AluSrc = 1;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				ADDIU: begin
 					cuif.AluOp = ALU_ADD;
 					cuif.AluSrc = 1;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				SLTI: begin
 					cuif.AluOp = ALU_SLT;
 					cuif.AluSrc = 1;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				SLTIU: begin
 					cuif.AluOp = ALU_SLTU;
 					cuif.AluSrc = 1;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				ANDI: begin
 					cuif.AluOp = ALU_AND;
 					cuif.AluSrc = 1;
 					cuif.ExtOp = 0;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				ORI: begin
 					cuif.AluOp = ALU_OR;
 					cuif.AluSrc = 1;
 					cuif.ExtOp = 0;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				XORI: begin
 					cuif.AluOp = ALU_XOR;
 					cuif.AluSrc = 1;
 					cuif.ExtOp = 0;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				LUI: begin
@@ -113,13 +116,14 @@ module control_unit (
 					cuif.AluSrc = 1;
 					cuif.UpperImm = 1;
 					cuif.RegZero = 1;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				LW: begin
 					cuif.AluOp = ALU_ADD;
 					cuif.AluSrc = 1;
-					cuif.regWEN = 1;
+					//cuif.regWEN = 1;
+					cuif.regWEN = cuif.dHit;
 
 					// Memory
 					cuif.dMemRe = 1;
@@ -130,6 +134,7 @@ module control_unit (
 				SW: begin
 					cuif.AluOp = ALU_ADD;
 					cuif.AluSrc = 1;
+					cuif.regWEN = 0;
 
 					// Memory
 					cuif.dMemWr = 1;
@@ -137,6 +142,7 @@ module control_unit (
 
 				HALT: begin
 					cuif.Halt = 1;
+					cuif.regWEN = 0;
 				end
 
 			endcase
@@ -147,66 +153,67 @@ module control_unit (
 				// rtype
 			    SLLV: begin
 					cuif.AluOp = ALU_SLL;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 			    end
 
 				SRLV: begin
 					cuif.AluOp = ALU_SRL;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				JR: begin
 					{cuif.JReg,cuif.PcSrc} = 2'b10;
+					cuif.regWEN = 0;
 				end
 
 				ADD: begin
 					cuif.AluOp = ALU_ADD;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				ADDU: begin
 					cuif.AluOp = ALU_ADD;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				SUB: begin
 					cuif.AluOp = ALU_SUB;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				SUBU: begin
 					cuif.AluOp = ALU_SUB;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				AND: begin
 					cuif.AluOp = ALU_AND;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				OR: begin
 					cuif.AluOp = ALU_OR;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				XOR: begin
 					cuif.AluOp = ALU_XOR;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				NOR: begin
 					cuif.AluOp = ALU_NOR;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				SLT: begin
 					cuif.AluOp = ALU_SLT;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 
 				SLTU: begin
 					cuif.AluOp = ALU_SLTU;
-					cuif.regWEN = 1;
+//					cuif.regWEN = 1;
 				end
 			endcase
 		end

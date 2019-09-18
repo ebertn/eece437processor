@@ -2,8 +2,6 @@ onerror {resume}
 quietly WaveActivateNextPane {} 0
 add wave -noupdate -divider -height 30 Datapath
 add wave -noupdate -divider Instructions
-add wave -noupdate -color Orange /system_tb/DUT/CPU/DP/jt.opcode
-add wave -noupdate -color Magenta -radixenum symbolic /system_tb/DUT/CPU/DP/rt.funct
 add wave -noupdate -group {j type} -radix hexadecimal /system_tb/DUT/CPU/DP/jt.addr
 add wave -noupdate -group {i type} -color Cyan -radix unsigned /system_tb/DUT/CPU/DP/it.rs
 add wave -noupdate -group {i type} -color Cyan -radix unsigned /system_tb/DUT/CPU/DP/it.rt
@@ -19,21 +17,21 @@ add wave -noupdate -expand -group {Program Counter} -radix hexadecimal /system_t
 add wave -noupdate -expand -group {Program Counter} /system_tb/DUT/CPU/DP/pcif/countEn
 add wave -noupdate -divider {Datapath Interface}
 add wave -noupdate /system_tb/DUT/CPU/ccif/ramstate
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/halt
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/ihit
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemREN
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemload
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemaddr
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dhit
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/datomic
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemREN
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemWEN
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/flushed
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemload
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemstore
-add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemaddr
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/halt
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/ihit
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemREN
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemload
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemaddr
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dhit
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/datomic
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemREN
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemWEN
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/flushed
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemload
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemstore
+add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemaddr
 add wave -noupdate -divider {Register File}
-add wave -noupdate -expand -group {Register File} /system_tb/DUT/CPU/DP/rfDUT/registers
+add wave -noupdate -expand -group {Register File} -expand /system_tb/DUT/CPU/DP/rfDUT/registers
 add wave -noupdate -expand -group {Register File} -expand -group Other /system_tb/DUT/CPU/DP/rfif/WEN
 add wave -noupdate -expand -group {Register File} -expand -group Other -radix unsigned /system_tb/DUT/CPU/DP/rfif/wsel
 add wave -noupdate -expand -group {Register File} -expand -group Other -radix unsigned /system_tb/DUT/CPU/DP/rfif/rsel1
@@ -42,13 +40,13 @@ add wave -noupdate -expand -group {Register File} -expand -group Other /system_t
 add wave -noupdate -expand -group {Register File} -expand -group Other /system_tb/DUT/CPU/DP/rfif/rdat1
 add wave -noupdate -expand -group {Register File} -expand -group Other /system_tb/DUT/CPU/DP/rfif/rdat2
 add wave -noupdate -divider ALU
-add wave -noupdate -group ALU /system_tb/DUT/CPU/DP/aluif/negative
-add wave -noupdate -group ALU /system_tb/DUT/CPU/DP/aluif/overflow
-add wave -noupdate -group ALU /system_tb/DUT/CPU/DP/aluif/zero
-add wave -noupdate -group ALU /system_tb/DUT/CPU/DP/aluif/portA
-add wave -noupdate -group ALU /system_tb/DUT/CPU/DP/aluif/portB
-add wave -noupdate -group ALU /system_tb/DUT/CPU/DP/aluif/outPort
-add wave -noupdate -group ALU /system_tb/DUT/CPU/DP/aluif/aluOp
+add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/aluif/negative
+add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/aluif/overflow
+add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/aluif/zero
+add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/aluif/portA
+add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/aluif/portB
+add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/aluif/outPort
+add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/aluif/aluOp
 add wave -noupdate -divider {Control Unit}
 add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/Equal
 add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/Halt
@@ -86,10 +84,14 @@ add wave -noupdate -group Extender -radix decimal /system_tb/DUT/CPU/DP/extif/im
 add wave -noupdate -group Extender -radix hexadecimal /system_tb/DUT/CPU/DP/extif/imm26
 TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
+add wave -noupdate -color Orange /system_tb/DUT/CPU/DP/jt.opcode
+add wave -noupdate -color Magenta -radixenum symbolic /system_tb/DUT/CPU/DP/rt.funct
+TreeUpdate [SetDefaultTree]
+quietly WaveActivateNextPane
 add wave -noupdate -color White /system_tb/DUT/CPU/DP/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {172008 ps} 0}
+WaveRestoreCursors {{Cursor 1} {868164 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -105,4 +107,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {69371 ps} {342371 ps}
+WaveRestoreZoom {0 ps} {1502 ns}

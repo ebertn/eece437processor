@@ -8,7 +8,7 @@
   shubhamrastogi3111995@gmail.com
 
   cache structs added
-
+  
 */
 `ifndef CPU_TYPES_PKG_VH
 `define CPU_TYPES_PKG_VH
@@ -168,7 +168,7 @@ package cpu_types_pkg;
 	word_t [1:0] data;
   } dcache_frame;
 
-  //icache frame
+  //icache frame  
   typedef struct packed {
 	logic valid;
 	logic [ITAG_W - 1:0] tag;

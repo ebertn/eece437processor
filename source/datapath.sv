@@ -40,6 +40,9 @@ module datapath (
     extender_if extif();
     extender extDUT(extif);
 
+    ifid_if ifidif();
+    ifif ifidDUT(CLK, nRST, ifidif);
+
     j_t jt;
     assign jt = dpif.imemload;
 

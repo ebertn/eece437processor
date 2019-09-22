@@ -11,7 +11,7 @@ import cpu_types_pkg::*;
 word_t pcplus4_in, pcplus4_out, instr_in, instr_out;
 
 // ifit ports
-modport ifid (
+modport ifit (
 input   pcplus4_in, instr_in,
 output  pcplus4_out, instr_out
 );

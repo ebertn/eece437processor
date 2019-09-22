@@ -1,5 +1,5 @@
 
-
+`include "ifid_if.vh"
 module ifid 
 (
 	input logic CLK, 
@@ -10,11 +10,11 @@ module ifid
 
 	always_ff @(posedge CLK, negedge nRST) begin
 		if (!nRST) begin
-			pcplus4_out <= 0; 
-			instr_out <= 0; 
+			ifid.pcplus4_out <= 0; 
+			ifid.instr_out <= 0; 
 		end else begin
-			pcplus4_out <= pcplus4_in;
-			instr_out <= instr_in; 
+			ifid.pcplus4_out <= ifid.pcplus4_in;
+			ifid.instr_out <= ifid.instr_in; 
 		end
 	end
 

@@ -1,15 +1,15 @@
+`include "exmem_if.vh"
+
 module exmem
 (
 	input logic CLK,
 	input logic nRST, 
-	exmem_if exmem
+	exmem_if.exmem exmem
 
 ); 
-	
-
 
 	always_ff @(posedge CLK, negedge nRST) begin
-		if (nRST == 0) begin
+		if (!nRST) begin
 			exmem.pcplus4_out <= 0; 
 			exmem.branchaddr_out <= 0; 
 			exmem.aluOutport_out <= 0; 

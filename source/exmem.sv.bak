@@ -1,12 +1,12 @@
+`include "exmem_if.vh"
+
 module exmem
 (
 	input logic CLK,
 	input logic nRST, 
-	exmem_if exmem
+	exmem_if.exmem exmem
 
 ); 
-	
-
 
 	always_ff @(posedge CLK, negedge nRST) begin
 		if (nRST == 0) begin
@@ -37,3 +37,7 @@ module exmem
 			exmem.Halt_out <= exmem.Halt_in; 
 			exmem.dMemWEN_out <= exmem.dMemWEN_in; 
 			exmem.dMemREN_out <= exmem.dMemREN_in; 
+		end
+	end
+
+endmodule 

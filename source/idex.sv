@@ -1,8 +1,12 @@
+
+`include "idex_if.vh"
+
+
 module idex
 (
 	input logic CLK, 
 	input logic nRST, 
-	idex_if idex
+	idex_if.idex idex
 
 ); 
 	

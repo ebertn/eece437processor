@@ -9,7 +9,7 @@ interface memwb_if;
 import cpu_types_pkg::*;
 
 // Inputs
-word_t pcplus4_in, aluOutport_in;
+word_t pcplus4_in, aluOutport_in, dmemload_in;
 logic MemToReg_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in;
 
 // Outputs

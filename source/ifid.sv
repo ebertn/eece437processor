@@ -1,10 +1,10 @@
 
-
+`include "ifid_if.vh"
 module ifid 
 (
 	input logic CLK, 
 	input logic nRST, 
-	ifid_if ifid
+	ifid_if.ifid ifid
 
 ); 
 

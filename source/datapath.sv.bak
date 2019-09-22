@@ -188,7 +188,7 @@ module datapath (
     assign exmemif.Halt_in = idexif.Halt_out; 
     assign exmemif.dMemWEN_in = idexif.dMemWEN_out; 
     assign exmemif.dMemREN_in = idexif.dMemREN_out; 
-    assign exmemif.branchaddr_in = ex_branchaddr; 
+    assign exmemif.branchaddr_in = branchaddr; 
 
     //MEM/WB Inputs
  

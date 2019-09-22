@@ -14,7 +14,7 @@ logic MemToReg_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in;
 
 // Outputs
 // Outputs
-word_t pcplus4_out, aluOutport_out;
+word_t pcplus4_out, aluOutport_out, dmemload_out;
 logic MemToReg_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out;
 
 // memwb ports

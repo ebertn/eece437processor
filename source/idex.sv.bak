@@ -6,12 +6,10 @@ module idex
 (
 	input logic CLK, 
 	input logic nRST, 
-	idex_if idex
+	idex_if.idex idex
 
 ); 
 	
-
-
 	always_ff @(posedge CLK, negedge nRST) begin	
 		if (nRST == 0) begin
 			idex.pcplus4_out <= 0;  
@@ -19,7 +17,7 @@ module idex
 			idex.rdat2_out <= 0; 
  			idex.immext_out <= 0; 
  			idex.MemToReg_out <= 0; 
- 			idex.AluOp_out <= 0; 
+ 			idex.AluOp_out <= ALU_SLL; 
 			idex.AluSrc_out <= 0; 
     			idex.JType_out <= 0; 
 			idex.RegDst_out <= 0;  

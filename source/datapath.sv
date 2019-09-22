@@ -145,8 +145,8 @@ module datapath (
     // Datapath Outputs
     assign dpif.halt = exmemif.Halt_out;
     assign dpif.imemREN = 1'b1;
-    assign dpif.dmemREN = exmemif.dmemREN_out;
-    assign dpif.dmemWEN = exmemif.dmemWEN_out;
+    assign dpif.dmemREN = exmemif.dMemREN_out;
+    assign dpif.dmemWEN = exmemif.dMemWEN_out;
     assign dpif.imemaddr = pcif.count;
     assign dpif.dmemstore = exmemif.rdat2_out;
     assign dpif.dmemaddr = exmemif.aluOutport_out;
@@ -194,7 +194,7 @@ module datapath (
  
     assign memwbif.pcplus4_in = exmemif.pcplus4_out; 
     assign memwbif.MemToReg_in = exmemif.MemToReg_out; 
-    assign memwbif.aluOutport_in = exmemif.outPort; 
+    assign memwbif.aluOutport_in = exmemif.aluOutport_out; 
     assign memwbif.JType_in = exmemif.JType_out; 
     assign memwbif.RegDst_in = exmemif.RegDst_out; 
     assign memwbif.regWEN_in = exmemif.regWEN_out;     

@@ -10,12 +10,14 @@ import cpu_types_pkg::*;
 
 // Inputs
 word_t pcplus4_in, rdat1_in, rdat2_in, immext_in;
-logic MemToReg_in, AluOp_in, AluSrc_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in,
+aluop_t AluOp_in;
+logic MemToReg_in, AluSrc_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in,
     Halt_in, dMemWEN_in, dMemREN_in;
 
 // Outputs
 word_t pcplus4_out, rdat1_out, rdat2_out, immext_out;
-logic MemToReg_out, AluOp_out, AluSrc_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out,
+aluop_t AluOp_out;
+logic MemToReg_out, AluSrc_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out,
     Halt_out, dMemWEN_out, dMemREN_out;
 
 // idex ports

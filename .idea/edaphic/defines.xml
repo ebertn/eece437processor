@@ -369,14 +369,535 @@
             </Define>
           </value>
         </entry>
+        <entry key="DER_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+            </Define>
+          </value>
+        </entry>
         <entry key="EIntellijIdeaRulezzz">
           <value>
             <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                </list>
+              </option>
               <option name="dependencies">
                 <set>
                   <DefineDependency>
                     <option name="conditionalCompilationSource" value="true" />
                     <option name="file" value="extender_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="ENDER_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="ER_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="EXIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="EXMEIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="EXMEMIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="EXMEM_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="offset" value="28" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXME_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="26" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="25" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="E_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="24" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="23" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="M_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="24" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="44" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="ME_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="25" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="45" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="26" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="46" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMW_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="47" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWBIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="48" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="EXME_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="EXMIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="EXM_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
                   </DefineDependency>
                 </set>
               </option>
@@ -886,6 +1407,202 @@
                     <option name="offset" value="58" />
                     <option name="source" value="program_counter_if.vh" />
                   </Body>
+                  <Body>
+                    <option name="offset" value="31" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXTENDE_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="30" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXTEND_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="29" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXTEN_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXTE_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXT_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="26" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="25" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="E_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="24" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="23" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="I_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="24" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="44" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IF_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="25" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="45" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFI_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="26" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFIIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="46" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFIDIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="47" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
                 </list>
               </option>
               <option name="dependencies">
@@ -897,6 +1614,10 @@
                   <DefineDependency>
                     <option name="conditionalCompilationSource" value="true" />
                     <option name="file" value="program_counter_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
                   </DefineDependency>
                 </set>
               </option>
@@ -911,6 +1632,10 @@
                   <DefineDependency>
                     <option name="conditionalCompilationSource" value="true" />
                     <option name="file" value="extender_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
                   </DefineDependency>
                 </set>
               </option>
@@ -940,6 +1665,10 @@
                     <option name="conditionalCompilationSource" value="true" />
                     <option name="file" value="extender_if.vh" />
                   </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
                 </set>
               </option>
             </Define>
@@ -968,6 +1697,10 @@
                     <option name="conditionalCompilationSource" value="true" />
                     <option name="file" value="extender_if.vh" />
                   </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
                 </set>
               </option>
             </Define>
@@ -981,6 +1714,10 @@
                   <DefineDependency>
                     <option name="conditionalCompilationSource" value="true" />
                     <option name="file" value="extender_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
                   </DefineDependency>
                 </set>
               </option>
@@ -1010,6 +1747,10 @@
                     <option name="conditionalCompilationSource" value="true" />
                     <option name="file" value="extender_if.vh" />
                   </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
                 </set>
               </option>
             </Define>
@@ -1018,11 +1759,51 @@
         <entry key="EX_IF_VH">
           <value>
             <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
               <option name="dependencies">
                 <set>
                   <DefineDependency>
                     <option name="conditionalCompilationSource" value="true" />
                     <option name="file" value="extender_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
                   </DefineDependency>
                 </set>
               </option>
@@ -1032,11 +1813,1031 @@
         <entry key="E_IF_VH">
           <value>
             <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
               <option name="dependencies">
                 <set>
                   <DefineDependency>
                     <option name="conditionalCompilationSource" value="true" />
                     <option name="file" value="extender_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IDEIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IDEXIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IDEX_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="offset" value="27" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="offset" value="27" />
+                    <option name="source" value="idex_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="offset" value="27" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDE_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="26" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="ID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="25" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="I_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="24" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="23" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="E_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="24" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="44" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="25" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="45" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="26" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="46" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXME_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="47" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEMIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="48" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IDE_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IDIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="ID_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IFIDIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IFID_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="offset" value="27" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFI_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="26" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IF_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="25" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="I_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="24" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="23" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="44" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="ID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="25" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="45" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDE_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="26" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="46" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEXIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="47" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFI_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="26" />
+                    <option name="source" value="ifid_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IF_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="25" />
+                    <option name="source" value="ifid_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="I_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="24" />
+                    <option name="source" value="ifid_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="23" />
+                    <option name="source" value="ifid_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="44" />
+                    <option name="source" value="ifid_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="45" />
+                    <option name="source" value="ifid_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFIIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="46" />
+                    <option name="source" value="ifid_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFIDIntellijIdeaRulezzz" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="47" />
+                    <option name="source" value="ifid_if.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IFIIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IFI_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IFIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IF_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="IIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="I_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh" />
                   </DefineDependency>
                 </set>
               </option>
@@ -1061,6 +2862,325 @@
                     <option name="file" value="system_tb.sv" />
                   </DefineDependency>
                 </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="MEIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="MEMIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="MEMWBIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="MEMWB_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="MEMWIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="MEMW_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="MEM_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="ME_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="MIntellijIdeaRulezzz">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="replacementList" value="_IF_VH" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="M_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                </set>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="NDER_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                </list>
               </option>
             </Define>
           </value>
@@ -1607,6 +3727,28 @@
             </Define>
           </value>
         </entry>
+        <entry key="R_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+            </Define>
+          </value>
+        </entry>
         <entry key="SYSTEM_IF_VH">
           <value>
             <Define>
@@ -1629,6 +3771,28 @@
             </Define>
           </value>
         </entry>
+        <entry key="TENDER_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+            </Define>
+          </value>
+        </entry>
         <entry key="TRACE_FILE_NAME">
           <value>
             <Define>
@@ -1640,6 +3804,110 @@
                     <option name="source" value="cpu_tracker.sv" />
                   </Body>
                 </list>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="XTENDER_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                </list>
+              </option>
+            </Define>
+          </value>
+        </entry>
+        <entry key="_IF_VH">
+          <value>
+            <Define>
+              <option name="definitions">
+                <list>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IFID_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="ifid_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="IDEX_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="27" />
+                    <option name="source" value="idex_if.vh.sv" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="EXMEM_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="exmem_if.vh" />
+                  </Body>
+                  <Body>
+                    <option name="inclusionDependencies">
+                      <list>
+                        <InclusionDependency>
+                          <option name="name" value="MEMWB_IF_VH" />
+                          <option name="rule" value="NOT_DEFINED" />
+                        </InclusionDependency>
+                      </list>
+                    </option>
+                    <option name="offset" value="28" />
+                    <option name="source" value="memwb.vh" />
+                  </Body>
+                </list>
+              </option>
+              <option name="dependencies">
+                <set>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="idex_if.vh.sv" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="exmem_if.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="memwb.vh" />
+                  </DefineDependency>
+                  <DefineDependency>
+                    <option name="conditionalCompilationSource" value="true" />
+                    <option name="file" value="ifid_if.vh" />
+                  </DefineDependency>
+                </set>
               </option>
             </Define>
           </value>

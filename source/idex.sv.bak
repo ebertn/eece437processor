@@ -1,4 +1,4 @@
-module idex
+module id_ex
 (
 	input logic CLK, 
 	input logic nRST, 

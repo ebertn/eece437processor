@@ -26,8 +26,4 @@ module memwb
 			memwb.RegDst_out <= memwb.RegDst_in  
 			memwb.regWEN_out <= memwb.regWEN_in;  
 			memwb.PcSrc_out <= memwb.PcSrc_in;  
-			memwb.JReg_out <= memwb.JReg_in; 
-		end 
-	end 	
-
-endmodule  
+			memwb.JReg_out <= memwb.JReg_in;  

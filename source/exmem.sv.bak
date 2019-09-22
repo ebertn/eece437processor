@@ -37,7 +37,3 @@ module exmem
 			exmem.Halt_out <= exmem.Halt_in; 
 			exmem.dMemWEN_out <= exmem.dMemWEN_in; 
 			exmem.dMemREN_out <= exmem.dMemREN_in; 
-		end
-	end
-
-endmodule 

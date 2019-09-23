@@ -1,4 +1,4 @@
-`ifndef MEMWB_IF_VH
+`ifndef MEMWB_IF_V
 `define MEMWB_IF_VH
 
 // all types
@@ -10,22 +10,24 @@ import cpu_types_pkg::*;
 
 // Inputs
 word_t pcplus4_in, aluOutport_in, dmemload_in;
+regbits_t rt_in, rd_in;
 logic MemToReg_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in;
 
 // Outputs
 // Outputs
 word_t pcplus4_out, aluOutport_out, dmemload_out;
+regbits_t rt_out, rd_out;
 logic MemToReg_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out;
 
 // memwb ports
 modport memwb (
-input   pcplus4_in, aluOutport_in, dmemload_in, MemToReg_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in,
-output  pcplus4_out, aluOutport_out, dmemload_out, MemToReg_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out
+input   pcplus4_in, aluOutport_in, dmemload_in, rt_in, rd_in, MemToReg_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in,
+output  pcplus4_out, aluOutport_out, dmemload_out, rt_out, rd_out, MemToReg_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out
 );
 // memwb tb
 modport tb (
-input   pcplus4_out, aluOutport_out, dmemload_out, MemToReg_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out,
-output  pcplus4_in, aluOutport_in, dmemload_in, MemToReg_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in
+input   pcplus4_out, aluOutport_out, dmemload_out, rt_out, rd_out, MemToReg_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out,
+output  pcplus4_in, aluOutport_in, dmemload_in, rt_in, rd_in, MemToReg_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in
 );
 endinterface : memwb_if
 

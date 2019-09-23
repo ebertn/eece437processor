@@ -18,11 +18,15 @@ module idex
 			idex.pcplus4_out <= 0;  
 			idex.rdat1_out <= 0;  
 			idex.rdat2_out <= 0; 
- 			idex.immext_out <= 0; 
+ 			idex.immext_out <= 0;
+
+			idex.rt_out <= '0;
+			idex.rd_out <= '0;
+
  			idex.MemToReg_out <= 0; 
  			idex.AluOp_out <= ALU_SLL; 
 			idex.AluSrc_out <= 0; 
-    			idex.JType_out <= 0; 
+			idex.JType_out <= 0;
 			idex.RegDst_out <= 0;  
 			idex.regWEN_out <= 0;  
 			idex.PcSrc_out <= 0;  
@@ -34,11 +38,15 @@ module idex
 			idex.pcplus4_out <= idex.pcplus4_in; 
 			idex.rdat1_out <= idex.rdat1_in; 
 			idex.rdat2_out <= idex.rdat2_in; 
- 			idex.immext_out <= idex.immext_in; 
+ 			idex.immext_out <= idex.immext_in;
+
+			idex.rt_out <= idex.rt_in;
+			idex.rd_out <= idex.rd_in;
+
  			idex.MemToReg_out <= idex.MemToReg_in; 
  			idex.AluOp_out <= idex.AluOp_in; 
 			idex.AluSrc_out <= idex.AluSrc_in; 
-    			idex.JType_out <= idex.JType_in; 
+			idex.JType_out <= idex.JType_in;
 			idex.RegDst_out <= idex.RegDst_in; 
 			idex.regWEN_out <= idex.regWEN_in;  
 			idex.PcSrc_out <= idex.PcSrc_in;  

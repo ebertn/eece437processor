@@ -62,8 +62,8 @@ module datapath (
     //ID
     always_comb begin
         case ({memwbif.JType_out, memwbif.RegDst_out})
-            2'b00: rfif.wsel = rt.rt;
-            2'b01: rfif.wsel = rt.rd;
+            2'b00: rfif.wsel = memwbif.rt_out;//rt.rt;
+            2'b01: rfif.wsel = memwbif.rd_out;//rt.rd;
             2'b10: rfif.wsel = 5'd31;
             2'b11: rfif.wsel = 5'd31;
         endcase
@@ -163,7 +163,11 @@ module datapath (
     assign idexif.pcplus4_in = ifidif.pcplus4_out; 
     assign idexif.rdat1_in = rfif.rdat1; 
     assign idexif.rdat2_in = rfif.rdat2; 
-    assign idexif.immext_in = extif.out; 
+    assign idexif.immext_in = extif.out;
+
+    assign idexif.rt_in = rt.rt;
+    assign idexif.rd_in = rt.rd;
+
     assign idexif.MemToReg_in = cuif.MemToReg; 
     assign idexif.AluOp_in = cuif.AluOp; 
     assign idexif.AluSrc_in = cuif.AluSrc; 
@@ -177,9 +181,15 @@ module datapath (
     assign idexif.dMemREN_in = cuif.dMemREN; 
 
     //EX/MEM Inputs
-    assign exmemif.pcplus4_in = idexif.pcplus4_out; 
-    assign exmemif.MemToReg_in = idexif.MemToReg_out; 
-    assign exmemif.aluOutport_in = aluif.outPort; 
+    assign exmemif.pcplus4_in = idexif.pcplus4_out;
+    assign exmemif.branchaddr_in = ex_branchaddr;
+    assign exmemif.aluOutport_in = aluif.outPort;
+    assign exmemif.rdat2_in = idexif.rdat2_out;
+
+    assign exmemif.rt_in = idexif.rt_out;
+    assign exmemif.rd_in = idexif.rd_out;
+
+    assign exmemif.MemToReg_in = idexif.MemToReg_out;
     assign exmemif.JType_in = idexif.JType_out; 
     assign exmemif.RegDst_in = idexif.RegDst_out; 
     assign exmemif.regWEN_in = idexif.regWEN_out;     
@@ -187,21 +197,23 @@ module datapath (
     assign exmemif.JReg_in = idexif.JReg_out; 
     assign exmemif.Halt_in = idexif.Halt_out; 
     assign exmemif.dMemWEN_in = idexif.dMemWEN_out; 
-    assign exmemif.dMemREN_in = idexif.dMemREN_out; 
-    assign exmemif.branchaddr_in = ex_branchaddr; 
+    assign exmemif.dMemREN_in = idexif.dMemREN_out;
 
     //MEM/WB Inputs
  
     assign memwbif.pcplus4_in = exmemif.pcplus4_out; 
-    assign memwbif.MemToReg_in = exmemif.MemToReg_out; 
-    assign memwbif.aluOutport_in = exmemif.aluOutport_out; 
+    assign memwbif.aluOutport_in = exmemif.aluOutport_out;
+    assign memwbif.dmemload_in = dpif.dmemload;
+
+    assign memwbif.rt_in = exmemif.rt_out;
+    assign memwbif.rd_in = exmemif.rd_out;
+
+    assign memwbif.MemToReg_in = exmemif.MemToReg_out;
     assign memwbif.JType_in = exmemif.JType_out; 
     assign memwbif.RegDst_in = exmemif.RegDst_out; 
     assign memwbif.regWEN_in = exmemif.regWEN_out;     
     assign memwbif.PcSrc_in = exmemif.PcSrc_out; 
     assign memwbif.JReg_in = exmemif.JReg_out;
-    assign memwbif.dmemload_in = dpif.dmemload;  
-   
 
     // ALU Connection Inputs
     assign aluif.portA = idexif.rdat1_out;

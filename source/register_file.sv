@@ -11,7 +11,7 @@ import cpu_types_pkg::*;
 
 word_t [31:0] registers, next_registers;
 
-always_ff @(posedge CLK, negedge nRST) begin
+always_ff @(negedge CLK, negedge nRST) begin
 	if (!nRST) begin
 		registers <= '0;
 	end else begin

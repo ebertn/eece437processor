@@ -14,7 +14,7 @@ module idex
     import cpu_types_pkg::*;
 	
 	always_ff @(posedge CLK, negedge nRST) begin	
-		if (nRST == 0) begin
+		if (!nRST | idex.flush) begin
 			idex.pcplus4_out <= 0;  
 			idex.rdat1_out <= 0;  
 			idex.rdat2_out <= 0; 
@@ -45,25 +45,25 @@ module idex
 			idex.imm_16_out <= 0; 
 			idex.shamt_out <= 0; 
 		end else begin
-			idex.pcplus4_out <= idex.pcplus4_in; 
-			idex.rdat1_out <= idex.rdat1_in; 
-			idex.rdat2_out <= idex.rdat2_in; 
- 			idex.immext_out <= idex.immext_in;
+			idex.pcplus4_out <= idex.pcplus4_out;
+			idex.rdat1_out <= idex.rdat1_out;
+			idex.rdat2_out <= idex.rdat2_out;
+			idex.immext_out <= idex.immext_out;
 
-			idex.rt_out <= idex.rt_in;
-			idex.rd_out <= idex.rd_in;
+			idex.rt_out <= idex.rt_out;
+			idex.rd_out <= idex.rd_out;
 
- 			idex.MemToReg_out <= idex.MemToReg_in; 
- 			idex.AluOp_out <= idex.AluOp_in; 
-			idex.AluSrc_out <= idex.AluSrc_in; 
-			idex.JType_out <= idex.JType_in;
-			idex.RegDst_out <= idex.RegDst_in; 
-			idex.regWEN_out <= idex.regWEN_in;  
-			idex.PcSrc_out <= idex.PcSrc_in;  
-			idex.JReg_out <= idex.JReg_in; 
-			idex.Halt_out <= idex.Halt_in; 
-			idex.dMemWEN_out <= idex.dMemWEN_in;  
-			idex.dMemREN_out <= idex.dMemREN_in; 
+			idex.MemToReg_out <= idex.MemToReg_out;
+			idex.AluOp_out <= idex.AluOp_out;
+			idex.AluSrc_out <= idex.AluSrc_out;
+			idex.JType_out <= idex.JType_out;
+			idex.RegDst_out <= idex.RegDst_out;
+			idex.regWEN_out <= idex.regWEN_out;
+			idex.PcSrc_out <= idex.PcSrc_out;
+			idex.JReg_out <= idex.JReg_out;
+			idex.Halt_out <= idex.Halt_out;
+			idex.dMemWEN_out <= idex.dMemWEN_out;
+			idex.dMemREN_out <= idex.dMemREN_out;
 
 			//DEBUG SHIT
 			idex.InstrOp_out <= idex.InstrOp_in; 
@@ -74,6 +74,28 @@ module idex
 			idex.imm_out <= idex.imm_in;
 			idex.imm_16_out <= idex.imm_16_in;
 			idex.shamt_out <= idex.shamt_in;  
+
+			if (idex.writeEN) begin
+				idex.pcplus4_out <= idex.pcplus4_in;
+				idex.rdat1_out <= idex.rdat1_in;
+				idex.rdat2_out <= idex.rdat2_in;
+				idex.immext_out <= idex.immext_in;
+
+				idex.rt_out <= idex.rt_in;
+				idex.rd_out <= idex.rd_in;
+
+				idex.MemToReg_out <= idex.MemToReg_in;
+				idex.AluOp_out <= idex.AluOp_in;
+				idex.AluSrc_out <= idex.AluSrc_in;
+				idex.JType_out <= idex.JType_in;
+				idex.RegDst_out <= idex.RegDst_in;
+				idex.regWEN_out <= idex.regWEN_in;
+				idex.PcSrc_out <= idex.PcSrc_in;
+				idex.JReg_out <= idex.JReg_in;
+				idex.Halt_out <= idex.Halt_in;
+				idex.dMemWEN_out <= idex.dMemWEN_in;
+				idex.dMemREN_out <= idex.dMemREN_in;
+			end
 		end 
 	end
 

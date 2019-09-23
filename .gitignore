@@ -16,3 +16,5 @@ README
 .vimrc
 .idea/
 .idea/*
+testasm.diff
+*.do

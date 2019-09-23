@@ -14,6 +14,7 @@ regbits_t rt_in, rd_in;
 aluop_t AluOp_in;
 logic MemToReg_in, AluSrc_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in,
     Halt_in, dMemWEN_in, dMemREN_in;
+logic writeEN, flush;
 
 // Outputs
 word_t pcplus4_out, rdat1_out, rdat2_out, immext_out;
@@ -35,7 +36,7 @@ logic [4:0] shamt_in, shamt_out;
 // idex ports
 modport idex (
 input   pcplus4_in, rdat1_in, rdat2_in, immext_in, rt_in, rd_in, MemToReg_in, AluOp_in, AluSrc_in, JType_in,
-    RegDst_in, regWEN_in, PcSrc_in, JReg_in, Halt_in, dMemWEN_in, dMemREN_in,InstrOp_in, InstrFunc_in,rs_in,instr_in, next_pc_in, imm_in,imm_16_in, shamt_in,  
+    RegDst_in, regWEN_in, PcSrc_in, JReg_in, Halt_in, dMemWEN_in, dMemREN_in, writeEN, flush, InstrOp_in, InstrFunc_in,rs_in,instr_in, next_pc_in, imm_in,imm_16_in, shamt_in,  
 output  pcplus4_out, rdat1_out, rdat2_out, immext_out, rt_out, rd_out, MemToReg_out, AluOp_out, AluSrc_out,
     JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out, Halt_out, dMemWEN_out, dMemREN_out, InstrOp_out,InstrFunc_out, rs_out, instr_out, next_pc_out, imm_out, imm_16_out, shamt_out
 );
@@ -44,7 +45,7 @@ modport tb (
 input   pcplus4_out, rdat1_out, rdat2_out, immext_out, rt_out, rd_out, MemToReg_out, AluOp_out, AluSrc_out,
         JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out, Halt_out, dMemWEN_out, dMemREN_out, InstrOp_out,InstrFunc_out, rs_out, instr_out, next_pc_out, imm_out, imm_16_out, shamt_out, 
 output  pcplus4_in, rdat1_in, rdat2_in, immext_in, rt_in, rd_in, MemToReg_in, AluOp_in, AluSrc_in, JType_in,
-        RegDst_in, regWEN_in, PcSrc_in, JReg_in, Halt_in, dMemWEN_in, dMemREN_in, InstrOp_in, InstrFunc_in, rs_in, instr_in,next_pc_in, imm_in, imm_16_in, shamt_in
+        RegDst_in, regWEN_in, PcSrc_in, JReg_in, Halt_in, dMemWEN_in, dMemREN_in, writeEN, flush, InstrOp_in, InstrFunc_in, rs_in, instr_in,next_pc_in, imm_in, imm_16_in, shamt_in
 );
 endinterface : idex_if
 

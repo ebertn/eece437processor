@@ -158,6 +158,9 @@ module datapath (
     // IF/ID Inputs
     assign ifidif.instr_in = dpif.imemload; 
     assign ifidif.pcplus4_in = if_pcplus4; 
+
+    assign ifidif.writeEN = dpif.ihit | dpif.dhit;
+    assign ifidif.flush = dpif.dmemREN | dpif.dmemWEN;
    
     //DEBUG BULLSHIT
     assign ifidif.next_pc_in = if_next_pc;  
@@ -181,7 +184,10 @@ module datapath (
     assign idexif.JReg_in = cuif.JReg; 
     assign idexif.Halt_in = cuif.Halt; 
     assign idexif.dMemWEN_in = cuif.dMemWEN; 
-    assign idexif.dMemREN_in = cuif.dMemREN; 
+    assign idexif.dMemREN_in = cuif.dMemREN;
+
+    assign idexif.writeEN = dpif.ihit | dpif.dhit;
+    assign idexif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
 
     //DEBUG BULLSHIT
     assign idexif.InstrOp_in = cuif.InstrOp; 
@@ -212,6 +218,9 @@ module datapath (
     assign exmemif.dMemWEN_in = idexif.dMemWEN_out; 
     assign exmemif.dMemREN_in = idexif.dMemREN_out;
 
+    assign exmemif.writeEN = dpif.ihit | dpif.dhit;
+    assign exmemif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
+
     //DEBUG BULLSHIT
     assign exmemif.InstrOp_in = idexif.InstrOp_out; 
     assign exmemif.InstrFunc_in = idexif.InstrFunc_out; 
@@ -223,7 +232,6 @@ module datapath (
     assign exmemif.shamt_in = exmemif.shamt_out; 
 
     //MEM/WB Inputs
- 
     assign memwbif.pcplus4_in = exmemif.pcplus4_out; 
     assign memwbif.aluOutport_in = exmemif.aluOutport_out;
     assign memwbif.dmemload_in = dpif.dmemload;
@@ -238,6 +246,9 @@ module datapath (
     assign memwbif.PcSrc_in = exmemif.PcSrc_out; 
     assign memwbif.JReg_in = exmemif.JReg_out;
 
+    assign memwbif.writeEN = dpif.ihit | dpif.dhit;
+    assign memwbif.flush = 0;//dpif.dmemREN | dpif.dmemWEN;
+
    //DEBUG BULLSHIT
     assign memwbif.InstrOp_in = exmemif.InstrOp_out; 
     assign memwbif.InstrFunc_in = exmemif.InstrFunc_out; 
@@ -248,6 +259,7 @@ module datapath (
     assign memwbif.imm_16_in = exmemif.imm_16_out; 
     assign memwbif.branchaddr_in = exmemif.branchaddr_out; 
     assign memwbif.writeEN = 1; 
+    assign memwbif.shamt_in = memwbif.shamt_out; 
 
     // ALU Connection Inputs
     assign aluif.portA = idexif.rdat1_out;

@@ -143,7 +143,7 @@ module datapath (
     assign pcif.countEn = dpif.ihit && !exmemif.Halt_out;
 
     // Datapath Outputs
-    assign dpif.halt = exmemif.Halt_out;
+    assign dpif.halt = memwbif.Halt_out;
     assign dpif.imemREN = 1'b1;
     assign dpif.dmemREN = exmemif.dMemREN_out;
     assign dpif.dmemWEN = exmemif.dMemWEN_out;
@@ -258,7 +258,6 @@ module datapath (
     assign memwbif.imm_in =  exmemif.imm_out;  
     assign memwbif.imm_16_in = exmemif.imm_16_out; 
     assign memwbif.branchaddr_in = exmemif.branchaddr_out; 
-    assign memwbif.writeEN = 1; 
     assign memwbif.shamt_in = memwbif.shamt_out; 
 
     // ALU Connection Inputs

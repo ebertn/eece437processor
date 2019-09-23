@@ -143,7 +143,7 @@ module datapath (
     assign pcif.countEn = dpif.ihit && !exmemif.Halt_out;
 
     // Datapath Outputs
-    assign dpif.halt = exmemif.Halt_out;
+    assign dpif.halt = memwbif.Halt_out;
     assign dpif.imemREN = 1'b1;
     assign dpif.dmemREN = exmemif.dMemREN_out;
     assign dpif.dmemWEN = exmemif.dMemWEN_out;
@@ -217,6 +217,7 @@ module datapath (
     assign exmemif.Halt_in = idexif.Halt_out; 
     assign exmemif.dMemWEN_in = idexif.dMemWEN_out; 
     assign exmemif.dMemREN_in = idexif.dMemREN_out;
+ 
 
     assign exmemif.writeEN = dpif.ihit | dpif.dhit;
     assign exmemif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
@@ -245,6 +246,7 @@ module datapath (
     assign memwbif.regWEN_in = exmemif.regWEN_out;     
     assign memwbif.PcSrc_in = exmemif.PcSrc_out; 
     assign memwbif.JReg_in = exmemif.JReg_out;
+    assign memwbif.Halt_in = exmemif.Halt_out; 
 
     assign memwbif.writeEN = dpif.ihit | dpif.dhit;
     assign memwbif.flush = 0;//dpif.dmemREN | dpif.dmemWEN;

@@ -184,7 +184,7 @@ module cpu_tracker(
         RTYPE: case(funct)
           ADDU, ADD, AND,
           NOR, OR, SLT, SLTU,
-          SLLV, SRLV, SUB, SUBU,
+          SLL, SRL, SUB, SUBU,
           XOR:  $sformat(temp_str, "%s    %s <-- %x\n", temp_str, dest_str, reg_dat);
         endcase
         ADDIU, ADDI, ANDI,

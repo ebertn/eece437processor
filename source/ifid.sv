@@ -12,9 +12,11 @@ module ifid
 		if (!nRST) begin
 			ifid.pcplus4_out <= 0; 
 			ifid.instr_out <= 0; 
+			ifid.next_pc_out <= 0; 
 		end else begin
 			ifid.pcplus4_out <= ifid.pcplus4_in;
 			ifid.instr_out <= ifid.instr_in; 
+			ifid.next_pc_out <= ifid.next_pc_in; 
 		end
 	end
 

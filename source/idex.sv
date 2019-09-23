@@ -34,6 +34,16 @@ module idex
 			idex.Halt_out <= 0; 
 			idex.dMemWEN_out <= 0; 
 			idex.dMemREN_out <= 0; 
+
+			//DEBUG SHIT
+			idex.InstrOp_out <=  BEQ; 
+			idex.InstrFunc_out <= SLLV; 
+			idex.rs_out <= 0; 
+			idex.instr_out <= 0; 
+			idex.next_pc_out <= 0; 
+			idex.imm_out <= 0;
+			idex.imm_16_out <= 0; 
+			idex.shamt_out <= 0; 
 		end else begin
 			idex.pcplus4_out <= idex.pcplus4_in; 
 			idex.rdat1_out <= idex.rdat1_in; 
@@ -54,6 +64,16 @@ module idex
 			idex.Halt_out <= idex.Halt_in; 
 			idex.dMemWEN_out <= idex.dMemWEN_in;  
 			idex.dMemREN_out <= idex.dMemREN_in; 
+
+			//DEBUG SHIT
+			idex.InstrOp_out <= idex.InstrOp_in; 
+			idex.InstrFunc_out <= idex.InstrFunc_in; 
+			idex.rs_out <= idex.rs_in; 
+			idex.instr_out <= idex.instr_in; 
+			idex.next_pc_out <= idex.next_pc_in; 
+			idex.imm_out <= idex.imm_in;
+			idex.imm_16_out <= idex.imm_16_in;
+			idex.shamt_out <= idex.shamt_in;  
 		end 
 	end
 

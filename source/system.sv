@@ -14,7 +14,7 @@
 
 module system (input logic CLK, nRST, system_if.sys syif);
 
-
+  import cpu_types_pkg::*;
   // stopped running
   logic halt;
 

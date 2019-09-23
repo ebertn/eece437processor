@@ -158,6 +158,9 @@ module datapath (
     // IF/ID Inputs
     assign ifidif.instr_in = dpif.imemload; 
     assign ifidif.pcplus4_in = if_pcplus4; 
+   
+    //DEBUG BULLSHIT
+    assign ifidif.next_pc_in = if_next_pc;  
   
     //ID/EX Inputs
     assign idexif.pcplus4_in = ifidif.pcplus4_out; 
@@ -180,6 +183,16 @@ module datapath (
     assign idexif.dMemWEN_in = cuif.dMemWEN; 
     assign idexif.dMemREN_in = cuif.dMemREN; 
 
+    //DEBUG BULLSHIT
+    assign idexif.InstrOp_in = cuif.InstrOp; 
+    assign idexif.InstrFunc_in = cuif.InstrFunc;
+    assign idexif.rs_in = rt.rs; 
+    assign idexif.instr_in = ifidif.instr_out; 
+    assign idexif.next_pc_in = ifidif.next_pc_out; 
+    assign idexif.imm_in = extif.out; 
+    assign idexif.imm_16_in = it.imm; 
+    assign idexif.shamt_in = rt.shamt; 
+
     //EX/MEM Inputs
     assign exmemif.pcplus4_in = idexif.pcplus4_out;
     assign exmemif.branchaddr_in = ex_branchaddr;
@@ -199,6 +212,16 @@ module datapath (
     assign exmemif.dMemWEN_in = idexif.dMemWEN_out; 
     assign exmemif.dMemREN_in = idexif.dMemREN_out;
 
+    //DEBUG BULLSHIT
+    assign exmemif.InstrOp_in = idexif.InstrOp_out; 
+    assign exmemif.InstrFunc_in = idexif.InstrFunc_out; 
+    assign exmemif.rs_in = idexif.rs_out;  
+    assign exmemif.instr_in = idexif.instr_out; 
+    assign exmemif.next_pc_in = idexif.next_pc_out; 
+    assign exmemif.imm_in =  idexif.imm_out;  
+    assign exmemif.imm_16_in = idexif.imm_16_out; 
+    assign exmemif.shamt_in = exmemif.shamt_out; 
+
     //MEM/WB Inputs
  
     assign memwbif.pcplus4_in = exmemif.pcplus4_out; 
@@ -214,6 +237,18 @@ module datapath (
     assign memwbif.regWEN_in = exmemif.regWEN_out;     
     assign memwbif.PcSrc_in = exmemif.PcSrc_out; 
     assign memwbif.JReg_in = exmemif.JReg_out;
+
+   //DEBUG BULLSHIT
+    assign memwbif.InstrOp_in = exmemif.InstrOp_out; 
+    assign memwbif.InstrFunc_in = exmemif.InstrFunc_out; 
+    assign memwbif.rs_in = exmemif.rs_out;  
+    assign memwbif.instr_in = exmemif.instr_out; 
+    assign memwbif.next_pc_in = exmemif.next_pc_out; 
+    assign memwbif.imm_in =  exmemif.imm_out;  
+    assign memwbif.imm_16_in = exmemif.imm_16_out; 
+    assign memwbif.branchaddr_in = exmemif.branchaddr_out; 
+    assign memwbif.writeEN = 1; 
+    assign memwbif.shamt_in = memwbif.shamt_out; 
 
     // ALU Connection Inputs
     assign aluif.portA = idexif.rdat1_out;

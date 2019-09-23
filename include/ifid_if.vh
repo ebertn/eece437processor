@@ -9,16 +9,17 @@ interface ifid_if;
 import cpu_types_pkg::*;
 
 word_t pcplus4_in, pcplus4_out, instr_in, instr_out;
+logic writeEN, flush;
 
 // ifit ports
 modport ifid (
-input   pcplus4_in, instr_in,
+input   pcplus4_in, instr_in, writeEN, flush,
 output  pcplus4_out, instr_out
 );
 // ifit tb
 modport tb (
 input   pcplus4_out, instr_out,
-output  pcplus4_in, instr_in
+output  pcplus4_in, instr_in, writeEN, flush
 );
 endinterface
 

@@ -157,7 +157,10 @@ module datapath (
     
     // IF/ID Inputs
     assign ifidif.instr_in = dpif.imemload; 
-    assign ifidif.pcplus4_in = if_pcplus4; 
+    assign ifidif.pcplus4_in = if_pcplus4;
+
+    assign ifidif.writeEN = dpif.ihit | dpif.dhit;
+    assign ifidif.flush = dpif.dmemREN | dpif.dmemWEN;
   
     //ID/EX Inputs
     assign idexif.pcplus4_in = ifidif.pcplus4_out; 
@@ -178,7 +181,10 @@ module datapath (
     assign idexif.JReg_in = cuif.JReg; 
     assign idexif.Halt_in = cuif.Halt; 
     assign idexif.dMemWEN_in = cuif.dMemWEN; 
-    assign idexif.dMemREN_in = cuif.dMemREN; 
+    assign idexif.dMemREN_in = cuif.dMemREN;
+
+    assign idexif.writeEN = dpif.ihit | dpif.dhit;
+    assign idexif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
 
     //EX/MEM Inputs
     assign exmemif.pcplus4_in = idexif.pcplus4_out;
@@ -199,6 +205,9 @@ module datapath (
     assign exmemif.dMemWEN_in = idexif.dMemWEN_out; 
     assign exmemif.dMemREN_in = idexif.dMemREN_out;
 
+    assign exmemif.writeEN = dpif.ihit | dpif.dhit;
+    assign exmemif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
+
     //MEM/WB Inputs
  
     assign memwbif.pcplus4_in = exmemif.pcplus4_out; 
@@ -214,6 +223,9 @@ module datapath (
     assign memwbif.regWEN_in = exmemif.regWEN_out;     
     assign memwbif.PcSrc_in = exmemif.PcSrc_out; 
     assign memwbif.JReg_in = exmemif.JReg_out;
+
+    assign memwbif.writeEN = dpif.ihit | dpif.dhit;
+    assign memwbif.flush = 0;//dpif.dmemREN | dpif.dmemWEN;
 
     // ALU Connection Inputs
     assign aluif.portA = idexif.rdat1_out;

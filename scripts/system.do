@@ -11,6 +11,7 @@ add wave -noupdate -group {r type} -color Cyan -radix unsigned /system_tb/DUT/CP
 add wave -noupdate -group {r type} -color Cyan -radix unsigned /system_tb/DUT/CPU/DP/rt.rd
 add wave -noupdate -group {r type} -color Green /system_tb/DUT/CPU/DP/rt.shamt
 add wave -noupdate -divider {Program Counter}
+add wave -noupdate /system_tb/DUT/CPU/DP/dpif/halt
 add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP/cuif/Halt
 add wave -noupdate -expand -group {Program Counter} -color Orange -radix hexadecimal /system_tb/DUT/CPU/DP/pcif/count
 add wave -noupdate -expand -group {Program Counter} -radix hexadecimal /system_tb/DUT/CPU/DP/pcif/next_count
@@ -170,7 +171,7 @@ quietly WaveActivateNextPane
 add wave -noupdate -color White /system_tb/DUT/CPU/DP/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {260477 ps} 0}
+WaveRestoreCursors {{Cursor 1} {405742 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -186,4 +187,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {894 ns}
+WaveRestoreZoom {0 ps} {2499 ns}

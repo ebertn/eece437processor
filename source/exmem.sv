@@ -28,7 +28,7 @@ module exmem
 			exmem.dMemWEN_out <= 0; 
 			exmem.dMemREN_out <= 0; 
 
-			//DEBUG SHIT
+			//DEBUG BULLSHIT
 			exmem.InstrOp_out <= BEQ; 
 			exmem.InstrFunc_out <= SLLV; 
 			exmem.rs_out <= 0; 
@@ -37,6 +37,9 @@ module exmem
 			exmem.imm_out <= 0;
 			exmem.imm_16_out <= 0; 
 			exmem.shamt_out <= 0;
+
+			//HAZARD BULLSHIT
+			exmem.writeReg_out <= 0; 
 
 		end else begin
 			exmem.pcplus4_out <= exmem.pcplus4_out;
@@ -57,7 +60,7 @@ module exmem
 			exmem.dMemWEN_out <= exmem.dMemWEN_out;
 			exmem.dMemREN_out <= exmem.dMemREN_out;
 
-			//DEBUG SHIT
+			//DEBUG BULLSHIT
 			exmem.InstrOp_out <= exmem.InstrOp_in; 
 			exmem.InstrFunc_out <= exmem.InstrFunc_in; 
 			exmem.rs_out <= exmem.rs_in;
@@ -66,6 +69,9 @@ module exmem
 			exmem.imm_out <= exmem.imm_in;
 			exmem.imm_16_out <= exmem.imm_16_in;
 			exmem.shamt_out <= exmem.shamt_in;  
+
+			//HAZARD BULLSHIT
+			exmem.writeReg_out <= exmem.writeReg_in; 
 
 			if(exmem.writeEN) begin
 				exmem.pcplus4_out <= exmem.pcplus4_in;

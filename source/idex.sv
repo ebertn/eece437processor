@@ -35,7 +35,7 @@ module idex
 			idex.dMemWEN_out <= 0; 
 			idex.dMemREN_out <= 0; 
 
-			//DEBUG SHIT
+			//DEBUG BULLSHIT
 			idex.InstrOp_out <=  BEQ; 
 			idex.InstrFunc_out <= SLLV; 
 			idex.rs_out <= 0; 
@@ -44,6 +44,9 @@ module idex
 			idex.imm_out <= 0;
 			idex.imm_16_out <= 0; 
 			idex.shamt_out <= 0; 
+
+			//HAZARD BULLSHIT
+			idex.writeReg_out <= 0; 
 		end else begin
 			idex.pcplus4_out <= idex.pcplus4_out;
 			idex.rdat1_out <= idex.rdat1_out;
@@ -65,7 +68,7 @@ module idex
 			idex.dMemWEN_out <= idex.dMemWEN_out;
 			idex.dMemREN_out <= idex.dMemREN_out;
 
-			//DEBUG SHIT
+			//DEBUG BULLSHIT
 			idex.InstrOp_out <= idex.InstrOp_in; 
 			idex.InstrFunc_out <= idex.InstrFunc_in; 
 			idex.rs_out <= idex.rs_in; 
@@ -74,6 +77,9 @@ module idex
 			idex.imm_out <= idex.imm_in;
 			idex.imm_16_out <= idex.imm_16_in;
 			idex.shamt_out <= idex.shamt_in;  
+		
+			//HAZARD BULLSHIT
+			idex.writeReg_out <= idex.writeReg_in; 
 
 			if (idex.writeEN) begin
 				idex.pcplus4_out <= idex.pcplus4_in;

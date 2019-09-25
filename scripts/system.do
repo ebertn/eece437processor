@@ -49,21 +49,21 @@ add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/aluif/portB
 add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/aluif/outPort
 add wave -noupdate -expand -group ALU /system_tb/DUT/CPU/DP/aluif/aluOp
 add wave -noupdate -divider {Control Unit}
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/Equal
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/Halt
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/RegDst
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/MemToReg
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/regWEN
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/UpperImm
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/AluSrc
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/ExtOp
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/JType
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/RegZero
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/JReg
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/PcSrc
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/InstrOp
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/InstrFunc
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/AluOp
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/Equal
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/Halt
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/RegDst
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/MemToReg
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/regWEN
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/UpperImm
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/AluSrc
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/ExtOp
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/JType
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/RegZero
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/JReg
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/PcSrc
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/InstrOp
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/InstrFunc
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/AluOp
 add wave -noupdate -divider Extender
 add wave -noupdate -group Extender /system_tb/DUT/CPU/DP/extif/JType
 add wave -noupdate -group Extender /system_tb/DUT/CPU/DP/extif/ExtOp
@@ -162,16 +162,25 @@ add wave -noupdate -group memwb /system_tb/DUT/CPU/DP/memwbif/RegDst_out
 add wave -noupdate -group memwb /system_tb/DUT/CPU/DP/memwbif/regWEN_out
 add wave -noupdate -group memwb /system_tb/DUT/CPU/DP/memwbif/PcSrc_out
 add wave -noupdate -group memwb /system_tb/DUT/CPU/DP/memwbif/JReg_out
+add wave -noupdate -divider {Hazard Unit}
+add wave -noupdate /system_tb/DUT/CPU/DP/hazardif/rsel1
+add wave -noupdate /system_tb/DUT/CPU/DP/hazardif/rsel2
+add wave -noupdate /system_tb/DUT/CPU/DP/hazardif/mem_writeReg
+add wave -noupdate /system_tb/DUT/CPU/DP/hazardif/ex_writeReg
+add wave -noupdate /system_tb/DUT/CPU/DP/hazardif/hazard
+add wave -noupdate /system_tb/DUT/CPU/DP/hazardif/equal
+add wave -noupdate /system_tb/DUT/CPU/DP/hazardif/branch
+add wave -noupdate /system_tb/DUT/CPU/DP/hazardif/instrOp
 TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
-add wave -noupdate -color Orange /system_tb/DUT/CPU/DP/jt.opcode
 add wave -noupdate -color Magenta -radixenum symbolic /system_tb/DUT/CPU/DP/rt.funct
+add wave -noupdate -color Orange /system_tb/DUT/CPU/DP/jt.opcode
 TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
 add wave -noupdate -color White /system_tb/DUT/CPU/DP/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {405742 ps} 0}
+WaveRestoreCursors {{Cursor 1} {622888 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -187,4 +196,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {2499 ns}
+WaveRestoreZoom {1361779073 ps} {1362180049 ps}

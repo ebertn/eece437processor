@@ -32,8 +32,12 @@ module hazard_unit
 		end else begin
 			hazif.branch = 0; 
 		end 
-	end 
+	end
+
+	always_comb begin
+		hazif.jump = (hazif.instrOp == J | hazif.instrOp == JAL);
+	end
 
 
-endmodule
+endmodule : hazard_unit
 

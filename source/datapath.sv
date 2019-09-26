@@ -124,13 +124,13 @@ module datapath (
 
     // idexif.immext_out shift left 2
     // EX
-    word_t ex_ext_ls;
-    assign ex_ext_ls = idexif.immext_in << 2;
+//    word_t ex_ext_ls;
+//    assign ex_ext_ls = idexif.immext_in << 2;
 
-    // ex_ext_ls + (PC + 4) adder
-    // EX
-    word_t ex_branchaddr;
-    assign ex_branchaddr = idexif.pcplus4_in + ex_ext_ls;
+    // if_ext_ls + (PC + 4) adder
+    // ID
+    word_t id_branchaddr;
+    assign id_branchaddr = ifidif.pcplus4_out + if_ext_ls;
 
     // alu_out, dmemload Mux
     // WB
@@ -143,12 +143,14 @@ module datapath (
             2'b10: if_next_pc = rfif.rdat1; // JR
             2'b11: if_next_pc = if_ext_ls; // J/JAL
         endcase
-    end*/ 
-	//Changed for Hazard Detection 
+    end*/
+	//Changed for Hazard Detection
+    logic [1:0] next_pc_src;
+    assign next_pc_src = {cuif.JReg, (cuif.PcSrc && (hazardif.branch | hazardif.jump))};
 	always_comb begin
-        case ({cuif.JReg, (cuif.PcSrc && hazardif.branch)})
+        case (next_pc_src)
             2'b00: if_next_pc = if_pcplus4; // PC + 4
-            2'b01: if_next_pc = ex_branchaddr; // Branch
+            2'b01: if_next_pc = id_branchaddr; // Branch
             2'b10: if_next_pc = rfif.rdat1; // JR
             2'b11: if_next_pc = if_ext_ls; // J/JAL
         endcase
@@ -186,8 +188,8 @@ module datapath (
 
     //assign ifidif.writeEN = dpif.ihit | dpif.dhit;
     //assign ifidif.flush = dpif.dmemREN | dpif.dmemWEN;
-	assign ifidif.writeEN = !hazardif.hazard ** !hazardif.branch; 
-	assign ifidif.flush = (hazardif.branch && !hazardif.hazard); 
+	assign ifidif.writeEN = !hazardif.hazard && !hazardif.branch;
+	assign ifidif.flush = (hazardif.branch | hazardif.jump) && !hazardif.hazard;
    
     //DEBUG BULLSHIT
     assign ifidif.next_pc_in = if_next_pc;  
@@ -230,7 +232,7 @@ module datapath (
 
     //EX/MEM Inputs
     assign exmemif.pcplus4_in = idexif.pcplus4_out;
-    assign exmemif.branchaddr_in = ex_branchaddr;
+    //assign exmemif.branchaddr_in = ex_branchaddr;
     assign exmemif.aluOutport_in = aluif.outPort;
     assign exmemif.rdat2_in = idexif.rdat2_out;
 

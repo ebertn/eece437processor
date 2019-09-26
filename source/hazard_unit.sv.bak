@@ -25,9 +25,9 @@ module hazard_unit
 
 
 	always_comb begin 
-		if (hazif.instrOp == BEQ && hazif.equal == 1 /*&& hazif.rsel1 != 0*/) begin
+		if (hazif.instrOp == BEQ && hazif.equal == 1 && hazif.rsel1 != 0) begin
 			hazif.branch = 1; 
-		end else if (hazif.instrOp == BNE && hazif.equal == 0 /*&& hazif.rsel1 != 0*/) begin
+		end else if (hazif.instrOp == BNE && hazif.equal == 0 && hazif.rsel1 != 0) begin
 			hazif.branch = 1; 
 		end else begin
 			hazif.branch = 0; 

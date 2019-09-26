@@ -48,6 +48,11 @@ module datapath (
 
     memwb_if memwbif(); 
     memwb memwbFAG(CLK, nRST, memwbif); 
+ 		
+    //HAZARD UNIT
+    hazard_if hazardif(); 
+    hazard_unit HZ(hazardif); 
+
     
     j_t jt;
     assign jt = ifidif.instr_out;
@@ -59,15 +64,25 @@ module datapath (
     assign rt = ifidif.instr_out;
 
     // Rt, Rd, 5'b31 Mux 
-    //ID
-    always_comb begin
+    //ID  
+	//Changed where Jtype and RegDst come from 
+    /*always_comb begin
         case ({memwbif.JType_out, memwbif.RegDst_out})
             2'b00: rfif.wsel = memwbif.rt_out;//rt.rt;
             2'b01: rfif.wsel = memwbif.rd_out;//rt.rd;
             2'b10: rfif.wsel = 5'd31;
             2'b11: rfif.wsel = 5'd31;
         endcase
-    end
+    end*/ 
+	always_comb begin
+        case ({cuif.JType, cuif.RegDst})
+            2'b00: idexif.writeReg_in = rt.rt;//rt.rt;
+            2'b01: idexif.writeReg_in = rt.rd;//rt.rd;
+            2'b10: idexif.writeReg_in = 5'd31;
+            2'b11: idexif.writeReg_in = 5'd31;
+        endcase
+    end 
+    assign rfif.wsel = memwbif.writeReg_out; 
 
     // Rs, 0 Mux 
     //ID
@@ -110,16 +125,17 @@ module datapath (
     // idexif.immext_out shift left 2
     // EX
     word_t ex_ext_ls;
-    assign ex_ext_ls = idexif.immext_out << 2;
+    assign ex_ext_ls = idexif.immext_in << 2;
 
     // ex_ext_ls + (PC + 4) adder
     // EX
     word_t ex_branchaddr;
-    assign ex_branchaddr = idexif.pcplus4_out + ex_ext_ls;
+    assign ex_branchaddr = idexif.pcplus4_in + ex_ext_ls;
 
     // alu_out, dmemload Mux
     // WB
     word_t if_next_pc;
+	/*
     always_comb begin
         case ({memwbif.JReg_out, memwbif.PcSrc_out})
             2'b00: if_next_pc = if_pcplus4; // PC + 4
@@ -127,7 +143,16 @@ module datapath (
             2'b10: if_next_pc = rfif.rdat1; // JR
             2'b11: if_next_pc = if_ext_ls; // J/JAL
         endcase
-    end
+    end*/ 
+	//Changed for Hazard Detection 
+	always_comb begin
+        case ({cuif.JReg, (cuif.PcSrc && hazardif.branch)})
+            2'b00: if_next_pc = if_pcplus4; // PC + 4
+            2'b01: if_next_pc = ex_branchaddr; // Branch
+            2'b10: if_next_pc = rfif.rdat1; // JR
+            2'b11: if_next_pc = if_ext_ls; // J/JAL
+        endcase
+    end 
 
     // wb_data_out, memwbif.pcplus4_out Mux
     // ID
@@ -140,7 +165,7 @@ module datapath (
 
     // PC Inputs
     assign pcif.next_count = if_next_pc;
-    assign pcif.countEn = dpif.ihit && !exmemif.Halt_out;
+    assign pcif.countEn = dpif.ihit && !exmemif.Halt_out && !hazardif.hazard;
 
     // Datapath Outputs
     assign dpif.halt = memwbif.Halt_out;
@@ -159,8 +184,10 @@ module datapath (
     assign ifidif.instr_in = dpif.imemload; 
     assign ifidif.pcplus4_in = if_pcplus4; 
 
-    assign ifidif.writeEN = dpif.ihit | dpif.dhit;
-    assign ifidif.flush = dpif.dmemREN | dpif.dmemWEN;
+    //assign ifidif.writeEN = dpif.ihit | dpif.dhit;
+    //assign ifidif.flush = dpif.dmemREN | dpif.dmemWEN;
+	assign ifidif.writeEN = !hazardif.hazard ** !hazardif.branch; 
+	assign ifidif.flush = (hazardif.branch && !hazardif.hazard); 
    
     //DEBUG BULLSHIT
     assign ifidif.next_pc_in = if_next_pc;  
@@ -186,9 +213,11 @@ module datapath (
     assign idexif.dMemWEN_in = cuif.dMemWEN; 
     assign idexif.dMemREN_in = cuif.dMemREN;
 
-    assign idexif.writeEN = dpif.ihit | dpif.dhit;
-    assign idexif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
-
+    //assign idexif.writeEN = dpif.ihit | dpif.dhit;
+    //assign idexif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
+	assign idexif.writeEN = 1; 
+	assign idexif.flush = hazardif.hazard; 
+	
     //DEBUG BULLSHIT
     assign idexif.InstrOp_in = cuif.InstrOp; 
     assign idexif.InstrFunc_in = cuif.InstrFunc;
@@ -218,9 +247,11 @@ module datapath (
     assign exmemif.dMemWEN_in = idexif.dMemWEN_out; 
     assign exmemif.dMemREN_in = idexif.dMemREN_out;
  
-
-    assign exmemif.writeEN = dpif.ihit | dpif.dhit;
-    assign exmemif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
+    //assign exmemif.writeEN = dpif.ihit | dpif.dhit;
+    //assign exmemif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
+	assign exmemif.writeEN = 1; 
+   	assign exmemif.flush = 0; 
+	assign exmemif.writeReg_in = idexif.writeReg_out; 
 
     //DEBUG BULLSHIT
     assign exmemif.InstrOp_in = idexif.InstrOp_out; 
@@ -248,10 +279,13 @@ module datapath (
     assign memwbif.JReg_in = exmemif.JReg_out;
     assign memwbif.Halt_in = exmemif.Halt_out; 
 
-    assign memwbif.writeEN = dpif.ihit | dpif.dhit;
-    assign memwbif.flush = 0;//dpif.dmemREN | dpif.dmemWEN;
+    //assign memwbif.writeEN = dpif.ihit | dpif.dhit;
+    //assign memwbif.flush = 0;//dpif.dmemREN | dpif.dmemWEN;
+	assign memwbif.writeEN = 1;
+    assign memwbif.flush = 0;
+	assign memwbif.writeReg_in = exmemif.writeReg_out; 
 
-   //DEBUG BULLSHIT
+    //DEBUG BULLSHIT
     assign memwbif.InstrOp_in = exmemif.InstrOp_out; 
     assign memwbif.InstrFunc_in = exmemif.InstrFunc_out; 
     assign memwbif.rs_in = exmemif.rs_out;  
@@ -277,5 +311,13 @@ module datapath (
     assign extif.JType = cuif.JType;
     assign extif.ExtOp = cuif.ExtOp;
     assign extif.UpperImm = cuif.UpperImm;
+
+    //HAZARD UNIT 
+    assign hazardif.instrOp = it.opcode; 
+    assign hazardif.equal = (rfif.rdat1 == rfif.rdat2);
+    assign hazardif.rsel1 = rfif.rsel1; 
+    assign hazardif.rsel2 = rfif.rsel2; 
+    assign hazardif.mem_writeReg = exmemif.writeReg_out; 
+    assign hazardif.ex_writeReg = idexif.writeReg_out; 
 
 endmodule : datapath

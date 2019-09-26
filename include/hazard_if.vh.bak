@@ -18,7 +18,7 @@ output hazard, branch
 
 modport tb (
 input hazard, branch, 
-output rsel1, rsel2, mem_writeReg, ex_writeReg,equal, instrOp
+output rsel1, resel2, mem_writeReg, ex_writeReg,equal, instrOp
 ); 
 
 endinterface

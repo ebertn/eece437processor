@@ -125,12 +125,12 @@ module datapath (
     // idexif.immext_out shift left 2
     // EX
     word_t ex_ext_ls;
-    assign ex_ext_ls = idexif.immext_out << 2;
+    assign ex_ext_ls = idexif.immext_in << 2;
 
     // ex_ext_ls + (PC + 4) adder
     // EX
     word_t ex_branchaddr;
-    assign ex_branchaddr = idexif.pcplus4_out + ex_ext_ls;
+    assign ex_branchaddr = idexif.pcplus4_in + ex_ext_ls;
 
     // alu_out, dmemload Mux
     // WB
@@ -165,7 +165,7 @@ module datapath (
 
     // PC Inputs
     assign pcif.next_count = if_next_pc;
-    assign pcif.countEn = dpif.ihit && !exmemif.Halt_out;
+    assign pcif.countEn = dpif.ihit && !exmemif.Halt_out && !hazardif.hazard;
 
     // Datapath Outputs
     assign dpif.halt = memwbif.Halt_out;
@@ -186,7 +186,7 @@ module datapath (
 
     //assign ifidif.writeEN = dpif.ihit | dpif.dhit;
     //assign ifidif.flush = dpif.dmemREN | dpif.dmemWEN;
-	assign ifidif.writeEN = !hazardif.hazard; 
+	assign ifidif.writeEN = !hazardif.hazard ** !hazardif.branch; 
 	assign ifidif.flush = (hazardif.branch && !hazardif.hazard); 
    
     //DEBUG BULLSHIT

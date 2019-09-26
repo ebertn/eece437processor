@@ -79,7 +79,7 @@ module idex
 			idex.shamt_out <= idex.shamt_in;  
 		
 			//HAZARD BULLSHIT
-			idex.writeReg_out <= idex.writeReg_in; 
+			idex.writeReg_out <= idex.writeReg_out; 
 
 			if (idex.writeEN) begin
 				idex.pcplus4_out <= idex.pcplus4_in;
@@ -101,6 +101,10 @@ module idex
 				idex.Halt_out <= idex.Halt_in;
 				idex.dMemWEN_out <= idex.dMemWEN_in;
 				idex.dMemREN_out <= idex.dMemREN_in;
+				
+				//HAZARD BULLSHIT
+				idex.writeReg_out <= idex.writeReg_in;
+	
 			end
 		end 
 	end

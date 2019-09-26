@@ -10,13 +10,13 @@ module hazard_unit
 
 	import cpu_types_pkg::*;
 	always_comb begin
-		if (hazif.ex_writeReg == hazif.rsel1 && hazif.ex_writeReg != 0)  begin 
+		if (hazif.ex_writeReg == hazif.rsel1 && hazif.ex_writeReg != 0 && !hazif.branch == 1)  begin 
 			hazif.hazard = 1; 
-		end else if (hazif.ex_writeReg == hazif.rsel2 && hazif.ex_writeReg != 0) begin
+		end else if (hazif.ex_writeReg == hazif.rsel2 && hazif.ex_writeReg != 0 && !hazif.branch == 1) begin
 			hazif.hazard = 1; 			
-		end else if (hazif.mem_writeReg == hazif.rsel1 && hazif.mem_writeReg != 0) begin
+		end else if (hazif.mem_writeReg == hazif.rsel1 && hazif.mem_writeReg != 0 && !hazif.branch == 1) begin
 			hazif.hazard = 1; 
-		end else if (hazif.mem_writeReg == hazif.rsel2 && hazif.mem_writeReg != 0)begin
+		end else if (hazif.mem_writeReg == hazif.rsel2 && hazif.mem_writeReg != 0 && !hazif.branch == 1)begin
 			hazif.hazard = 1; 		
 		end else begin
 			hazif.hazard = 0; 
@@ -27,7 +27,7 @@ module hazard_unit
 	always_comb begin 
 		if (hazif.instrOp == BEQ && hazif.equal == 1 && hazif.rsel1 != 0) begin
 			hazif.branch = 1; 
-		end else if (hazif.instrOp == BNE && hazif.equal == 0) begin
+		end else if (hazif.instrOp == BNE && hazif.equal == 0 && hazif.rsel1 != 0) begin
 			hazif.branch = 1; 
 		end else begin
 			hazif.branch = 0; 

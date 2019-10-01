@@ -8,19 +8,20 @@ import cpu_types_pkg::*;
 
 
 word_t rsel1, rsel2, mem_writeReg, ex_writeReg; 
-logic hazard, equal, branch, jump;
-opcode_t instrOp; 
+logic hazard, equal, branch, jump, dhit;
+opcode_t instrOp;
+funct_t instrFunc;
 
 modport haz (
-input rsel1, rsel2, mem_writeReg, ex_writeReg, equal, instrOp,  
+input rsel1, rsel2, mem_writeReg, ex_writeReg, equal, instrOp, instrFunc, dhit,
 output hazard, branch, jump
 ); 
 
 modport tb (
 input hazard, branch, jump,
-output rsel1, rsel2, mem_writeReg, ex_writeReg,equal, instrOp
+output rsel1, rsel2, mem_writeReg, ex_writeReg,equal, instrOp, instrFunc, dhit
 ); 
 
-endinterface
+endinterface : hazard_if
 
 `endif

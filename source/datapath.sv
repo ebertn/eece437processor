@@ -167,7 +167,7 @@ module datapath (
 
     // PC Inputs
     assign pcif.next_count = if_next_pc;
-    assign pcif.countEn = dpif.ihit && !exmemif.Halt_out && !hazardif.hazard;
+    assign pcif.countEn = (dpif.ihit | hazardif.jump) && !exmemif.Halt_out && !hazardif.hazard;
 
     // Datapath Outputs
     assign dpif.halt = memwbif.Halt_out;
@@ -189,7 +189,7 @@ module datapath (
     //assign ifidif.writeEN = dpif.ihit | dpif.dhit;
     //assign ifidif.flush = dpif.dmemREN | dpif.dmemWEN;
 	assign ifidif.writeEN = !hazardif.hazard && !hazardif.branch;
-	assign ifidif.flush = (hazardif.branch | hazardif.jump) && !hazardif.hazard;
+	assign ifidif.flush = (hazardif.branch | hazardif.jump/* | dpif.ihit*/) && !hazardif.hazard;
    
     //DEBUG BULLSHIT
     assign ifidif.next_pc_in = if_next_pc;  
@@ -314,12 +314,14 @@ module datapath (
     assign extif.ExtOp = cuif.ExtOp;
     assign extif.UpperImm = cuif.UpperImm;
 
-    //HAZARD UNIT 
-    assign hazardif.instrOp = it.opcode; 
+    // Hazard Unit Inputs
+    assign hazardif.instrOp = it.opcode;
+    assign hazardif.instrFunc = rt.funct;
     assign hazardif.equal = (rfif.rdat1 == rfif.rdat2);
     assign hazardif.rsel1 = rfif.rsel1; 
     assign hazardif.rsel2 = rfif.rsel2; 
     assign hazardif.mem_writeReg = exmemif.writeReg_out; 
-    assign hazardif.ex_writeReg = idexif.writeReg_out; 
+    assign hazardif.ex_writeReg = idexif.writeReg_out;
+    assign hazardif.dhit = dpif.dhit;
 
 endmodule : datapath

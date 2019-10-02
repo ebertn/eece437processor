@@ -81,7 +81,7 @@ module idex
 			//HAZARD BULLSHIT
 			idex.writeReg_out <= idex.writeReg_out; 
 
-			if (idex.writeEN) begin
+			if (idex.writeEN && idex.InstrOp_in != 46) begin
 				idex.pcplus4_out <= idex.pcplus4_in;
 				idex.rdat1_out <= idex.rdat1_in;
 				idex.rdat2_out <= idex.rdat2_in;

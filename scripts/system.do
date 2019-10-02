@@ -19,25 +19,25 @@ add wave -noupdate -expand -group {Program Counter} /system_tb/DUT/CPU/DP/pcif/c
 add wave -noupdate -expand -group {Program Counter} /system_tb/DUT/CPU/DP/next_pc_src
 add wave -noupdate -divider {Datapath Interface}
 add wave -noupdate /system_tb/DUT/CPU/ccif/ramstate
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/halt
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/ihit
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemREN
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemload
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemaddr
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dhit
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/datomic
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemREN
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemWEN
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/flushed
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemload
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemstore
-add wave -noupdate -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemaddr
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/halt
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/ihit
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemREN
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemload
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/imemaddr
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dhit
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/datomic
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemREN
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemWEN
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/flushed
+add wave -noupdate -expand -group {Datapath Interface} -radix hexadecimal /system_tb/DUT/CPU/DP/dpif/dmemload
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemstore
+add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemaddr
 add wave -noupdate -divider {Register File}
-add wave -noupdate -expand -group {Register File} -childformat {{{/system_tb/DUT/CPU/DP/rfDUT/registers[2]} -radix unsigned}} -subitemconfig {{/system_tb/DUT/CPU/DP/rfDUT/registers[2]} {-radix unsigned}} /system_tb/DUT/CPU/DP/rfDUT/registers
+add wave -noupdate -expand -group {Register File} -childformat {{{/system_tb/DUT/CPU/DP/rfDUT/registers[2]} -radix hexadecimal}} -expand -subitemconfig {{/system_tb/DUT/CPU/DP/rfDUT/registers[2]} {-height 17 -radix hexadecimal}} /system_tb/DUT/CPU/DP/rfDUT/registers
 add wave -noupdate -expand -group {Register File} -expand -group Other /system_tb/DUT/CPU/DP/rfif/WEN
 add wave -noupdate -expand -group {Register File} -expand -group Other -radix unsigned /system_tb/DUT/CPU/DP/rfif/wsel
-add wave -noupdate -expand -group {Register File} -expand -group Other -radix unsigned /system_tb/DUT/CPU/DP/rfif/rsel1
-add wave -noupdate -expand -group {Register File} -expand -group Other -radix unsigned /system_tb/DUT/CPU/DP/rfif/rsel2
+add wave -noupdate -expand -group {Register File} -expand -group Other -radix hexadecimal -childformat {{{/system_tb/DUT/CPU/DP/rfif/rsel1[4]} -radix unsigned} {{/system_tb/DUT/CPU/DP/rfif/rsel1[3]} -radix unsigned} {{/system_tb/DUT/CPU/DP/rfif/rsel1[2]} -radix unsigned} {{/system_tb/DUT/CPU/DP/rfif/rsel1[1]} -radix unsigned} {{/system_tb/DUT/CPU/DP/rfif/rsel1[0]} -radix unsigned}} -subitemconfig {{/system_tb/DUT/CPU/DP/rfif/rsel1[4]} {-radix unsigned} {/system_tb/DUT/CPU/DP/rfif/rsel1[3]} {-radix unsigned} {/system_tb/DUT/CPU/DP/rfif/rsel1[2]} {-radix unsigned} {/system_tb/DUT/CPU/DP/rfif/rsel1[1]} {-radix unsigned} {/system_tb/DUT/CPU/DP/rfif/rsel1[0]} {-radix unsigned}} /system_tb/DUT/CPU/DP/rfif/rsel1
+add wave -noupdate -expand -group {Register File} -expand -group Other -radix hexadecimal /system_tb/DUT/CPU/DP/rfif/rsel2
 add wave -noupdate -expand -group {Register File} -expand -group Other /system_tb/DUT/CPU/DP/rfif/wdat
 add wave -noupdate -expand -group {Register File} -expand -group Other /system_tb/DUT/CPU/DP/rfif/rdat1
 add wave -noupdate -expand -group {Register File} -expand -group Other /system_tb/DUT/CPU/DP/rfif/rdat2
@@ -50,21 +50,21 @@ add wave -noupdate -group ALU /system_tb/DUT/CPU/DP/aluif/overflow
 add wave -noupdate -group ALU /system_tb/DUT/CPU/DP/aluif/zero
 add wave -noupdate -group ALU /system_tb/DUT/CPU/DP/aluif/portA
 add wave -noupdate -divider {Control Unit}
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/Equal
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/Halt
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/RegDst
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/MemToReg
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/regWEN
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/UpperImm
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/AluSrc
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/ExtOp
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/JType
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/RegZero
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/JReg
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/PcSrc
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/InstrOp
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/InstrFunc
-add wave -noupdate -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/AluOp
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/Equal
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/Halt
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/RegDst
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/MemToReg
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/regWEN
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/UpperImm
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/AluSrc
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/ExtOp
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/JType
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/RegZero
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/JReg
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/PcSrc
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/InstrOp
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/InstrFunc
+add wave -noupdate -expand -group {Control Unit} /system_tb/DUT/CPU/DP/cuif/AluOp
 add wave -noupdate -divider Extender
 add wave -noupdate -group Extender /system_tb/DUT/CPU/DP/extif/JType
 add wave -noupdate -group Extender /system_tb/DUT/CPU/DP/extif/ExtOp
@@ -168,15 +168,15 @@ add wave -noupdate -group memwb /system_tb/DUT/CPU/DP/memwbif/regWEN_out
 add wave -noupdate -group memwb /system_tb/DUT/CPU/DP/memwbif/PcSrc_out
 add wave -noupdate -group memwb /system_tb/DUT/CPU/DP/memwbif/JReg_out
 add wave -noupdate -divider {Hazard Unit}
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/rsel1
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/rsel2
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/mem_writeReg
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/ex_writeReg
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/hazard
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/equal
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/branch
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/jump
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/instrOp
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/rsel1
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/rsel2
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/mem_writeReg
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/ex_writeReg
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/hazard
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/equal
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/branch
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/jump
+add wave -noupdate -expand -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/instrOp
 TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
 add wave -noupdate -color Magenta -radixenum symbolic /system_tb/DUT/CPU/DP/rt.funct
@@ -186,7 +186,7 @@ quietly WaveActivateNextPane
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP/nRST
 add wave -noupdate -color White /system_tb/DUT/CPU/DP/CLK
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1236725 ps} 0}
+WaveRestoreCursors {{Cursor 1} {63297 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 100
@@ -202,4 +202,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1014962 ps} {1668962 ps}
+WaveRestoreZoom {0 ps} {894482 ps}

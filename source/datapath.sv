@@ -323,5 +323,6 @@ module datapath (
     assign hazardif.mem_writeReg = exmemif.writeReg_out; 
     assign hazardif.ex_writeReg = idexif.writeReg_out;
     assign hazardif.dhit = dpif.dhit;
+	//assign hazardif.ihit = dpif.ihit;
 
 endmodule : datapath

@@ -48,7 +48,6 @@ module idex
 			//HAZARD BULLSHIT
 			idex.writeReg_out <= 0; 
 		end else begin
-			/*
 			idex.pcplus4_out <= idex.pcplus4_out;
 			idex.rdat1_out <= idex.rdat1_out;
 			idex.rdat2_out <= idex.rdat2_out;
@@ -68,7 +67,7 @@ module idex
 			idex.Halt_out <= idex.Halt_out;
 			idex.dMemWEN_out <= idex.dMemWEN_out;
 			idex.dMemREN_out <= idex.dMemREN_out;
-			*/
+
 			//DEBUG BULLSHIT
 			idex.InstrOp_out <= idex.InstrOp_in; 
 			idex.InstrFunc_out <= idex.InstrFunc_in; 
@@ -82,7 +81,7 @@ module idex
 			//HAZARD BULLSHIT
 			idex.writeReg_out <= idex.writeReg_out; 
 
-			if (idex.writeEN) begin
+			if (idex.writeEN && idex.instrOp_in != 46) begin
 				idex.pcplus4_out <= idex.pcplus4_in;
 				idex.rdat1_out <= idex.rdat1_in;
 				idex.rdat2_out <= idex.rdat2_in;

@@ -199,7 +199,7 @@ module datapath (
     //assign ifidif.writeEN = dpif.ihit | dpif.dhit;
     //assign ifidif.flush = dpif.dmemREN | dpif.dmemWEN;
 	assign ifidif.writeEN = !hazardif.hazard/* && !hazardif.branch*/ && dpif.ihit;
-	assign ifidif.flush = (hazardif.branch | hazardif.jump/* | dpif.ihit*/);// && !hazardif.hazard;
+	assign ifidif.flush = (hazardif.branch | hazardif.jump/* | dpif.ihit*/) && !hazardif.hazard;
    
     //DEBUG BULLSHIT
     assign ifidif.next_pc_in = if_next_pc;  
@@ -261,7 +261,7 @@ module datapath (
  
     //assign exmemif.writeEN = dpif.ihit | dpif.dhit;
     //assign exmemif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
-	assign exmemif.writeEN = !hazardif.hazard;
+	assign exmemif.writeEN = 1;//!hazardif.hazard;
    	assign exmemif.flush = 0; 
 	assign exmemif.writeReg_in = idexif.writeReg_out; 
 
@@ -293,7 +293,7 @@ module datapath (
 
     //assign memwbif.writeEN = dpif.ihit | dpif.dhit;
     //assign memwbif.flush = 0;//dpif.dmemREN | dpif.dmemWEN;
-	assign memwbif.writeEN = 1;
+	assign memwbif.writeEN = 1;//!hazardif.hazard;//1;
     assign memwbif.flush = 0;
 	assign memwbif.writeReg_in = exmemif.writeReg_out; 
 
@@ -335,7 +335,7 @@ module datapath (
     assign hazardif.dhit = dpif.dhit;
     assign hazardif.ex_regWEN = idexif.regWEN_out;
     assign hazardif.mem_regWEN = exmemif.regWEN_out;
-    assign hazardif.dmemREN = idexif.dMemREN_out;
+    assign hazardif.ex_dmemREN = idexif.dMemREN_out;
 	//assign hazardif.ihit = dpif.ihit;
 
 endmodule : datapath

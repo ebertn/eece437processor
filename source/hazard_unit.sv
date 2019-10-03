@@ -11,8 +11,8 @@ module hazard_unit
 	import cpu_types_pkg::*;
 	always_comb begin
 		hazif.hazardifstatement = 0;
-		if (/*hazif.instrOp == LW*/hazif.dmemREN && hazif.ex_writeReg && ((hazif.ex_writeReg == hazif.rsel1) || hazif.ex_writeReg == hazif.rsel2)/*&& !hazif.dmemREN/*&& !hazif.dhit*/) begin
-			hazif.hazard = 1;
+		if (hazif.ex_dmemREN && hazif.ex_regWEN && ((hazif.ex_writeReg == hazif.rsel1) || ((hazif.instrOp == RTYPE) && hazif.ex_writeReg == hazif.rsel2))/*&& !hazif.dmemREN/*&& !hazif.dhit*/) begin
+			hazif.hazard = 1; //!hazif.dhit;
 			hazif.hazardifstatement = 1;
 		end else if (hazif.ex_regWEN && hazif.ex_writeReg == hazif.rsel1 && hazif.ex_writeReg != 0 && hazif.instrOp != 46/*&& hazif.ihit == 0&& !hazif.branch*/) begin
 			hazif.hazard = 1;

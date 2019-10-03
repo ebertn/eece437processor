@@ -50,6 +50,8 @@ module hazard_unit
 			hazif.hazard = 1;
         end else if ((hazif.instrOp == BEQ || hazif.instrOp == BNE) &&
 			((hazif.ex_writeReg == hazif.rsel1 && hazif.ex_writeReg != 0) ||
+			(hazif.ex_writeReg == hazif.rsel2 && hazif.ex_writeReg != 0) ||
+			(hazif.mem_writeReg == hazif.rsel1 && hazif.mem_writeReg != 0) ||
 			(hazif.mem_writeReg == hazif.rsel2 && hazif.mem_writeReg != 0))) begin
 			hazif.hazard = 1;
     	end

@@ -255,7 +255,7 @@ module datapath (
     //assign idexif.writeEN = dpif.ihit | dpif.dhit;
     //assign idexif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
 	assign idexif.writeEN = 1; //!hazardif.hazard;
-	assign idexif.flush = hazardif.hazard || dpif.dhit;
+	assign idexif.flush = hazardif.hazard || (dpif.dhit && (dpif.dmemWEN || dpif.dmemREN));
 	
     //DEBUG BULLSHIT
     assign idexif.InstrOp_in = cuif.InstrOp; 

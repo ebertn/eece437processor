@@ -53,6 +53,9 @@ module datapath (
     hazard_if hazardif(); 
     hazard_unit HZ(hazardif);
 
+    forward_if forwardif();
+    forward_unit FUDUT(forwardif);
+
     // Instructions in IF stage
     j_t jt_if;
     assign jt_if = dpif.imemload;
@@ -100,15 +103,6 @@ module datapath (
         case (cuif.RegZero)
             0: rfif.rsel1 = rt.rs;
             1: rfif.rsel1 = '0;
-        endcase
-    end
-
-    // rdat2, extender_out Mux 
-    //EX
-    always_comb begin
-        case (idexif.AluSrc_out)
-            0: aluif.portB = idexif.rdat2_out;
-            1: aluif.portB = idexif.immext_out;
         endcase
     end
 
@@ -175,6 +169,36 @@ module datapath (
         endcase
     end
 
+    // Forward A mux
+    always_comb begin
+        case (forwardif.forwardA)
+            0: aluif.portA = idexif.rdat1_out;
+            1: aluif.portA = wb_data_out;
+            2: aluif.portA = exmemif.aluOutport_out;
+            3: aluif.portA = exmemif.aluOutport_out;
+        endcase
+    end
+
+    // Forward B mux
+    word_t forBmux;
+    always_comb begin
+        case (forwardif.forwardB)
+            0: forBmux = idexif.rdat2_out;
+            1: forBmux = wb_data_out;
+            2: forBmux = exmemif.aluOutport_out;
+            3: forBmux = exmemif.aluOutport_out;
+        endcase
+    end
+
+    // forBmux, extender_out Mux
+    //EX
+    always_comb begin
+        case (idexif.AluSrc_out)
+            0: aluif.portB = forBmux;
+            1: aluif.portB = idexif.immext_out;
+        endcase
+    end
+
     // PC Inputs
     assign pcif.next_count = if_next_pc;
     assign pcif.countEn = (dpif.ihit /*| dpif.dhit*/ | hazardif.branch | hazardif.jump) && !exmemif.Halt_out && !hazardif.hazard;
@@ -213,6 +237,9 @@ module datapath (
     assign idexif.rt_in = rt.rt;
     assign idexif.rd_in = rt.rd;
 
+    assign idexif.rsel1_in = rfif.rsel1;
+    assign idexif.rsel2_in = rfif.rsel2;
+
     assign idexif.MemToReg_in = cuif.MemToReg; 
     assign idexif.AluOp_in = cuif.AluOp; 
     assign idexif.AluSrc_in = cuif.AluSrc; 
@@ -228,7 +255,7 @@ module datapath (
     //assign idexif.writeEN = dpif.ihit | dpif.dhit;
     //assign idexif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
 	assign idexif.writeEN = 1; //!hazardif.hazard;
-	assign idexif.flush = hazardif.hazard;
+	assign idexif.flush = hazardif.hazard || dpif.dhit;
 	
     //DEBUG BULLSHIT
     assign idexif.InstrOp_in = cuif.InstrOp; 
@@ -293,7 +320,7 @@ module datapath (
 
     //assign memwbif.writeEN = dpif.ihit | dpif.dhit;
     //assign memwbif.flush = 0;//dpif.dmemREN | dpif.dmemWEN;
-	assign memwbif.writeEN = 1;//!hazardif.hazard;//1;
+	assign memwbif.writeEN = !hazardif.hazard || dpif.dhit;//1;
     assign memwbif.flush = 0;
 	assign memwbif.writeReg_in = exmemif.writeReg_out; 
 
@@ -309,7 +336,7 @@ module datapath (
     assign memwbif.shamt_in = memwbif.shamt_out; 
 
     // ALU Connection Inputs
-    assign aluif.portA = idexif.rdat1_out;
+    //assign aluif.portA = idexif.rdat1_out;
     assign aluif.aluOp = idexif.AluOp_out;
 
     // Control Unit Inputs
@@ -338,5 +365,13 @@ module datapath (
     assign hazardif.ex_dmemREN = idexif.dMemREN_out;
     assign hazardif.mem_instrOp = exmemif.InstrOp_out;
 	//assign hazardif.ihit = dpif.ihit;
+
+    // Forwarding Unit Inputs
+    assign forwardif.rsel1 = idexif.rsel1_out;
+    assign forwardif.rsel2 = idexif.rsel2_out;
+    assign forwardif.mem_writeReg = exmemif.writeReg_out;
+    assign forwardif.wb_writeReg = memwbif.writeReg_out;
+    assign forwardif.mem_regWEN = exmemif.regWEN_out;
+    assign forwardif.wb_regWEN = memwbif.regWEN_out;
 
 endmodule : datapath

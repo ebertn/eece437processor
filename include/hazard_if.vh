@@ -7,7 +7,7 @@ interface hazard_if;
 import cpu_types_pkg::*;
 
 
-word_t rsel1, rsel2, mem_writeReg, ex_writeReg; 
+regbits_t rsel1, rsel2, mem_writeReg, ex_writeReg;
 logic hazard, equal, branch, jump, dhit, ex_regWEN, mem_regWEN, ex_dmemREN;
 logic [3:0] hazardifstatement;
 opcode_t instrOp, mem_instrOp;

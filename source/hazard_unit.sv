@@ -10,16 +10,24 @@ module hazard_unit
 
 	import cpu_types_pkg::*;
 	always_comb begin
-		if (hazif.ex_writeReg == hazif.rsel1 && hazif.ex_writeReg != 0 && hazif.instrOp != 46/*&& hazif.ihit == 0&& !hazif.branch*/) begin
-			hazif.hazard = 1; 
-		end else if (hazif.ex_writeReg == hazif.rsel2 && hazif.ex_writeReg != 0 && hazif.instrOp != 46/*&& hazif.ihit == 0&& !hazif.branch*/) begin
-			hazif.hazard = 1; 			
-		end else if (hazif.mem_writeReg == hazif.rsel1 && hazif.mem_writeReg != 0 && hazif.instrOp != 46/*&&  hazif.ihit == 0 && !hazif.branch*/) begin
-			hazif.hazard = 1; 
-		end else if (hazif.mem_writeReg == hazif.rsel2 && hazif.mem_writeReg != 0 && hazif.instrOp != 46/*&& hazif.ihit == 0&& !hazif.branch*/)begin
-			hazif.hazard = 1; 		
-		//end else if (hazif.instrOp == LW) begin
-			//hazif.hazard = hazif.dhit;
+		hazif.hazardifstatement = 0;
+		if (/*hazif.instrOp == LW*/hazif.dmemREN && hazif.ex_writeReg && ((hazif.ex_writeReg == hazif.rsel1) || hazif.ex_writeReg == hazif.rsel2)/*&& !hazif.dmemREN/*&& !hazif.dhit*/) begin
+			hazif.hazard = 1;
+			hazif.hazardifstatement = 1;
+		end else if (hazif.ex_regWEN && hazif.ex_writeReg == hazif.rsel1 && hazif.ex_writeReg != 0 && hazif.instrOp != 46/*&& hazif.ihit == 0&& !hazif.branch*/) begin
+			hazif.hazard = 1;
+			hazif.hazardifstatement = 2;
+		end else if ((hazif.instrOp == RTYPE) && hazif.ex_regWEN && hazif.ex_writeReg == hazif.rsel2 && hazif.ex_writeReg != 0 && hazif.instrOp != 46/*&& hazif.ihit == 0&& !hazif.branch*/) begin
+			hazif.hazard = 1;
+			hazif.hazardifstatement = 3;
+		end else if (hazif.mem_regWEN && hazif.mem_writeReg == hazif.rsel1 && hazif.mem_writeReg != 0 && hazif.instrOp != 46/*&&  hazif.ihit == 0 && !hazif.branch*/) begin
+			hazif.hazard = 1;
+			hazif.hazardifstatement = 4;
+		end else if ((hazif.instrOp == RTYPE) && hazif.mem_regWEN && hazif.mem_writeReg == hazif.rsel2 && hazif.mem_writeReg != 0 && hazif.instrOp != 46/*&& hazif.ihit == 0&& !hazif.branch*/)begin
+			hazif.hazard = 1;
+			hazif.hazardifstatement = 5;
+//		end else if (/*hazif.instrOp == LW*/hazif.dmemREN && ((hazif.ex_writeReg == hazif.rsel1) || hazif.ex_writeReg == hazif.rsel2)/*&& !hazif.dmemREN/*&& !hazif.dhit*/) begin
+//			hazif.hazard = 1;
 		end else begin
 			hazif.hazard = 0;
 		end

@@ -23,6 +23,9 @@ module idex
 			idex.rt_out <= '0;
 			idex.rd_out <= '0;
 
+			idex.rsel1_out <= '0;
+			idex.rsel2_out <= '0;
+
  			idex.MemToReg_out <= 0; 
  			idex.AluOp_out <= ALU_SLL; 
 			idex.AluSrc_out <= 0; 
@@ -55,6 +58,9 @@ module idex
 
 			idex.rt_out <= idex.rt_out;
 			idex.rd_out <= idex.rd_out;
+
+			idex.rsel1_out <= idex.rsel1_out;
+			idex.rsel2_out <= idex.rsel2_out;
 
 			idex.MemToReg_out <= idex.MemToReg_out;
 			idex.AluOp_out <= idex.AluOp_out;
@@ -89,6 +95,9 @@ module idex
 
 				idex.rt_out <= idex.rt_in;
 				idex.rd_out <= idex.rd_in;
+
+				idex.rsel1_out <= idex.rsel1_in;
+				idex.rsel2_out <= idex.rsel2_in;
 
 				idex.MemToReg_out <= idex.MemToReg_in;
 				idex.AluOp_out <= idex.AluOp_in;

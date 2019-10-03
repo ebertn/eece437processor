@@ -37,7 +37,7 @@ add wave -noupdate -expand -group {Datapath Interface} -radix hexadecimal /syste
 add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemstore
 add wave -noupdate -expand -group {Datapath Interface} /system_tb/DUT/CPU/DP/dpif/dmemaddr
 add wave -noupdate -divider {Register File}
-add wave -noupdate -expand -group {Register File} -childformat {{{/system_tb/DUT/CPU/DP/rfDUT/registers[2]} -radix hexadecimal}} -expand -subitemconfig {{/system_tb/DUT/CPU/DP/rfDUT/registers[2]} {-height 17 -radix hexadecimal}} /system_tb/DUT/CPU/DP/rfDUT/registers
+add wave -noupdate -expand -group {Register File} -childformat {{{/system_tb/DUT/CPU/DP/rfDUT/registers[2]} -radix hexadecimal}} -subitemconfig {{/system_tb/DUT/CPU/DP/rfDUT/registers[2]} {-height 17 -radix hexadecimal}} /system_tb/DUT/CPU/DP/rfDUT/registers
 add wave -noupdate -expand -group {Register File} -expand -group Other /system_tb/DUT/CPU/DP/rfif/WEN
 add wave -noupdate -expand -group {Register File} -expand -group Other -radix unsigned /system_tb/DUT/CPU/DP/rfif/wsel
 add wave -noupdate -expand -group {Register File} -expand -group Other -radix unsigned -childformat {{{/system_tb/DUT/CPU/DP/rfif/rsel1[4]} -radix unsigned} {{/system_tb/DUT/CPU/DP/rfif/rsel1[3]} -radix unsigned} {{/system_tb/DUT/CPU/DP/rfif/rsel1[2]} -radix unsigned} {{/system_tb/DUT/CPU/DP/rfif/rsel1[1]} -radix unsigned} {{/system_tb/DUT/CPU/DP/rfif/rsel1[0]} -radix unsigned}} -subitemconfig {{/system_tb/DUT/CPU/DP/rfif/rsel1[4]} {-height 17 -radix unsigned} {/system_tb/DUT/CPU/DP/rfif/rsel1[3]} {-height 17 -radix unsigned} {/system_tb/DUT/CPU/DP/rfif/rsel1[2]} {-height 17 -radix unsigned} {/system_tb/DUT/CPU/DP/rfif/rsel1[1]} {-height 17 -radix unsigned} {/system_tb/DUT/CPU/DP/rfif/rsel1[0]} {-height 17 -radix unsigned}} /system_tb/DUT/CPU/DP/rfif/rsel1
@@ -238,12 +238,14 @@ add wave -noupdate -expand -group memwb -group Other /system_tb/DUT/CPU/DP/memwb
 add wave -noupdate -divider {Forwarding Unit}
 add wave -noupdate -expand -group {Forwarding Unit} /system_tb/DUT/CPU/DP/forwardif/forwardA
 add wave -noupdate -expand -group {Forwarding Unit} /system_tb/DUT/CPU/DP/forwardif/forwardB
-add wave -noupdate -expand -group {Forwarding Unit} /system_tb/DUT/CPU/DP/forwardif/rsel1
-add wave -noupdate -expand -group {Forwarding Unit} /system_tb/DUT/CPU/DP/forwardif/rsel2
-add wave -noupdate -expand -group {Forwarding Unit} /system_tb/DUT/CPU/DP/forwardif/mem_writeReg
-add wave -noupdate -expand -group {Forwarding Unit} /system_tb/DUT/CPU/DP/forwardif/wb_writeReg
+add wave -noupdate -expand -group {Forwarding Unit} -color {Blue Violet} -radix unsigned /system_tb/DUT/CPU/DP/forwardif/rsel1
+add wave -noupdate -expand -group {Forwarding Unit} -color {Blue Violet} -radix unsigned /system_tb/DUT/CPU/DP/forwardif/rsel2
+add wave -noupdate -expand -group {Forwarding Unit} -color {Blue Violet} -radix unsigned /system_tb/DUT/CPU/DP/forwardif/mem_writeReg
+add wave -noupdate -expand -group {Forwarding Unit} -color {Blue Violet} -radix unsigned /system_tb/DUT/CPU/DP/forwardif/wb_writeReg
 add wave -noupdate -expand -group {Forwarding Unit} /system_tb/DUT/CPU/DP/forwardif/mem_regWEN
 add wave -noupdate -expand -group {Forwarding Unit} /system_tb/DUT/CPU/DP/forwardif/wb_regWEN
+add wave -noupdate /system_tb/DUT/CPU/DP/forwardif/mem_dmemREN
+add wave -noupdate /system_tb/DUT/CPU/DP/forwardif/mem_dmemWEN
 add wave -noupdate -divider {Hazard Unit}
 add wave -noupdate -group {Hazard Unit} -radix unsigned /system_tb/DUT/CPU/DP/hazardif/rsel1
 add wave -noupdate -group {Hazard Unit} -radix unsigned /system_tb/DUT/CPU/DP/hazardif/rsel2
@@ -267,7 +269,7 @@ quietly WaveActivateNextPane
 add wave -noupdate -color White /system_tb/DUT/CPU/DP/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1312168 ps} 0}
+WaveRestoreCursors {{Cursor 1} {910843 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 100
@@ -283,4 +285,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1104736 ps} {2047120 ps}
+WaveRestoreZoom {0 ps} {2160 ns}

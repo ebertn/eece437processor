@@ -271,7 +271,7 @@ module datapath (
     assign exmemif.pcplus4_in = idexif.pcplus4_out;
     //assign exmemif.branchaddr_in = ex_branchaddr;
     assign exmemif.aluOutport_in = aluif.outPort;
-    assign exmemif.rdat2_in = idexif.rdat2_out;
+    assign exmemif.rdat2_in = forBmux;//idexif.rdat2_out;
 
     assign exmemif.rt_in = idexif.rt_out;
     assign exmemif.rd_in = idexif.rd_out;
@@ -288,7 +288,7 @@ module datapath (
  
     //assign exmemif.writeEN = dpif.ihit | dpif.dhit;
     //assign exmemif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
-	assign exmemif.writeEN = 1;//!hazardif.hazard;
+	assign exmemif.writeEN = /*!hazardif.hazard || dpif.ihit && */dpif.ihit || (!dpif.dmemWEN || dpif.dhit);//dpif.dhit;//1;//!hazardif.hazard;
    	assign exmemif.flush = 0; 
 	assign exmemif.writeReg_in = idexif.writeReg_out; 
 
@@ -320,7 +320,7 @@ module datapath (
 
     //assign memwbif.writeEN = dpif.ihit | dpif.dhit;
     //assign memwbif.flush = 0;//dpif.dmemREN | dpif.dmemWEN;
-	assign memwbif.writeEN = !hazardif.hazard || dpif.dhit;//1;
+	assign memwbif.writeEN = dpif.ihit || (!dpif.dmemREN || dpif.dhit);//!hazardif.hazard || dpif.ihit || dpif.dhit;//1;
     assign memwbif.flush = 0;
 	assign memwbif.writeReg_in = exmemif.writeReg_out; 
 
@@ -363,6 +363,7 @@ module datapath (
     assign hazardif.ex_regWEN = idexif.regWEN_out;
     assign hazardif.mem_regWEN = exmemif.regWEN_out;
     assign hazardif.ex_dmemREN = idexif.dMemREN_out;
+    assign hazardif.id_dmemWEN = idexif.dMemWEN_in;
     assign hazardif.mem_instrOp = exmemif.InstrOp_out;
 	//assign hazardif.ihit = dpif.ihit;
 
@@ -373,5 +374,7 @@ module datapath (
     assign forwardif.wb_writeReg = memwbif.writeReg_out;
     assign forwardif.mem_regWEN = exmemif.regWEN_out;
     assign forwardif.wb_regWEN = memwbif.regWEN_out;
+    assign forwardif.mem_dmemREN = idexif.dMemREN_out;
+    assign forwardif.mem_dmemWEN = idexif.dMemWEN_out;
 
 endmodule : datapath

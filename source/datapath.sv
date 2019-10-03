@@ -336,6 +336,7 @@ module datapath (
     assign hazardif.ex_regWEN = idexif.regWEN_out;
     assign hazardif.mem_regWEN = exmemif.regWEN_out;
     assign hazardif.ex_dmemREN = idexif.dMemREN_out;
+    assign hazardif.mem_instrOp = exmemif.InstrOp_out;
 	//assign hazardif.ihit = dpif.ihit;
 
 endmodule : datapath

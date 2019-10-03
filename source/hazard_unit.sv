@@ -26,6 +26,9 @@ module hazard_unit
 		end else if ((hazif.instrOp == RTYPE) && hazif.mem_regWEN && hazif.mem_writeReg == hazif.rsel2 && hazif.mem_writeReg != 0 && hazif.instrOp != 46/*&& hazif.ihit == 0&& !hazif.branch*/)begin
 			hazif.hazard = 1;
 			hazif.hazardifstatement = 5;
+		end else if (hazif.mem_instrOp == LW) begin
+			hazif.hazard = !hazif.dhit;
+			hazif.hazardifstatement = 6;
 //		end else if (/*hazif.instrOp == LW*/hazif.dmemREN && ((hazif.ex_writeReg == hazif.rsel1) || hazif.ex_writeReg == hazif.rsel2)/*&& !hazif.dmemREN/*&& !hazif.dhit*/) begin
 //			hazif.hazard = 1;
 		end else begin

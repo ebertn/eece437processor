@@ -17,6 +17,5 @@ README
 .idea/
 .idea/*
 testasm.diff
-*.do
 *.bak
 covhtmlreport

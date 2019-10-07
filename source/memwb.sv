@@ -58,17 +58,17 @@ module memwb
 
 	
 			//DEBUG BULLSHIT
-			memwb.InstrOp_out <= memwb.InstrOp_in; 
-			memwb.InstrFunc_out <= memwb.InstrFunc_in; 
-			memwb.rs_out <= memwb.rs_in; 
-			memwb.instr_out <= memwb.instr_in; 
-			memwb.next_pc_out <= memwb.next_pc_in; 
-			memwb.imm_out <= memwb.imm_in;
-			memwb.imm_16_out <= memwb.imm_16_in; 
-			memwb.branchaddr_out <= memwb.branchaddr_in; 
+			memwb.InstrOp_out <= memwb.InstrOp_out;
+			memwb.InstrFunc_out <= memwb.InstrFunc_out;
+			memwb.rs_out <= memwb.rs_out;
+			memwb.instr_out <= memwb.instr_out;
+			memwb.next_pc_out <= memwb.next_pc_out;
+			memwb.imm_out <= memwb.imm_out;
+			memwb.imm_16_out <= memwb.imm_16_out;
+			memwb.branchaddr_out <= memwb.branchaddr_out;
 
 			//HAZARD BULLSHIT
-			memwb.writeReg_out <= memwb.writeReg_in; 
+			memwb.writeReg_out <= memwb.writeReg_out;
 
 			if (memwb.writeEN) begin
 				memwb.pcplus4_out <= memwb.pcplus4_in;
@@ -84,7 +84,20 @@ module memwb
 				memwb.regWEN_out <= memwb.regWEN_in;
 				memwb.PcSrc_out <= memwb.PcSrc_in;
 				memwb.JReg_out <= memwb.JReg_in;
-				memwb.Halt_out <= memwb.Halt_in; 
+				memwb.Halt_out <= memwb.Halt_in;
+
+				//DEBUG BULLSHIT
+				memwb.InstrOp_out <= memwb.InstrOp_in;
+				memwb.InstrFunc_out <= memwb.InstrFunc_in;
+				memwb.rs_out <= memwb.rs_in;
+				memwb.instr_out <= memwb.instr_in;
+				memwb.next_pc_out <= memwb.next_pc_in;
+				memwb.imm_out <= memwb.imm_in;
+				memwb.imm_16_out <= memwb.imm_16_in;
+				memwb.branchaddr_out <= memwb.branchaddr_in;
+
+				//HAZARD BULLSHIT
+				memwb.writeReg_out <= memwb.writeReg_in;
 			end
 		end 
 	end 	

@@ -74,20 +74,20 @@ module idex
 			idex.dMemWEN_out <= idex.dMemWEN_out;
 			idex.dMemREN_out <= idex.dMemREN_out;
 
-			//DEBUG BULLSHIT
-			idex.InstrOp_out <= idex.InstrOp_in; 
-			idex.InstrFunc_out <= idex.InstrFunc_in; 
-			idex.rs_out <= idex.rs_in; 
-			idex.instr_out <= idex.instr_in; 
-			idex.next_pc_out <= idex.next_pc_in; 
-			idex.imm_out <= idex.imm_in;
-			idex.imm_16_out <= idex.imm_16_in;
-			idex.shamt_out <= idex.shamt_in;  
+			//DEBUG
+			idex.InstrOp_out <= idex.InstrOp_out;
+			idex.InstrFunc_out <= idex.InstrFunc_out;
+			idex.rs_out <= idex.rs_out;
+			idex.instr_out <= idex.instr_out;
+			idex.next_pc_out <= idex.next_pc_out;
+			idex.imm_out <= idex.imm_out;
+			idex.imm_16_out <= idex.imm_16_out;
+			idex.shamt_out <= idex.shamt_out;
 		
 			//HAZARD BULLSHIT
 			idex.writeReg_out <= idex.writeReg_out; 
 
-			if (idex.writeEN && idex.InstrOp_in != 46) begin
+			if (idex.writeEN) begin
 				idex.pcplus4_out <= idex.pcplus4_in;
 				idex.rdat1_out <= idex.rdat1_in;
 				idex.rdat2_out <= idex.rdat2_in;
@@ -110,7 +110,17 @@ module idex
 				idex.Halt_out <= idex.Halt_in;
 				idex.dMemWEN_out <= idex.dMemWEN_in;
 				idex.dMemREN_out <= idex.dMemREN_in;
-				
+
+				//DEBUG
+				idex.InstrOp_out <= idex.InstrOp_in;
+				idex.InstrFunc_out <= idex.InstrFunc_in;
+				idex.rs_out <= idex.rs_in;
+				idex.instr_out <= idex.instr_in;
+				idex.next_pc_out <= idex.next_pc_in;
+				idex.imm_out <= idex.imm_in;
+				idex.imm_16_out <= idex.imm_16_in;
+				idex.shamt_out <= idex.shamt_in;
+
 				//HAZARD BULLSHIT
 				idex.writeReg_out <= idex.writeReg_in;
 	

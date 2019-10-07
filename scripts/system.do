@@ -35,6 +35,7 @@ add wave -noupdate -color {Dark Orchid} -label funct /system_tb/DUT/CPU/DP/rt.fu
 add wave -noupdate -group {Instruction ID} /system_tb/DUT/CPU/DP/jt
 add wave -noupdate -group {Instruction ID} /system_tb/DUT/CPU/DP/it
 add wave -noupdate -group {Instruction ID} /system_tb/DUT/CPU/DP/rt
+add wave -noupdate -group {Register File} /system_tb/DUT/CPU/DP/rfDUT/registers
 add wave -noupdate -group {Register File} /system_tb/DUT/CPU/DP/rfif/WEN
 add wave -noupdate -group {Register File} /system_tb/DUT/CPU/DP/rfif/wsel
 add wave -noupdate -group {Register File} /system_tb/DUT/CPU/DP/rfif/rsel1
@@ -69,7 +70,7 @@ add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/rsel1
 add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/rsel2
 add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/mem_writeReg
 add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/ex_writeReg
-add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/hazard
+add wave -noupdate -group {Hazard Unit} -color Orange /system_tb/DUT/CPU/DP/hazardif/hazard
 add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/equal
 add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/branch
 add wave -noupdate -group {Hazard Unit} /system_tb/DUT/CPU/DP/hazardif/jump
@@ -223,13 +224,13 @@ add wave -noupdate -color {Dark Orchid} -label funct /system_tb/DUT/CPU/DP/rt_me
 add wave -noupdate -group {Instruction MEM} /system_tb/DUT/CPU/DP/jt_mem
 add wave -noupdate -group {Instruction MEM} /system_tb/DUT/CPU/DP/it_mem
 add wave -noupdate -group {Instruction MEM} -expand /system_tb/DUT/CPU/DP/rt_mem
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP/dpif/ihit
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP/dpif/dhit
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP/dpif/dmemREN
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP/dpif/dmemWEN
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP/dpif/dmemload
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP/dpif/dmemstore
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP/dpif/dmemaddr
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP/dpif/ihit
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP/dpif/dhit
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP/dpif/dmemREN
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP/dpif/dmemWEN
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP/dpif/dmemload
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP/dpif/dmemstore
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP/dpif/dmemaddr
 add wave -noupdate -divider {MEMWB Register}
 add wave -noupdate -group {MEMWB Register} /system_tb/DUT/CPU/DP/memwbif/writeEN
 add wave -noupdate -group {MEMWB Register} /system_tb/DUT/CPU/DP/memwbif/flush
@@ -290,7 +291,7 @@ add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP/dpif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {519543 ps} 0}
+WaveRestoreCursors {{Cursor 1} {575758 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 132
@@ -306,4 +307,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {2722 ns}
+WaveRestoreZoom {0 ps} {1789592 ps}

@@ -76,6 +76,36 @@ module datapath (
     r_t rt;
     assign rt = ifidif.instr_out;
 
+    // Instructions in EX stage
+    j_t jt_ex;
+    assign jt_ex = idexif.instr_out;
+
+    i_t it_ex;
+    assign it_ex = idexif.instr_out;
+
+    r_t rt_ex;
+    assign rt_ex = idexif.instr_out;
+
+    // Instructions in MEM stage
+    j_t jt_mem;
+    assign jt_mem = exmemif.instr_out;
+
+    i_t it_mem;
+    assign it_mem = exmemif.instr_out;
+
+    r_t rt_mem;
+    assign rt_mem = exmemif.instr_out;
+
+    // Instructions in WB stage
+    j_t jt_wb;
+    assign jt_wb = memwbif.instr_out;
+
+    i_t it_wb;
+    assign it_wb = memwbif.instr_out;
+
+    r_t rt_wb;
+    assign rt_wb = memwbif.instr_out;
+
     // Rt, Rd, 5'b31 Mux 
     //ID  
 	//Changed where Jtype and RegDst come from 
@@ -222,8 +252,8 @@ module datapath (
 
     //assign ifidif.writeEN = dpif.ihit | dpif.dhit;
     //assign ifidif.flush = dpif.dmemREN | dpif.dmemWEN;
-	assign ifidif.writeEN = !hazardif.hazard/* && !hazardif.branch*/ && dpif.ihit;
-	assign ifidif.flush = (hazardif.branch | hazardif.jump/* | dpif.ihit*/) && !hazardif.hazard;
+	assign ifidif.writeEN = !hazardif.hazard && (dpif.ihit || dpif.dhit);
+	assign ifidif.flush = (hazardif.branch | hazardif.jump) && !hazardif.hazard;
    
     //DEBUG BULLSHIT
     assign ifidif.next_pc_in = if_next_pc;  
@@ -254,8 +284,8 @@ module datapath (
 
     //assign idexif.writeEN = dpif.ihit | dpif.dhit;
     //assign idexif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
-	assign idexif.writeEN = 1; //!hazardif.hazard;
-	assign idexif.flush = hazardif.hazard || (dpif.dhit && (dpif.dmemWEN || dpif.dmemREN));
+	assign idexif.writeEN = !hazardif.hazard && (dpif.ihit || dpif.dhit); //1; //!hazardif.hazard;
+	assign idexif.flush = hazardif.hazard;// || (dpif.dhit && (dpif.dmemWEN || dpif.dmemREN));
 	
     //DEBUG BULLSHIT
     assign idexif.InstrOp_in = cuif.InstrOp; 
@@ -288,7 +318,7 @@ module datapath (
  
     //assign exmemif.writeEN = dpif.ihit | dpif.dhit;
     //assign exmemif.flush = 0; //dpif.dmemREN | dpif.dmemWEN;
-	assign exmemif.writeEN = /*!hazardif.hazard || dpif.ihit && */dpif.ihit || (!dpif.dmemWEN || dpif.dhit);//dpif.dhit;//1;//!hazardif.hazard;
+	assign exmemif.writeEN = !hazardif.hazard && (dpif.ihit || dpif.dhit); // /*!hazardif.hazard || dpif.ihit && */dpif.ihit || (!dpif.dmemWEN || dpif.dhit);//dpif.dhit;//1;//!hazardif.hazard;
    	assign exmemif.flush = 0; 
 	assign exmemif.writeReg_in = idexif.writeReg_out; 
 
@@ -320,7 +350,7 @@ module datapath (
 
     //assign memwbif.writeEN = dpif.ihit | dpif.dhit;
     //assign memwbif.flush = 0;//dpif.dmemREN | dpif.dmemWEN;
-	assign memwbif.writeEN = dpif.ihit || (!dpif.dmemREN || dpif.dhit);//!hazardif.hazard || dpif.ihit || dpif.dhit;//1;
+	assign memwbif.writeEN = !hazardif.hazard && (dpif.ihit || dpif.dhit); //dpif.ihit || (!dpif.dmemREN || dpif.dhit);//!hazardif.hazard || dpif.ihit || dpif.dhit;//1;
     assign memwbif.flush = 0;
 	assign memwbif.writeReg_in = exmemif.writeReg_out; 
 
@@ -363,6 +393,7 @@ module datapath (
     assign hazardif.ex_regWEN = idexif.regWEN_out;
     assign hazardif.mem_regWEN = exmemif.regWEN_out;
     assign hazardif.ex_dmemREN = idexif.dMemREN_out;
+    assign hazardif.mem_dmemREN = exmemif.dMemREN_out;
     assign hazardif.id_dmemWEN = idexif.dMemWEN_in;
     assign hazardif.mem_instrOp = exmemif.InstrOp_out;
 	//assign hazardif.ihit = dpif.ihit;

@@ -61,17 +61,17 @@ module exmem
 			exmem.dMemREN_out <= exmem.dMemREN_out;
 
 			//DEBUG BULLSHIT
-			exmem.InstrOp_out <= exmem.InstrOp_in; 
-			exmem.InstrFunc_out <= exmem.InstrFunc_in; 
-			exmem.rs_out <= exmem.rs_in;
-			exmem.instr_out <= exmem.instr_in; 
-			exmem.next_pc_out <= exmem.next_pc_in; 
-			exmem.imm_out <= exmem.imm_in;
-			exmem.imm_16_out <= exmem.imm_16_in;
-			exmem.shamt_out <= exmem.shamt_in;  
+			exmem.InstrOp_out <= exmem.InstrOp_out;
+			exmem.InstrFunc_out <= exmem.InstrFunc_out;
+			exmem.rs_out <= exmem.rs_out;
+			exmem.instr_out <= exmem.instr_out;
+			exmem.next_pc_out <= exmem.next_pc_out;
+			exmem.imm_out <= exmem.imm_out;
+			exmem.imm_16_out <= exmem.imm_16_out;
+			exmem.shamt_out <= exmem.shamt_out;
 
 			//HAZARD BULLSHIT
-			exmem.writeReg_out <= exmem.writeReg_in; 
+			exmem.writeReg_out <= exmem.writeReg_out;
 
 			if(exmem.writeEN) begin
 				exmem.pcplus4_out <= exmem.pcplus4_in;
@@ -91,6 +91,19 @@ module exmem
 				exmem.Halt_out <= exmem.Halt_in;
 				exmem.dMemWEN_out <= exmem.dMemWEN_in;
 				exmem.dMemREN_out <= exmem.dMemREN_in;
+
+				//DEBUG BULLSHIT
+				exmem.InstrOp_out <= exmem.InstrOp_in;
+				exmem.InstrFunc_out <= exmem.InstrFunc_in;
+				exmem.rs_out <= exmem.rs_in;
+				exmem.instr_out <= exmem.instr_in;
+				exmem.next_pc_out <= exmem.next_pc_in;
+				exmem.imm_out <= exmem.imm_in;
+				exmem.imm_16_out <= exmem.imm_16_in;
+				exmem.shamt_out <= exmem.shamt_in;
+
+				//HAZARD BULLSHIT
+				exmem.writeReg_out <= exmem.writeReg_in;
 			end
 		end
 	end

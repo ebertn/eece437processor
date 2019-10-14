@@ -38,17 +38,26 @@ module hazard_unit
 
     always_comb begin
         hazif.hazard = 0;
-		if (hazif.ex_dmemREN &&
-            ((hazif.ex_writeReg == hazif.rsel1) ||
-			(hazif.mem_writeReg == hazif.rsel2))) begin
+//		if (hazif.ex_dmemREN &&
+//            ((hazif.ex_writeReg == hazif.rsel1) ||
+//			(hazif.mem_writeReg == hazif.rsel2))) begin
+//			// LW
+//            hazif.hazard = 1;
+//			hazif.hazardifstatement = 0;
+		if (hazif.mem_dmemREN) begin
 			// LW
             hazif.hazard = 1;
-        /*end else if (hazif.id_dmemWEN &&
-					((hazif.ex_regWEN && hazif.ex_writeReg == hazif.rsel2) ||
-					(hazif.mem_regWEN && hazif.mem_writeReg == hazif.rsel2))) begin
+			hazif.hazardifstatement = 0;
+//        end else if (hazif.id_dmemWEN &&
+//					((hazif.ex_regWEN && hazif.ex_writeReg == hazif.rsel2) ||
+//					(hazif.mem_regWEN && hazif.mem_writeReg == hazif.rsel2))) begin
+//			// SW
+//			hazif.hazard = 1;
+		end else if (hazif.mem_dmemWEN) begin
 			// SW
-			hazif.hazard = 1;*/
-        end else if ((hazif.instrOp == BEQ || hazif.instrOp == BNE) &&
+			hazif.hazard = 1;
+//		end
+		end else if ((hazif.instrOp == BEQ || hazif.instrOp == BNE) &&
 			(!hazif.ex_dmemWEN && // ISNT SW
 			(hazif.ex_writeReg == hazif.rsel1 && hazif.ex_writeReg != 0 ||
 			hazif.ex_writeReg == hazif.rsel2 && hazif.ex_writeReg != 0) ||

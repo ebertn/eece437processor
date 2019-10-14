@@ -203,7 +203,7 @@ module datapath (
     always_comb begin
         case (forwardif.forwardA)
             0: aluif.portA = idexif.rdat1_out;
-            1: aluif.portA = wb_data_out;
+            1: aluif.portA = rfif.wdat;
             2: aluif.portA = exmemif.aluOutport_out;
             3: aluif.portA = exmemif.aluOutport_out;
         endcase
@@ -214,7 +214,7 @@ module datapath (
     always_comb begin
         case (forwardif.forwardB)
             0: forBmux = idexif.rdat2_out;
-            1: forBmux = wb_data_out;
+            1: forBmux = rfif.wdat;
             2: forBmux = exmemif.aluOutport_out;
             3: forBmux = exmemif.aluOutport_out;
         endcase
@@ -234,7 +234,7 @@ module datapath (
     assign pcif.countEn = (dpif.ihit | hazardif.branch | hazardif.jump) && !exmemif.Halt_out && (!hazardif.hazard || dpif.dhit);
 
     logic pipeline_reg_writeEN;
-    assign pipeline_reg_writeEN = /*hazardif.hazard || */dpif.dhit || !hazardif.hazard && (dpif.ihit | hazardif.branch | hazardif.jump);
+    assign pipeline_reg_writeEN = !(hazardif.branch && hazardif.hazard) && (dpif.dhit || !hazardif.hazard && (dpif.ihit | hazardif.branch | hazardif.jump));
 
     // Datapath Outputs
     assign dpif.halt = memwbif.Halt_out;
@@ -256,8 +256,9 @@ module datapath (
     //assign ifidif.writeEN = dpif.ihit | dpif.dhit;
     //assign ifidif.flush = dpif.dmemREN | dpif.dmemWEN;
 	assign ifidif.writeEN = pipeline_reg_writeEN;
-	assign ifidif.flush = hazardif.branch || hazardif.jump; //0; //(hazardif.branch | hazardif.jump) && !hazardif.hazard;
-   
+	assign ifidif.flush = dpif.dhit || !hazardif.hazard && (hazardif.branch || hazardif.jump); //0; //(hazardif.branch | hazardif.jump) && !hazardif.hazard;
+//    assign ifidif.flush = !hazardif.hazard && (dpif.dhit || hazardif.branch || hazardif.jump);
+
     //DEBUG BULLSHIT
     assign ifidif.next_pc_in = if_next_pc;  
   
@@ -398,6 +399,7 @@ module datapath (
     assign hazardif.ex_dmemREN = idexif.dMemREN_out;
     assign hazardif.ex_dmemWEN = idexif.dMemWEN_out;
     assign hazardif.mem_dmemWEN = exmemif.dMemWEN_out;
+    assign hazardif.mem_dmemREN = exmemif.dMemREN_out;
     assign hazardif.id_dmemWEN = idexif.dMemWEN_in;
     assign hazardif.mem_instrOp = exmemif.InstrOp_out;
 	//assign hazardif.ihit = dpif.ihit;

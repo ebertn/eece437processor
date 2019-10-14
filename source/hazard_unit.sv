@@ -57,7 +57,7 @@ module hazard_unit
 			// SW
 			hazif.hazard = 1;
 //		end
-		end else if ((hazif.instrOp == BEQ || hazif.instrOp == BNE) &&
+		end /*else if ((hazif.instrOp == BEQ || hazif.instrOp == BNE) &&
 			(!hazif.ex_dmemWEN && // ISNT SW
 			(hazif.ex_writeReg == hazif.rsel1 && hazif.ex_writeReg != 0 ||
 			hazif.ex_writeReg == hazif.rsel2 && hazif.ex_writeReg != 0) ||
@@ -65,7 +65,7 @@ module hazard_unit
 			(hazif.mem_writeReg == hazif.rsel1 && hazif.mem_writeReg != 0 ||
 			hazif.mem_writeReg == hazif.rsel2 && hazif.mem_writeReg != 0))) begin
 			hazif.hazard = 1;
-    	end
+    	end */
     end
 
 	always_comb begin 

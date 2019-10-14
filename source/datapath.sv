@@ -234,7 +234,7 @@ module datapath (
     assign pcif.countEn = (dpif.ihit | hazardif.branch | hazardif.jump) && !exmemif.Halt_out && (!hazardif.hazard || dpif.dhit);
 
     logic pipeline_reg_writeEN;
-    assign pipeline_reg_writeEN = hazardif.hazard || dpif.dhit || !hazardif.hazard && dpif.ihit;
+    assign pipeline_reg_writeEN = /*hazardif.hazard || */dpif.dhit || !hazardif.hazard && (dpif.ihit | hazardif.branch | hazardif.jump);
 
     // Datapath Outputs
     assign dpif.halt = memwbif.Halt_out;
@@ -256,7 +256,7 @@ module datapath (
     //assign ifidif.writeEN = dpif.ihit | dpif.dhit;
     //assign ifidif.flush = dpif.dmemREN | dpif.dmemWEN;
 	assign ifidif.writeEN = pipeline_reg_writeEN;
-	assign ifidif.flush = 0; //(hazardif.branch | hazardif.jump) && !hazardif.hazard;
+	assign ifidif.flush = hazardif.branch || hazardif.jump; //0; //(hazardif.branch | hazardif.jump) && !hazardif.hazard;
    
     //DEBUG BULLSHIT
     assign ifidif.next_pc_in = if_next_pc;  
@@ -409,7 +409,9 @@ module datapath (
     assign forwardif.wb_writeReg = memwbif.writeReg_out;
     assign forwardif.mem_regWEN = exmemif.regWEN_out;
     assign forwardif.wb_regWEN = memwbif.regWEN_out;
-    assign forwardif.mem_dmemREN = idexif.dMemREN_out;
-    assign forwardif.mem_dmemWEN = idexif.dMemWEN_out;
+//    assign forwardif.mem_dmemREN = idexif.dMemREN_out;
+//    assign forwardif.mem_dmemWEN = idexif.dMemWEN_out;
+    assign forwardif.mem_dmemREN = exmemif.dMemREN_out;
+    assign forwardif.mem_dmemWEN = exmemif.dMemWEN_out;
 
 endmodule : datapath

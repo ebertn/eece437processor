@@ -9,12 +9,12 @@ add wave -noupdate -group {Instruction IF} -label rt /system_tb/DUT/CPU/DP/rt_if
 add wave -noupdate -expand -group {Program Counter} /system_tb/DUT/CPU/DP/pcif/countEn
 add wave -noupdate -expand -group {Program Counter} -color {Blue Violet} -radix unsigned /system_tb/DUT/CPU/DP/pcif/count
 add wave -noupdate -expand -group {Program Counter} -radix unsigned /system_tb/DUT/CPU/DP/pcif/next_count
-add wave -noupdate -group {Next PC Mux} -radix unsigned /system_tb/DUT/CPU/DP/next_pc_src
-add wave -noupdate -group {Next PC Mux} -label {pc + 4} /system_tb/DUT/CPU/DP/if_pcplus4
-add wave -noupdate -group {Next PC Mux} -label {branch addr} /system_tb/DUT/CPU/DP/id_branchaddr
-add wave -noupdate -group {Next PC Mux} -label {JR jump addr (rfif.rdat1)} /system_tb/DUT/CPU/DP/rfif/rdat1
-add wave -noupdate -group {Next PC Mux} -label {J/JAL jump addr} /system_tb/DUT/CPU/DP/if_ext_ls
-add wave -noupdate -group {Next PC Mux} /system_tb/DUT/CPU/DP/pcif/next_count
+add wave -noupdate -expand -group {Next PC Mux} -radix unsigned /system_tb/DUT/CPU/DP/next_pc_src
+add wave -noupdate -expand -group {Next PC Mux} -label {pc + 4} -radix unsigned /system_tb/DUT/CPU/DP/if_pcplus4
+add wave -noupdate -expand -group {Next PC Mux} -label {branch addr} -radix unsigned /system_tb/DUT/CPU/DP/id_branchaddr
+add wave -noupdate -expand -group {Next PC Mux} -label {JR jump addr (rfif.rdat1)} -radix unsigned /system_tb/DUT/CPU/DP/rfif/rdat1
+add wave -noupdate -expand -group {Next PC Mux} -label {J/JAL jump addr} -radix unsigned /system_tb/DUT/CPU/DP/if_ext_ls
+add wave -noupdate -expand -group {Next PC Mux} -radix unsigned /system_tb/DUT/CPU/DP/pcif/next_count
 add wave -noupdate -expand -group {DP Fetch} /system_tb/DUT/CPU/DP/dpif/ihit
 add wave -noupdate -expand -group {DP Fetch} /system_tb/DUT/CPU/DP/dpif/dhit
 add wave -noupdate -expand -group {DP Fetch} /system_tb/DUT/CPU/dcif/imemload
@@ -35,14 +35,14 @@ add wave -noupdate -color {Dark Orchid} -label funct /system_tb/DUT/CPU/DP/rt.fu
 add wave -noupdate -group {Instruction ID} /system_tb/DUT/CPU/DP/jt
 add wave -noupdate -group {Instruction ID} /system_tb/DUT/CPU/DP/it
 add wave -noupdate -group {Instruction ID} /system_tb/DUT/CPU/DP/rt
-add wave -noupdate -expand -group {Register File} /system_tb/DUT/CPU/DP/rfDUT/registers
-add wave -noupdate -expand -group {Register File} /system_tb/DUT/CPU/DP/rfif/WEN
-add wave -noupdate -expand -group {Register File} -radix unsigned /system_tb/DUT/CPU/DP/rfif/wsel
-add wave -noupdate -expand -group {Register File} -radix unsigned /system_tb/DUT/CPU/DP/rfif/rsel1
-add wave -noupdate -expand -group {Register File} -radix unsigned /system_tb/DUT/CPU/DP/rfif/rsel2
-add wave -noupdate -expand -group {Register File} /system_tb/DUT/CPU/DP/rfif/wdat
-add wave -noupdate -expand -group {Register File} /system_tb/DUT/CPU/DP/rfif/rdat1
-add wave -noupdate -expand -group {Register File} /system_tb/DUT/CPU/DP/rfif/rdat2
+add wave -noupdate -group {Register File} /system_tb/DUT/CPU/DP/rfDUT/registers
+add wave -noupdate -group {Register File} /system_tb/DUT/CPU/DP/rfif/WEN
+add wave -noupdate -group {Register File} -radix unsigned /system_tb/DUT/CPU/DP/rfif/wsel
+add wave -noupdate -group {Register File} -radix unsigned /system_tb/DUT/CPU/DP/rfif/rsel1
+add wave -noupdate -group {Register File} -radix unsigned /system_tb/DUT/CPU/DP/rfif/rsel2
+add wave -noupdate -group {Register File} /system_tb/DUT/CPU/DP/rfif/wdat
+add wave -noupdate -group {Register File} /system_tb/DUT/CPU/DP/rfif/rdat1
+add wave -noupdate -group {Register File} /system_tb/DUT/CPU/DP/rfif/rdat2
 add wave -noupdate -group Extender /system_tb/DUT/CPU/DP/extif/JType
 add wave -noupdate -group Extender /system_tb/DUT/CPU/DP/extif/ExtOp
 add wave -noupdate -group Extender /system_tb/DUT/CPU/DP/extif/UpperImm
@@ -291,7 +291,7 @@ add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP/dpif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {996162 ps} 0}
+WaveRestoreCursors {{Cursor 1} {424381 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 132
@@ -307,4 +307,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {2049735 ps}
+WaveRestoreZoom {0 ps} {1050 ns}

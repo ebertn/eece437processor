@@ -328,7 +328,7 @@ program test (
 
         hazif.instrOp = JAL;
 
-        @(posedge CLK);
+        @(posedge CLK);	
 
         assert(hazif.jump == 1) $display("Passed");
 

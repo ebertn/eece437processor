@@ -8,16 +8,16 @@ import cpu_types_pkg::*;
 
 regbits_t rsel1, rsel2, mem_writeReg, wb_writeReg;
 logic [1:0] forwardA, forwardB;
-logic mem_regWEN, wb_regWEN, mem_dmemREN, mem_dmemWEN;
+logic mem_regWEN, wb_regWEN, mem_dmemREN, mem_dmemWEN, ex_dmemWEN;
 
 modport forw (
-input rsel1, rsel2, mem_writeReg, wb_writeReg, mem_dmemREN, mem_dmemWEN,
+input rsel1, rsel2, mem_writeReg, wb_writeReg, mem_dmemREN, mem_dmemWEN, ex_dmemWEN,
 output forwardA, forwardB
 ); 
 
 modport tb (
 input forwardA, forwardB,
-output rsel1, rsel2, mem_writeReg, wb_writeReg, mem_dmemREN, mem_dmemWEN
+output rsel1, rsel2, mem_writeReg, wb_writeReg, mem_dmemREN, mem_dmemWEN, ex_dmemWEN
 ); 
 
 endinterface 

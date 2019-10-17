@@ -64,7 +64,7 @@ module icache (
 				if (dcif.imemREN && frames[req.idx].tag == req.tag && frames[req.idx].valid) begin
 					// Hit
 					dcif.ihit = 1;
-					dcif.imemload = frames[req.idx];
+					dcif.imemload = frames[req.idx].data;
 					next_state = ACCESS;
 				end else begin
 					// Miss
@@ -73,7 +73,11 @@ module icache (
 			end
 
 			MISS: begin
-				if(!cif.iwait) begin
+				if(cif.iwait) begin
+					// Access memory
+					cif.iREN = 1;
+					cif.iaddr = req;
+				end else begin
 					// Hit in memory
 					// Update cache
 					next_frames[req.idx].valid = 1;
@@ -84,10 +88,6 @@ module icache (
 					dcif.ihit = 1;
 					dcif.imemload = cif.iload;
 					next_state = ACCESS;
-				end else begin
-					// Access memory
-					cif.iREN = 1;
-					cif.iaddr = req;
 				end
 			end
 		endcase

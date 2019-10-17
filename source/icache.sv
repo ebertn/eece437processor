@@ -17,6 +17,12 @@ module icache (
 //		logic [IBYT_W-1:0]  bytoff;
 //	} icachef_t;
 
+//	// icache format widths
+//	parameter ITAG_W    = 26;
+//	parameter IIDX_W    = 4;
+//	parameter IBLK_W    = 0; // <- important
+//	parameter IBYT_W    = 2;
+
 	//icache frame
 //	typedef struct packed {
 //		logic valid;
@@ -48,8 +54,10 @@ module icache (
 	always_comb begin
 		next_state = state;
 		next_frames = frames;
-		dcif.ihit = 0;
+		dcif.ihit = '0;
 		dcif.imemload = 32'hBAD1BAD1;
+		cif.iREN = '0;
+		cif.iaddr = '0;
 
 		casez(state)
 			ACCESS: begin
@@ -77,37 +85,12 @@ module icache (
 					dcif.imemload = cif.iload;
 					next_state = ACCESS;
 				end else begin
-					// Access memory (TODO)
-					next_addresses[dcif.imemaddr[5:2]] = {1'b1,5'b00000, dcif.imemaddr[31:6]};
+					// Access memory
 					cif.iREN = 1;
-					cif.iaddr = dcif.imemaddr;
-					dcif.imemload = cif.iload;
-					next_data[dcif.imemaddr[5:2]] = cif.iload;
+					cif.iaddr = req;
 				end
 			end
 		endcase
-	end
-
-	// Frame format: {1'b V, 28'b tag, 32'b data}
-	always_comb begin
-		next_addresses = addresses; 
-		next_data = data; 
-		dcif.ihit = 0; 
-		dcif.imemload = '0; 
-		cif.iREN = 0;  
-
-		// Is dcif.imemaddr[5:2] enough to say that it is the right mem address?
-		if (addresses[dcif.imemaddr[5:2]][31] == 0 && dcif.imemREN == 1) begin //Miss
-			next_addresses[dcif.imemaddr[5:2]] = {1'b1,5'b00000, dcif.imemaddr[31:6]};
-			cif.iREN = 1; 
-			cif.iaddr = dcif.imemaddr; 
-			dcif.imemload = cif.iload; 
-			next_data[dcif.imemaddr[5:2]] = cif.iload;
-			// Need to add logic to ihit here. Probs just dcif.ihit = !cif.iwait
-		end else if(addresses[dcif.imemaddr[5:2]][31] == 1 && dcif.imemREN == 1) begin //Hit
-			dcif.ihit = 1;
-			dcif.imemload = data[dcif.imemaddr[5:2]]; 
-		end
 	end
 	
 endmodule

@@ -45,7 +45,7 @@ module dcache (
     always_ff @(posedge CLK, negedge nRST) begin
         if (!nRST) begin
             frames <= '0;
-            state <= ACCESS;
+            state <= COMPARE_TAG;
             lru <= 0;
         end else begin
             frames <= next_frames;
@@ -69,20 +69,28 @@ module dcache (
 
         casez(state)
             COMPARE_TAG: begin
-                dcif.dmemload = cif.dload;
-
-                if(frames[lru][req.idx].tag == req.tag && frames[lru][req.idx].valid) begin
+                if(frames[0][req.idx].tag == req.tag && frames[0][req.idx].valid) begin
+                    // Hit in set 0
                     dcif.dhit = 1;
+                    dcif.dmemload = frames[0][req.idx].data[req.blkoff];
 
-                    if(frames[lru][req.idx].dirty) begin
-                        next_state = WRITE_BACK1;
-                    end else begin
-                        next_state = ALLOCATE1;
+                    if (dcif.dmemWEN) begin
+                        dcif.dmemload = dcif.dmemstore;
+                        next_frames[0][req.idx].data[req.blkoff] = dcif.dmemstore;
+                        next_frames[0][req.idx].dirty = 1;
                     end
+                end else if (frames[1][req.idx].tag == req.tag && frames[1][req.idx].valid) begin
+                    // Hit in set 1
+                    dcif.dhit = 1;
+                    dcif.dmemload = frames[1][req.idx].data[req.blkoff];
 
-                    if(dcif.dmemWEN) begin
-                        frames[lru][req.idx].dirty = 1;
+                    if (dcif.dmemWEN) begin
+                        dcif.dmemload = dcif.dmemstore;
+                        next_frames[1][req.idx].data[req.blkoff] = dcif.dmemstore;
+                        next_frames[1][req.idx].dirty = 1;
                     end
+                end else begin
+                    next_state = frames[lru][req.idx].dirty ? WRITE_BACK1 : ALLOCATE1;
                 end
             end
 
@@ -90,14 +98,14 @@ module dcache (
                 if(cif.dwait) begin
                     // Access memory
                     cif.dREN = 1;
-                    cif.daddr = {req[31:3], 1'b0, req[1:0]};
+                    cif.daddr = req;
                     next_state = ALLOCATE1;
                 end else begin
                     // Read hit in memory
                     // Update cache
-                    next_frames[lru][req.idx].valid = 1;
-                    next_frames[lru][req.idx].dirty = 0;
-                    next_frames[lru][req.idx].tag = req.tag;
+//                    next_frames[lru][req.idx].valid = 1;
+//                    next_frames[lru][req.idx].dirty = 0;
+//                    next_frames[lru][req.idx].tag = req.tag;
                     next_frames[lru][req.idx].data[0] = cif.dload;
 
                     // Go to allocate second word
@@ -109,7 +117,7 @@ module dcache (
                 if(cif.dwait) begin
                     // Access memory
                     cif.dREN = 1;
-                    cif.daddr = {req[31:3], 1'b1, req[1:0]};
+                    cif.daddr = req + 32'd4;
                     next_state = ALLOCATE2;
                 end else begin
                     // Read hit in memory
@@ -119,11 +127,14 @@ module dcache (
                     next_frames[lru][req.idx].tag = req.tag;
                     next_frames[lru][req.idx].data[1] = cif.dload;
 
+                    dcif.dhit = 1;
+                    dcif.dmemload = frames[lru][req.idx].data[0];
+
                     // Update replacement info
                     next_lru = !lru;
 
                     // Since mem is ready, go to COMPARE_TAG
-                    next_state = ACCESS;
+                    next_state = COMPARE_TAG;
                 end
             end
 
@@ -131,8 +142,8 @@ module dcache (
                 if(cif.dwait) begin
                     // Access memory
                     cif.dWEN = 1;
-                    cif.daddr = {req[31:3], 1'b0, req[1:0]};
-                    cif.dstore = rames[lru][req.idx].data[0];
+                    cif.daddr = req;
+                    cif.dstore = frames[lru][req.idx].data[0];
                 end else begin
                     // Write hit in memory
                     next_state = WRITE_BACK2;
@@ -143,8 +154,8 @@ module dcache (
                 if(cif.dwait) begin
                     // Access memory
                     cif.dWEN = 1;
-                    cif.daddr = {req[31:3], 1'b1, req[1:0]};
-                    cif.dstore = rames[lru][req.idx].data[1];
+                    cif.daddr = req + 32'd4;
+                    cif.dstore = frames[lru][req.idx].data[1];
                 end else begin
                     // Write hit in memory
                     next_state = ALLOCATE1;

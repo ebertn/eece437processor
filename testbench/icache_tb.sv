@@ -106,39 +106,6 @@ program test(
 		assert(DUT.frames[req.idx].data == ram_data) print_passed(print);
 	endtask
 
-//	task query_hit;
-//		input logic print;
-//		input int test_num;
-//		input string test_name;
-//		input icachef_t req;
-//		input word_t ram_data;
-//
-//		if (print) begin
-//			$display("Test %d: %s", test_num, test_name);
-//		end
-//
-//		// Defaults
-//		cif.iwait = 1;
-//		cif.iload = 32'b0;
-//
-//		// Make request
-//		dcif.imemREN = 1;
-//		dcif.imemaddr = req;
-//
-//		@(negedge CLK);
-//		@(negedge CLK);
-//
-//		assert(dcif.ihit == 1) print_passed(print);
-//		assert(dcif.imemload == ram_data) print_passed(print);
-//
-//		// Wait for frame to write
-//		@(posedge CLK);
-//
-//		assert(DUT.frames[req.idx].valid == 1) print_passed(print);
-//		assert(DUT.frames[req.idx].tag == req.tag) print_passed(print);
-//		assert(DUT.frames[req.idx].data == ram_data) print_passed(print);
-//	endtask : query_hit
-
 	parameter PERIOD = 10;
 	int test_num;
 	string test_name;

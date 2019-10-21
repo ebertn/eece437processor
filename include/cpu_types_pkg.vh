@@ -141,10 +141,10 @@ package cpu_types_pkg;
 
   // dcache format type
   typedef struct packed {
-    logic [DTAG_W-1:0]  tag;
-    logic [DIDX_W-1:0]  idx;
-    logic [DBLK_W-1:0]  blkoff;
-    logic [DBYT_W-1:0]  bytoff;
+    logic [DTAG_W-1:0]  tag;    // 26
+    logic [DIDX_W-1:0]  idx;    // 3
+    logic [DBLK_W-1:0]  blkoff; // 1
+    logic [DBYT_W-1:0]  bytoff; // 2
   } dcachef_t;
 
 // word_t

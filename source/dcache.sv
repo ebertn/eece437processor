@@ -42,19 +42,22 @@ module dcache (
     dcachef_t req;
     dcache_frame [1:0][7:0] frames, next_frames;
     logic lru, next_lru;
-	integer index, next_index; 
+    logic found_set, next_found_set;
+	integer index, next_index;
 
     always_ff @(posedge CLK, negedge nRST) begin
         if (!nRST) begin
             frames <= '0;
             state <= COMPARE_TAG;
             lru <= 0;
-			index <= 0; 
+            found_set <= 0;
+			index <= 0;
         end else begin
             frames <= next_frames;
             state <= next_state;
             lru <= next_lru;
-			index <= next_index; 
+            found_set <= next_found_set;
+			index <= next_index;
         end
     end
 
@@ -74,14 +77,20 @@ module dcache (
 		dcif.flushed = 0; 
 
         casez(state)
-            COMPARE_TAG: begin	
-				if (dcif.halt == 1) begin 
-					next_state = FLUSH_INIT; 
-					next_index = 0; 
+            COMPARE_TAG: begin
+                if(dcif.halt == 1) begin
+                    next_state == FLUSH_INIT;
+                    next_index = 0;
+                end else if (!dcif.dmemREN && !dcif.dmemWEN) begin
+                    // No request
+                    next_state = COMPARE_TAG;
+
                 end else if(frames[0][req.idx].tag == req.tag && frames[0][req.idx].valid) begin
                     // Hit in set 0
                     dcif.dhit = 1;
                     dcif.dmemload = frames[0][req.idx].data[req.blkoff];
+
+                    next_found_set = 0;
 
                     if (dcif.dmemWEN) begin
                         dcif.dmemload = dcif.dmemstore;
@@ -92,6 +101,8 @@ module dcache (
                     // Hit in set 1
                     dcif.dhit = 1;
                     dcif.dmemload = frames[1][req.idx].data[req.blkoff];
+
+                    next_found_set = 1;
 
                     if (dcif.dmemWEN) begin
                         dcif.dmemload = dcif.dmemstore;
@@ -108,7 +119,7 @@ module dcache (
 			 if(cif.dwait) begin
                     // Access memory
                     cif.dREN = 1;
-                    cif.daddr = req;
+                    cif.daddr = {req[31:3], 1'b0, req[1:0]}; //req;
                     next_state = ALLOCATE1;
 				
                 end else begin
@@ -128,7 +139,7 @@ module dcache (
 				 if(cif.dwait) begin
                     // Access memory
                     cif.dREN = 1;
-                    cif.daddr = req + 32'd4;
+                    cif.daddr = {req[31:3], 1'b1, req[1:0]}; //req + 32'd4;
                     next_state = ALLOCATE2;
 	
                 end else begin
@@ -154,7 +165,7 @@ module dcache (
 				if(cif.dwait) begin
                     // Access memory
                     cif.dWEN = 1;
-                    cif.daddr = req;
+                    cif.daddr = {req[31:3], 1'b0, req[1:0]}; // req
                     cif.dstore = frames[lru][req.idx].data[0];
 				
                 end else begin
@@ -167,7 +178,7 @@ module dcache (
 				 if(cif.dwait) begin
                     // Access memory
                     cif.dWEN = 1;
-                    cif.daddr = req + 32'd4;
+                    cif.daddr = {req[31:3], 1'b1, req[1:0]}; //req + 32'd4;
                     cif.dstore = frames[lru][req.idx].data[1];
                 end else begin
                     // Write hit in memory

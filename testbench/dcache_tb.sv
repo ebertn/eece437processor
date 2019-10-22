@@ -44,7 +44,7 @@ program test(
         end
     endtask : print_passed
 
-    task query_hit_miss;
+    task test_read;
         input logic print;
         input int test_num;
         input string test_name;
@@ -71,16 +71,16 @@ program test(
         @(negedge CLK);
 
         if (dcif.dhit) begin
-            $display("Hit");
             // Hit
             //assert(dcif.dmemload == ram_data) print_passed(print);
-            @(posedge CLK);
-            assert(DUT.frames[!DUT.lru][req.idx].valid) print_passed(print);
-            assert(DUT.frames[!DUT.lru][req.idx].tag == req.tag) print_passed(print);
-            assert(DUT.frames[!DUT.lru][req.idx].data == ram_data) print_passed(print);
+            assert(dcif.dmemload == ram_data[0]) print_passed(print);
+            assert(DUT.frames[0][req.idx].valid && DUT.frames[0][req.idx].tag == req.tag && DUT.frames[0][req.idx].data[req.blkoff] == ram_data[0] || DUT.frames[1][req.idx].valid && DUT.frames[1][req.idx].tag == req.tag && DUT.frames[1][req.idx].data[req.blkoff] == ram_data[0]) print_passed(print);
             hit = 1;
             assert(expected_hit == hit) print_passed(print);
             @(posedge CLK);
+            cif.dwait = 1;
+            dcif.dmemREN = 0;
+            dcif.dmemWEN = 0;
             return;
         end
 
@@ -88,56 +88,213 @@ program test(
         hit = 0; // miss
         assert(expected_hit == hit) print_passed(print);
 
-        if(DUT.state == DUT.ALLOCATE1) begin
-            // ALLOCATE1
+        if(DUT.state == DUT.WRITE_BACK1) begin
+            // WRITE_BACK1
+            assert(DUT.frames[DUT.lru][req.idx].dirty == 1) print_passed(print);
             // Wait
-            assert(cif.dREN == 1) print_passed(print);
-            assert(cif.daddr == req) print_passed(print);
+            assert(cif.dWEN == 1) print_passed(print);
+            assert(cif.daddr == {req[31:3], 1'b0, req[1:0]}) print_passed(print);
             assert(cif.dwait == 1) print_passed(print);
 
             cif.dwait = 0;
-            cif.dload = ram_data[1];
 
             @(posedge CLK);
             // Hit
-            assert(DUT.state == DUT.ALLOCATE2) print_passed(print);
-            assert(DUT.frames[DUT.lru][req.idx].data[0] == cif.dload) print_passed(print);
+            assert(DUT.state == DUT.WRITE_BACK2) print_passed(print);
 
             cif.dwait = 1;
             @(negedge CLK);
 
-            // ALLOCATE2
+            // WRITE_BACK2
             // Wait
-            assert(cif.dREN == 1) print_passed(print);
-            assert(cif.daddr == (req + 32'd4)) print_passed(print);
+            assert(cif.dWEN == 1) print_passed(print);
+            assert(cif.daddr == {req[31:3], 1'b0, req[1:0]}) print_passed(print);
             assert(cif.dwait == 1) print_passed(print);
 
-            past_lru = DUT.lru;
             cif.dwait = 0;
-            cif.dload = ram_data[1];
 
             @(posedge CLK);
             // Hit
-            assert(dcif.dhit == 1) print_passed(print);
-            assert(dcif.dmemload == ram_data[0]) print_passed(print);
+            assert(DUT.state == DUT.ALLOCATE1) print_passed(print);
+
+            cif.dwait = 1;
+            @(negedge CLK);
+        end
+
+        // ALLOCATE1
+        // Wait
+        assert(cif.dREN == 1) print_passed(print);
+        assert(cif.daddr == {req[31:3], 1'b0, req[1:0]}) print_passed(print);
+        assert(cif.dwait == 1) print_passed(print);
+
+        cif.dwait = 0;
+        cif.dload = ram_data[0];
+
+        @(posedge CLK);
+        // Hit
+        assert(DUT.state == DUT.ALLOCATE2) print_passed(print);
+        assert(DUT.frames[DUT.lru][req.idx].data[0] == cif.dload) print_passed(print);
+
+        cif.dwait = 1;
+        @(negedge CLK);
+
+        // ALLOCATE2
+        // Wait
+        assert(cif.dREN == 1) print_passed(print);
+        assert(cif.daddr == {req[31:3], 1'b1, req[1:0]}) print_passed(print);
+        assert(cif.dwait == 1) print_passed(print);
+        past_lru = DUT.lru;
+
+        @(posedge CLK);
+        cif.dwait = 0;
+        cif.dload = ram_data[1];
+
+        @(posedge CLK);
+        // Hit
+        assert(dcif.dhit == 1) print_passed(print);
+        assert(dcif.dmemload == ram_data[0]) print_passed(print);
+
+        cif.dwait = 1;
+        dcif.dmemREN = 0;
+        dcif.dmemWEN = 0;
+
+//            @(posedge CLK);
+
+        assert(DUT.state == DUT.COMPARE_TAG) print_passed(print);
+        assert(past_lru == !DUT.lru) print_passed(print);
+        assert(DUT.frames[!DUT.lru][req.idx].valid == 1) print_passed(print);
+        assert(DUT.frames[!DUT.lru][req.idx].dirty == 0) print_passed(print);
+        assert(DUT.frames[!DUT.lru][req.idx].tag == req.tag) print_passed(print);
+        assert(DUT.frames[!DUT.lru][req.idx].data[1] == cif.dload) print_passed(print);
+
+        // COMPARE_TAG
+    endtask : test_read
+
+    task test_write;
+        input logic print;
+        input int test_num;
+        input string test_name;
+        input dcachef_t req;
+        input word_t store_val;
+        input word_t [1:0] ram_data;
+        input logic expected_hit;
+        output logic hit;
+
+        if (print) begin
+            $display("Test %d: %s", test_num, test_name);
+        end
+
+        // Defaults
+        cif.dwait = 1;
+        cif.dload = 32'b0;
+        dcif.dmemREN = 0;
+        dcif.dmemWEN = 0;
+        hit = 0;
+
+        // Make request
+        dcif.dmemWEN = 1;
+        dcif.dmemaddr = req; //{req[31:3], req[2:0] & 3'b011};
+        dcif.dmemstore = store_val;
+
+        @(negedge CLK);
+
+        if (dcif.dhit) begin
+            // Hit
+            //assert(dcif.dmemload == ram_data) print_passed(print);
+            hit = 1;
+            assert(expected_hit == hit) print_passed(print);
+            @(posedge CLK);
+            assert(DUT.frames[0][req.idx].dirty == 1 && DUT.frames[0][req.idx].valid && DUT.frames[0][req.idx].tag == req.tag && DUT.frames[0][req.idx].data[req.blkoff] == store_val || DUT.frames[1][req.idx].dirty == 1 && DUT.frames[1][req.idx].valid && DUT.frames[1][req.idx].tag == req.tag && DUT.frames[1][req.idx].data[req.blkoff] == store_val) print_passed(print);
+            assert(dcif.dmemload == store_val) print_passed(print);
+            cif.dwait = 1;
+            dcif.dmemREN = 0;
+            dcif.dmemWEN = 0;
+            return;
+        end
+
+        @(posedge CLK);
+        hit = 0; // miss
+        assert(expected_hit == hit) print_passed(print);
+
+        if(DUT.state == DUT.WRITE_BACK1) begin
+            // WRITE_BACK1
+            assert(DUT.frames[DUT.lru][req.idx].dirty == 1) print_passed(print);
+            // Wait
+            assert(cif.dWEN == 1) print_passed(print);
+            assert(cif.daddr == {req[31:3], 1'b0, req[1:0]}) print_passed(print);
+            assert(cif.dwait == 1) print_passed(print);
+
+            cif.dwait = 0;
 
             @(posedge CLK);
+            // Hit
+            assert(DUT.state == DUT.WRITE_BACK2) print_passed(print);
 
-            assert(DUT.state == DUT.COMPARE_TAG) print_passed(print);
-            assert(past_lru == !DUT.lru) print_passed(print);
-            assert(DUT.frames[!DUT.lru][req.idx].valid == 1) print_passed(print);
-            assert(DUT.frames[!DUT.lru][req.idx].dirty == 0) print_passed(print);
-            assert(DUT.frames[!DUT.lru][req.idx].tag == req.tag) print_passed(print);
-            assert(DUT.frames[!DUT.lru][req.idx].data[1] == cif.dload) print_passed(print);
+            cif.dwait = 1;
+            @(negedge CLK);
 
-            // COMPARE_TAG
-            assert(dcif.dhit == 1) print_passed(print);
-        end else if (DUT.state == DUT.WRITE_BACK1) begin
+            // WRITE_BACK2
+            // Wait
+            assert(cif.dWEN == 1) print_passed(print);
+            assert(cif.daddr == {req[31:3], 1'b0, req[1:0]}) print_passed(print);
+            assert(cif.dwait == 1) print_passed(print);
 
-        end else begin
-            assert(0) $error("Neither in ALLOCATE1 nor WRITE_BACK1");
+            cif.dwait = 0;
+
+            @(posedge CLK);
+            // Hit
+            assert(DUT.state == DUT.ALLOCATE1) print_passed(print);
+
+            cif.dwait = 1;
+            @(negedge CLK);
         end
-    endtask : query_hit_miss
+
+        // ALLOCATE1
+        // Wait
+        assert(cif.dREN == 1) print_passed(print);
+        assert(cif.daddr == {req[31:3], 1'b0, req[1:0]}) print_passed(print);
+        assert(cif.dwait == 1) print_passed(print);
+
+        cif.dwait = 0;
+        cif.dload = ram_data[0];
+
+        @(posedge CLK);
+        // Hit
+        assert(DUT.state == DUT.ALLOCATE2) print_passed(print);
+        assert(DUT.frames[DUT.lru][req.idx].data[0] == cif.dload) print_passed(print);
+
+        cif.dwait = 1;
+        @(negedge CLK);
+
+        // ALLOCATE2
+        // Wait
+        assert(cif.dREN == 1) print_passed(print);
+        assert(cif.daddr == {req[31:3], 1'b1, req[1:0]}) print_passed(print);
+        assert(cif.dwait == 1) print_passed(print);
+        past_lru = DUT.lru;
+
+        @(posedge CLK);
+        cif.dwait = 0;
+        cif.dload = ram_data[1];
+
+        @(posedge CLK);
+        // Hit
+        assert(dcif.dhit == 1) print_passed(print);
+        assert(dcif.dmemload == store_val) print_passed(print);
+
+        cif.dwait = 1;
+        dcif.dmemREN = 0;
+        dcif.dmemWEN = 0;
+
+        assert(DUT.state == DUT.COMPARE_TAG) print_passed(print);
+        assert(past_lru == !DUT.lru) print_passed(print);
+        assert(DUT.frames[!DUT.lru][req.idx].valid == 1) print_passed(print);
+        assert(DUT.frames[!DUT.lru][req.idx].dirty == 0) print_passed(print);
+        assert(DUT.frames[!DUT.lru][req.idx].tag == req.tag) print_passed(print);
+        assert(DUT.frames[!DUT.lru][req.idx].data[1] == cif.dload) print_passed(print);
+
+        // COMPARE_TAG
+    endtask : test_write
 
     parameter PERIOD = 10;
     int test_num;
@@ -145,6 +302,7 @@ program test(
 
     dcachef_t req;
     word_t [1:0] ram_data;
+    word_t store_val;
     logic hit;
 
     initial begin
@@ -160,98 +318,136 @@ program test(
         ==                  Test Num 0
         ========================================================*/
         test_num = 0;
-        test_name = "Test miss";
+        test_name = "Test read miss";
+        $display("Test %d: %s", test_num, test_name);
         req.tag = 26'h25;
         req.idx = 3'h4;
         req.blkoff = 1'b0;
         req.bytoff = 2'b00;
         ram_data[0] = 32'hAEAEAEAE;
         ram_data[1] = 32'hBCBCBCBC;
-        query_hit_miss(1, test_num, test_name, req, ram_data, 0, hit);
+        test_read(0, test_num, test_name, req, ram_data, 0, hit);
+        $display("Hit = %b", hit);
+        print_passed(1);
 
-//        /*=======================================================
-//        ==                  Test Num 1
-//        ========================================================*/
-//        test_num += 1;
-//        test_name = "Test hit";
-//        req.tag = 26'h25;
-//        req.idx = 3'h4;
-//        req.blkoff = 1'b0;
-//        req.bytoff = 2'b00;
-//        ram_data[0] = 32'hAEAEAEAE;
-//        ram_data[1] = 32'hBCBCBCBC;
-//        query_hit_miss(1, test_num, test_name, req, ram_data, 1, hit);
-//
-//        /*=======================================================
-//        ==                  Test Num 2
-//        ========================================================*/
-//        test_num += 1;
-//        test_name = "Test compulsory, conflict, and capacity misses";
-//        req.tag = 26'h25;
-//        req.idx = 3'h0;
-//        req.blkoff = 1'b0;
-//        req.bytoff = 2'b00;
-//        ram_data[0] = 32'hAEAEAEAE;
-//        ram_data[1] = 32'hBCBCBCBC;
-//        $display("Test %d: %s", test_num, test_name);
-//        @(posedge CLK);
-//        nRST = 0;
-//        @(posedge CLK);
-//        nRST = 1;
-//
-//        // Fill cache - compulsory misses
-//        for (int i = 0; i < 8; i++) begin
-//            query_hit_miss(1, test_num, test_name, req, ram_data, 0, hit);
-//            req.idx += 1;
-//        end
-////
-////		=======================================================
-////		==                  Test Num 3
-////		========================================================
-//        test_num += 1;
-//        test_name = "Test coverage";
-//        req.tag = '0;
-//        req.idx = 4'h0;
-//        req.bytoff = 2'b00;
-//        ram_data = '0;
-//        $display("Test %d: %s", test_num, test_name);
-//        @(posedge CLK);
-//        nRST = 0;
-//        @(posedge CLK);
-//        nRST = 1;
-//
-//        req.idx = 4'h0;
-//        req.tag = '0;
-//        req.bytoff = '0;
-//        ram_data = '0;
-//        // Fill cache - compulsory misses
-//        for (int i = 0; i < 16; i++) begin
-//            query_hit_miss(0, test_num, test_name, req, ram_data, 0, hit);
-//            req.idx += 1;
-//        end
-//        req.idx = 4'h0;
-//        req.tag = '1;
-//        req.bytoff = '1;
-//        ram_data = '1;
-//        // Conflict and Capacity misses
-//        for (int i = 0; i < 16; i++) begin
-//            query_hit_miss(0, test_num, test_name, req, ram_data, 0, hit);
-//            req.idx += 1;
-//        end
-//        req.idx = 4'h0;
-//        req.tag = '0;
-//        req.bytoff = '0;
-//        ram_data = '0;
-//        // Conflict and Capacity misses
-//        for (int i = 0; i < 16; i++) begin
-//            $display("i = %d", i);
-//            query_hit_miss(0, test_num, test_name, req, ram_data, 0, hit);
-//            req.idx += 1;
-//        end
-//        print_passed(1);
-//        @(posedge CLK);
+        @(posedge CLK);
+
+        /*=======================================================
+        ==                  Test Num 1
+        ========================================================*/
+        test_num += 1;
+        test_name = "Test read hit";
+        $display("Test %d: %s", test_num, test_name);
+        req.tag = 26'h25;
+        req.idx = 3'h4;
+        req.blkoff = 1'b0;
+        req.bytoff = 2'b00;
+        ram_data[0] = 32'hAEAEAEAE;
+        ram_data[1] = 32'hBCBCBCBC;
+        test_read(0, test_num, test_name, req, ram_data, 1, hit);
+        $display("Hit = %b", hit);
+        print_passed(1);
+
+        @(posedge CLK)
+
+        /*=======================================================
+        ==                  Test Num 2
+        ========================================================*/
+        test_num += 1;
+        test_name = "Test read compulsory, conflict, and capacity misses";
+        $display("Test %d: %s", test_num, test_name);
+        req.tag = 26'h25;
+        req.idx = 3'h0;
+        req.blkoff = 1'b0;
+        req.bytoff = 2'b00;
+        @(posedge CLK);
+        nRST = 0;
+        @(posedge CLK);
+        nRST = 1;
+
+        // Fill cache - compulsory misses
+        for (int i = 0; i < 8; i++) begin
+            ram_data[0] = i;
+            ram_data[1] = i + 1;
+            test_read(0, test_num, test_name, req, ram_data, 0, hit);
+            req.idx += 1;
+        end
+
+        req.idx = 3'h1;
+        req.tag = 26'h26;
+        // Fill cache - compulsory misses
+        for (int i = 8; i < 16; i++) begin
+            ram_data[0] = i;
+            ram_data[1] = i + 1;
+            test_read(0, test_num, test_name, req, ram_data, 0, hit);
+            req.idx += 1;
+        end
+        print_passed(1);
+        @(posedge CLK);
+
+        /*=======================================================
+        ==                  Test Num 3
+        ========================================================*/
+        @(posedge CLK);
+        nRST = 0;
+        @(posedge CLK);
+        nRST = 1;
+
+        test_num += 1;
+        test_name = "Test write miss";
+        $display("Test %d: %s", test_num, test_name);
+        req.tag = 26'h25;
+        req.idx = 3'h4;
+        req.blkoff = 1'b0;
+        req.bytoff = 2'b00;
+        store_val = 32'hF3F3F3F3;
+        ram_data[0] = 32'hAEAEAEAE;
+        ram_data[1] = 32'hBCBCBCBC;
+
+        test_write(0, test_num, test_name, req, store_val, ram_data, 0, hit);
+        $display("Hit = %b", hit);
+        print_passed(1);
+        @(posedge CLK);
+
+        /*=======================================================
+        ==                  Test Num 4
+        ========================================================*/
+        test_num += 1;
+        test_name = "Test write hit";
+        $display("Test %d: %s", test_num, test_name);
+        req.tag = 26'h25;
+        req.idx = 3'h4;
+        req.blkoff = 1'b0;
+        req.bytoff = 2'b00;
+        store_val = 32'hF3F3F3F3;
+        ram_data[0] = 32'hAEAEAEAE;
+        ram_data[1] = 32'hBCBCBCBC;
+
+        test_write(0, test_num, test_name, req, store_val, ram_data, 1, hit);
+        $display("Hit = %b", hit);
+        print_passed(1);
+        @(posedge CLK);
+
+        /*=======================================================
+        ==                  Test Num 5
+        ========================================================*/
+        test_num += 1;
+        test_name = "Test read hit dirty";
+        $display("Test %d: %s", test_num, test_name);
+        req.tag = 26'h25;
+        req.idx = 3'h4;
+        req.blkoff = 1'b0;
+        req.bytoff = 2'b00;
+        ram_data[0] = store_val;
+        ram_data[1] = 32'hBCBCBCBC;
+        test_read(0, test_num, test_name, req, ram_data, 1, hit);
+        $display("Hit = %b", hit);
+        print_passed(1);
+
+        @(posedge CLK);
 
     end
+
 
 
 endprogram : test

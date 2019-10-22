@@ -41,16 +41,19 @@ module dcache (
     dcachef_t req;
     dcache_frame [1:0][7:0] frames, next_frames;
     logic lru, next_lru;
+    logic found_set, next_found_set;
 
     always_ff @(posedge CLK, negedge nRST) begin
         if (!nRST) begin
             frames <= '0;
             state <= COMPARE_TAG;
             lru <= 0;
+            found_set <= 0;
         end else begin
             frames <= next_frames;
             state <= next_state;
             lru <= next_lru;
+            found_set <= next_found_set;
         end
     end
 
@@ -69,10 +72,17 @@ module dcache (
 
         casez(state)
             COMPARE_TAG: begin
-                if(frames[0][req.idx].tag == req.tag && frames[0][req.idx].valid) begin
+                if(dcif.halt) begin
+                    next_state = FLUSH;
+                end else if (!dcif.dmemREN && !dcif.dmemWEN) begin
+                    // No request
+                    next_state = COMPARE_TAG;
+                end else if(frames[0][req.idx].tag == req.tag && frames[0][req.idx].valid) begin
                     // Hit in set 0
                     dcif.dhit = 1;
                     dcif.dmemload = frames[0][req.idx].data[req.blkoff];
+
+                    next_found_set = 0;
 
                     if (dcif.dmemWEN) begin
                         dcif.dmemload = dcif.dmemstore;
@@ -83,6 +93,8 @@ module dcache (
                     // Hit in set 1
                     dcif.dhit = 1;
                     dcif.dmemload = frames[1][req.idx].data[req.blkoff];
+
+                    next_found_set = 1;
 
                     if (dcif.dmemWEN) begin
                         dcif.dmemload = dcif.dmemstore;
@@ -98,7 +110,7 @@ module dcache (
                 if(cif.dwait) begin
                     // Access memory
                     cif.dREN = 1;
-                    cif.daddr = req;
+                    cif.daddr = {req[31:3], 1'b0, req[1:0]}; //req;
                     next_state = ALLOCATE1;
                 end else begin
                     // Read hit in memory
@@ -117,7 +129,7 @@ module dcache (
                 if(cif.dwait) begin
                     // Access memory
                     cif.dREN = 1;
-                    cif.daddr = req + 32'd4;
+                    cif.daddr = {req[31:3], 1'b1, req[1:0]}; //req + 32'd4;
                     next_state = ALLOCATE2;
                 end else begin
                     // Read hit in memory
@@ -142,7 +154,7 @@ module dcache (
                 if(cif.dwait) begin
                     // Access memory
                     cif.dWEN = 1;
-                    cif.daddr = req;
+                    cif.daddr = {req[31:3], 1'b0, req[1:0]}; // req
                     cif.dstore = frames[lru][req.idx].data[0];
                 end else begin
                     // Write hit in memory
@@ -154,7 +166,7 @@ module dcache (
                 if(cif.dwait) begin
                     // Access memory
                     cif.dWEN = 1;
-                    cif.daddr = req + 32'd4;
+                    cif.daddr = {req[31:3], 1'b1, req[1:0]}; //req + 32'd4;
                     cif.dstore = frames[lru][req.idx].data[1];
                 end else begin
                     // Write hit in memory

@@ -236,8 +236,7 @@ module dcache (
                     cif.dWEN = 1;
                     cif.daddr = {frames[1][index].tag, index, 1'b1, 2'b00}; 
                     cif.dstore = frames[1][index].data[1];  
-                end else begin	
-					next_index = index + 1; 
+                end else begin
                     next_state =  FLUSH_SECOND; 
                 end
 			end 

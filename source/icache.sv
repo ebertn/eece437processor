@@ -77,6 +77,7 @@ module icache (
 					// Access memory
 					cif.iREN = 1;
 					cif.iaddr = req;
+			
 				end else begin
 					// Hit in memory
 					// Update cache

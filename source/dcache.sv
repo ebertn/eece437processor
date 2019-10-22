@@ -33,7 +33,7 @@ module dcache (
 //        word_t [1:0] data;
 //    } dcache_frame;
 
-    enum { COMPARE_TAG, ALLOCATE1, ALLOCATE2, WRITE_BACK1, WRITE_BACK2, FLUSH_INIT, FLUSH_WRTIE_DATA0, 
+    enum { COMPARE_TAG, ALLOCATE1, ALLOCATE2, WRITE_BACK1, WRITE_BACK2, FLUSH_INIT, FLUSH_WRITE_DATA0, 
 		FLUSH_WRITE_DATA1, FLUSH_SECOND, FLUSH_WRITE2_DATA0, FLUSH_WRITE2_DATA1, FLUSH_FINISH } state, next_state;
 
     parameter NUM_BLOCKS_PER_SET = 8;
@@ -71,11 +71,12 @@ module dcache (
         cif.daddr = '0;
         cif.dstore = '0;
 		next_index = index; 
+		dcif.flushed = 0; 
 
         casez(state)
             COMPARE_TAG: begin	
 				if (dcif.halt == 1) begin 
-					next_state == FLUSH_INIT; 
+					next_state = FLUSH_INIT; 
 					next_index = 0; 
                 end else if(frames[0][req.idx].tag == req.tag && frames[0][req.idx].valid) begin
                     // Hit in set 0
@@ -129,9 +130,7 @@ module dcache (
                     cif.dREN = 1;
                     cif.daddr = req + 32'd4;
                     next_state = ALLOCATE2;
-				end else if (dcif.halt == 1) begin 
-					next_state == FLUSH_INIT;
-					index = 0; 
+	
                 end else begin
                     // Read hit in memory
                     // Update cache
@@ -221,7 +220,7 @@ module dcache (
 				end						
 			end
 
-			FLUSH_WRTIE2_DATA0: begin
+			FLUSH_WRITE2_DATA0: begin
 				if(cif.dwait) begin
                     cif.dWEN = 1;
                     cif.daddr = {frames[1][index].tag, index, 1'b0, 2'b00}; 
@@ -231,7 +230,7 @@ module dcache (
                 end
 			end
 			
-			FLUSH_WRTIE2_DATA1: begin
+			FLUSH_WRITE2_DATA1: begin
 				if(cif.dwait) begin
                     cif.dWEN = 1;
                     cif.daddr = {frames[1][index].tag, index, 1'b1, 2'b00}; 
@@ -244,6 +243,7 @@ module dcache (
  	
 			FLUSH_FINISH: begin
 				next_index = 0; 
+				dcif.flushed = 1; 
 			end 
 				
         endcase

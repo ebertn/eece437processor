@@ -202,6 +202,11 @@ program test(
 			query_hit_miss(0, test_num, test_name, req, ram_data, 0, hit);
 			req.idx += 1;
 		end
+		req.idx = 0; 
+		for (int i = 0; i < 16; i++) begin
+			query_hit_miss(0, test_num, test_name, req, ram_data, 0, hit);
+			req.idx += 1;
+		end
 		print_passed(1);
 
 //		=======================================================
@@ -213,6 +218,7 @@ program test(
 		req.idx = 4'h0;
 		req.bytoff = 2'b00;
 		ram_data = '0;
+		
 		$display("Test %d: %s", test_num, test_name);
 		@(posedge CLK);
 		nRST = 0;
@@ -249,6 +255,8 @@ program test(
 		end
 		print_passed(1);
 		@(posedge CLK);
+
+		
 
 	end
 

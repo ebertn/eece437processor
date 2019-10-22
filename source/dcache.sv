@@ -79,7 +79,7 @@ module dcache (
         casez(state)
             COMPARE_TAG: begin
                 if(dcif.halt == 1) begin
-                    next_state == FLUSH_INIT;
+                    next_state = FLUSH_INIT;
                     next_index = 0;
                 end else if (!dcif.dmemREN && !dcif.dmemWEN) begin
                     // No request

@@ -66,7 +66,7 @@ module icache (
 					dcif.ihit = 1;
 					dcif.imemload = frames[req.idx].data;
 					next_state = ACCESS;
-				end else begin
+				end else if (dcif.imemREN) begin
 					// Miss
 					next_state = MISS;
 				end
@@ -77,7 +77,6 @@ module icache (
 					// Access memory
 					cif.iREN = 1;
 					cif.iaddr = req;
-			
 				end else begin
 					// Hit in memory
 					// Update cache

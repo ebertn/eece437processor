@@ -20,3 +20,4 @@ testasm.diff
 *.bak
 covhtmlreport
 wave.do
+!source/dcache.sv.bak

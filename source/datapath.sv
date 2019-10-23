@@ -258,7 +258,7 @@ module datapath (
 
     // IFID
 	assign ifidif.writeEN = pipeline_reg_writeEN && !branch_dep && !load_hazard;
-	assign ifidif.flush = (dpif.dhit || !hazardif.hazard && (hazardif.branch || hazardif.jump)) && !branch_dep && !load_hazard; //0; //(hazardif.branch | hazardif.jump) && !hazardif.hazard;
+	assign ifidif.flush = (/*dpif.dhit || */!hazardif.hazard && (hazardif.branch || hazardif.jump)) && !branch_dep && !load_hazard; //0; //(hazardif.branch | hazardif.jump) && !hazardif.hazard;
 
     // IDEX
     assign idexif.writeEN = pipeline_reg_writeEN; //1; //!hazardif.hazard;

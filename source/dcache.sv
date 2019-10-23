@@ -43,7 +43,7 @@ module dcache (
     dcache_frame [1:0][7:0] frames, next_frames;
     logic lru, next_lru;
     logic found_set, next_found_set;
-	integer index, next_index;
+	logic [4:0] index, next_index;
 
     always_ff @(posedge CLK, negedge nRST) begin
         if (!nRST) begin
@@ -121,7 +121,7 @@ module dcache (
                     cif.dREN = 1;
                     cif.daddr = {req[31:3], 1'b0, req[1:0]}; //req;
                     next_state = ALLOCATE1;
-				
+
                 end else begin
                     // Read hit in memory
                     // Update cache
@@ -129,8 +129,9 @@ module dcache (
 //                    next_frames[lru][req.idx].dirty = 0;
 //                    next_frames[lru][req.idx].tag = req.tag;
                     next_frames[lru][req.idx].data[0] = cif.dload;
-
-                    // Go to allocate second word
+                    cif.dREN = 1;
+                    cif.daddr =  {req[31:3], 1'b0, req[1:0]};
+                 // Go to allocate second word
                     next_state = ALLOCATE2;
                 end
             end
@@ -150,7 +151,10 @@ module dcache (
                     next_frames[lru][req.idx].tag = req.tag;
                     next_frames[lru][req.idx].data[1] = cif.dload;
 
-                    dcif.dhit = 1;
+                    //dcif.dhit = 1;
+                    cif.dREN = 1;
+                    cif.daddr =  {req[31:3], 1'b1, req[1:0]};
+
                     dcif.dmemload = frames[lru][req.idx].data[0];
 
                     // Update replacement info
@@ -162,26 +166,32 @@ module dcache (
             end
 
             WRITE_BACK1: begin
+                cif.dstore = frames[lru][req.idx].data[0];
 				if(cif.dwait) begin
                     // Access memory
                     cif.dWEN = 1;
-                    cif.daddr = {req[31:3], 1'b0, req[1:0]}; // req
-                    cif.dstore = frames[lru][req.idx].data[0];
+                    cif.daddr = {frames[lru][req.idx].tag, req.idx, 1'b0, 2'b00}; // req
+
 				
                 end else begin
                     // Write hit in memory
                     next_state = WRITE_BACK2;
+                    cif.dWEN = 1;
+                    cif.daddr =  {frames[lru][req.idx].tag, req.idx, 1'b0, 2'b00}; //{req[31:3], 1'b0, req[1:0]};
                 end
             end
 
             WRITE_BACK2: begin
+                cif.dstore = frames[lru][req.idx].data[1];
 				 if(cif.dwait) begin
                     // Access memory
                     cif.dWEN = 1;
-                    cif.daddr = {req[31:3], 1'b1, req[1:0]}; //req + 32'd4;
-                    cif.dstore = frames[lru][req.idx].data[1];
+                    cif.daddr = {frames[lru][req.idx].tag, req.idx, 1'b1, 2'b00}; //{req[31:3], 1'b1, req[1:0]}; //req + 32'd4;
+
                 end else begin
                     // Write hit in memory
+                    cif.dWEN = 1;
+                    cif.daddr =  {frames[lru][req.idx].tag, req.idx, 1'b1, 2'b00}; //{req[31:3], 1'b0, req[1:0]};
                     next_state = ALLOCATE1;
                 end
             end
@@ -189,30 +199,35 @@ module dcache (
 			FLUSH_INIT: begin
 				if (index == 8) begin
 					next_state = FLUSH_SECOND;
-					next_index = 0; 
-				end else if(frames[0][index].dirty) begin
+					next_index = 0;
+				end else if(frames[0][index[2:0]].dirty) begin
 					next_state = FLUSH_WRITE_DATA0; 
 				end	else begin
-					next_index = index + 1; 
-					next_state = FLUSH_INIT; 
+					next_index = index + 1;
+					next_state = FLUSH_INIT;
 				end						
 			end
 
 			FLUSH_WRITE_DATA0:begin
-				 if(cif.dwait) begin
-                    cif.dWEN = 1;
-                    cif.daddr = {frames[0][index].tag, index, 1'b0, 2'b00}; 
-                    cif.dstore = frames[0][index].data[0];  
+                cif.dWEN = 1;
+                cif.daddr = {frames[0][index[2:0]].tag, index[2:0], 1'b0, 2'b00};
+                cif.dstore = frames[0][index[2:0]].data[0];
+
+                if(cif.dwait) begin
+
+                    //cif.dstore = frames[0][index[2:0]].data[0];
                 end else begin
                     next_state =  FLUSH_WRITE_DATA1; 
                 end
 			end  
 
 			FLUSH_WRITE_DATA1:begin
-				if(cif.dwait) begin
-                    cif.dWEN = 1;
-                    cif.daddr = {frames[0][index].tag, index, 1'b1, 2'b00}; 
-                    cif.dstore = frames[0][index].data[1];  
+                cif.dWEN = 1;
+                cif.daddr = {frames[0][index[2:0]].tag, index[2:0], 1'b1, 2'b00};
+                cif.dstore = frames[0][index[2:0]].data[1];
+                if(cif.dwait) begin
+
+                    //cif.dstore = frames[0][index[2:0]].data[1];
                 end else begin
                     next_state =  FLUSH_INIT; 
 					next_index = index + 1;
@@ -223,7 +238,7 @@ module dcache (
 				if (index == 8) begin
 					next_state = FLUSH_FINISH;
 					next_index = 0; 
-				end else if(frames[1][index].dirty) begin
+				end else if(frames[1][index[2:0]].dirty) begin
 					next_state = FLUSH_WRITE2_DATA0; 
 				end	else begin
 					next_index = index + 1; 
@@ -232,20 +247,24 @@ module dcache (
 			end
 
 			FLUSH_WRITE2_DATA0: begin
-				if(cif.dwait) begin
-                    cif.dWEN = 1;
-                    cif.daddr = {frames[1][index].tag, index, 1'b0, 2'b00}; 
-                    cif.dstore = frames[1][index].data[0];  
+                cif.dWEN = 1;
+                cif.daddr = {frames[1][index[2:0]].tag, index[2:0], 1'b0, 2'b00};
+                cif.dstore = frames[1][index[2:0]].data[0];
+                if(cif.dwait) begin
+
+
                 end else begin
                     next_state =  FLUSH_WRITE2_DATA1; 
                 end
 			end
 			
 			FLUSH_WRITE2_DATA1: begin
-				if(cif.dwait) begin
-                    cif.dWEN = 1;
-                    cif.daddr = {frames[1][index].tag, index, 1'b1, 2'b00}; 
-                    cif.dstore = frames[1][index].data[1];  
+                cif.dWEN = 1;
+                cif.daddr = {frames[1][index[2:0]].tag, index[2:0], 1'b1, 2'b00};
+                cif.dstore = frames[1][index[2:0]].data[1];
+                if(cif.dwait) begin
+
+
                 end else begin	
 					next_index = index + 1; 
                     next_state =  FLUSH_SECOND; 
@@ -253,7 +272,6 @@ module dcache (
 			end 
  	
 			FLUSH_FINISH: begin
-				next_index = 0; 
 				dcif.flushed = 1; 
 			end 
 				

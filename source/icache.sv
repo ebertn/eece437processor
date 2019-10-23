@@ -5,7 +5,7 @@
 
 module icache (
 	input logic CLK, nRST, 
-	datapath_cache_if.icache dcif,
+	datapath_cache_if dcif,
 	caches_if.icache cif
 ); 
 
@@ -62,7 +62,9 @@ module icache (
 		casez(state)
 			HIT: begin
 				next_state = HIT;
-				if (dcif.imemREN && frames[req.idx].tag == req.tag && frames[req.idx].valid) begin
+				if(dcif.halt) begin
+					next_state = HIT;
+				end else if (dcif.imemREN && frames[req.idx].tag == req.tag && frames[req.idx].valid) begin
 					// Hit
 					dcif.ihit = 1;
 					cif.iREN = 0;
@@ -78,16 +80,12 @@ module icache (
 			end
 
 			MISS: begin
-				$display("iaddr = %h", cif.iaddr);
-				$display("iwait = %h", cif.iwait);
 				if(cif.iwait) begin
-					$display("In iwait");
 					// Access memory
 					cif.iREN = 1;
 					cif.iaddr = req;
 					next_state = MISS;
 				end else begin
-					$display("In else");
 					// Hit in memory
 					// Update cache
 					next_frames[req.idx].valid = 1;
@@ -95,6 +93,7 @@ module icache (
 					next_frames[req.idx].data = cif.iload;
 
 					cif.iREN = 1;
+					cif.iaddr = req;
 
 					// hit in datapath
 					dcif.ihit = 1;

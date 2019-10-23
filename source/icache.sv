@@ -30,7 +30,7 @@ module icache (
 //		word_t data;
 //	} icache_frame;
 
-	enum { ACCESS, MISS } state, next_state;
+	enum { HIT, MISS } state, next_state;
 
 	icachef_t req;
 	icache_frame [15:0] frames, next_frames;
@@ -38,7 +38,7 @@ module icache (
 	always_ff @(posedge CLK, negedge nRST) begin
 		if (!nRST) begin
 			frames <= '0;
-			state <= ACCESS;
+			state <= HIT;
 		end else begin
 			frames <= next_frames;
 			state <= next_state;
@@ -60,34 +60,46 @@ module icache (
 		cif.iaddr = '0;
 
 		casez(state)
-			ACCESS: begin
+			HIT: begin
+				next_state = HIT;
 				if (dcif.imemREN && frames[req.idx].tag == req.tag && frames[req.idx].valid) begin
 					// Hit
 					dcif.ihit = 1;
+					cif.iREN = 0;
 					dcif.imemload = frames[req.idx].data;
-					next_state = ACCESS;
+					next_state = HIT;
 				end else if (dcif.imemREN) begin
 					// Miss
+					//cif.iREN = 1; // Not right, iwait is zero when we get to miss on LAT = 0
+					cif.iREN = 0;
+					//cif.iaddr = req;
 					next_state = MISS;
 				end
 			end
 
 			MISS: begin
+				$display("iaddr = %h", cif.iaddr);
+				$display("iwait = %h", cif.iwait);
 				if(cif.iwait) begin
+					$display("In iwait");
 					// Access memory
 					cif.iREN = 1;
 					cif.iaddr = req;
+					next_state = MISS;
 				end else begin
+					$display("In else");
 					// Hit in memory
 					// Update cache
 					next_frames[req.idx].valid = 1;
 					next_frames[req.idx].tag = req.tag;
 					next_frames[req.idx].data = cif.iload;
 
+					cif.iREN = 1;
+
 					// hit in datapath
 					dcif.ihit = 1;
 					dcif.imemload = cif.iload;
-					next_state = ACCESS;
+					next_state = HIT;
 				end
 			end
 		endcase

@@ -155,7 +155,7 @@ module dcache (
                     cif.dREN = 1;
                     cif.daddr =  {req[31:3], 1'b1, req[1:0]};
 
-                    dcif.dmemload = frames[lru][req.idx].data[0];
+                    //dcif.dmemload = frames[lru][req.idx].data[0];
 
                     // Update replacement info
                     next_lru = !lru;

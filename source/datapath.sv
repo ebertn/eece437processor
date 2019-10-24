@@ -234,10 +234,10 @@ module datapath (
 
     // PC Inputs
     assign pcif.next_count = if_next_pc;
-    assign pcif.countEn = (dpif.ihit | hazardif.branch | hazardif.jump) && !exmemif.Halt_out && (!hazardif.hazard || dpif.dhit) && !branch_dep && !load_hazard;
+    assign pcif.countEn = (dpif.ihit | hazardif.branch | hazardif.jump) && !exmemif.Halt_out && (hazardif.jump || !hazardif.hazard || dpif.dhit) && !branch_dep && !load_hazard;
 
     logic pipeline_reg_writeEN;
-    assign pipeline_reg_writeEN = dpif.dhit || !hazardif.hazard && (dpif.ihit | hazardif.branch | hazardif.jump) || branch_dep && dpif.ihit || load_hazard && dpif.ihit;
+    assign pipeline_reg_writeEN = dpif.ihit && dpif.dhit || !hazardif.hazard && (dpif.ihit | hazardif.branch | hazardif.jump) || branch_dep && dpif.ihit || load_hazard && dpif.ihit;
 
     // Datapath Outputs
     assign dpif.halt = memwbif.Halt_out;

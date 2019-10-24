@@ -42,7 +42,7 @@ module dcache (
     dcachef_t req;
     dcache_frame [1:0][7:0] frames, next_frames;
     logic lru, next_lru;
-    logic found_set, next_found_set;
+    //logic found_set, next_found_set;
 	logic [4:0] index, next_index;
 
     always_ff @(posedge CLK, negedge nRST) begin
@@ -50,13 +50,13 @@ module dcache (
             frames <= '0;
             state <= COMPARE_TAG;
             lru <= 0;
-            found_set <= 0;
+            //found_set <= 0;
 			index <= 0;
         end else begin
             frames <= next_frames;
             state <= next_state;
             lru <= next_lru;
-            found_set <= next_found_set;
+            //found_set <= next_found_set;
 			index <= next_index;
         end
     end
@@ -90,7 +90,7 @@ module dcache (
                     dcif.dhit = 1;
                     dcif.dmemload = frames[0][req.idx].data[req.blkoff];
 
-                    next_found_set = 0;
+                    //next_found_set = 0;
 
                     if (dcif.dmemWEN) begin
                         dcif.dmemload = dcif.dmemstore;
@@ -102,7 +102,7 @@ module dcache (
                     dcif.dhit = 1;
                     dcif.dmemload = frames[1][req.idx].data[req.blkoff];
 
-                    next_found_set = 1;
+                    //next_found_set = 1;
 
                     if (dcif.dmemWEN) begin
                         dcif.dmemload = dcif.dmemstore;

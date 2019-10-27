@@ -81,7 +81,6 @@ add wave -noupdate -group {Hazard Unit} -group Inputs /system_tb/DUT/CPU/DP/haza
 add wave -noupdate -group {Hazard Unit} -group Inputs /system_tb/DUT/CPU/DP/hazardif/mem_regWEN
 add wave -noupdate -group {Hazard Unit} -group Inputs /system_tb/DUT/CPU/DP/hazardif/ex_dmemREN
 add wave -noupdate -group {Hazard Unit} -group Inputs /system_tb/DUT/CPU/DP/hazardif/id_dmemWEN
-add wave -noupdate -group {Hazard Unit} -group Inputs /system_tb/DUT/CPU/DP/hazardif/hazardifstatement
 add wave -noupdate -group {Hazard Unit} -group Inputs /system_tb/DUT/CPU/DP/hazardif/instrOp
 add wave -noupdate -group {Hazard Unit} -group Inputs /system_tb/DUT/CPU/DP/hazardif/mem_instrOp
 add wave -noupdate -group {Hazard Unit} -group Inputs /system_tb/DUT/CPU/DP/hazardif/instrFunc
@@ -315,6 +314,12 @@ add wave -noupdate -expand -group Dcache -group dcif_dcache /system_tb/DUT/CPU/C
 add wave -noupdate -expand -group Dcache -group dcif_dcache /system_tb/DUT/CPU/CM/dcif/dmemWEN
 add wave -noupdate -expand -group Dcache -group dcif_dcache /system_tb/DUT/CPU/CM/dcif/dmemREN
 add wave -noupdate -expand -group Dcache -group dcif_dcache /system_tb/DUT/CPU/CM/dcif/dhit
+add wave -noupdate -expand -group Dcache /system_tb/DUT/CPU/CM/DCACHE/hit_count
+add wave -noupdate -expand -group Dcache /system_tb/DUT/CPU/CM/DCACHE/next_hit_count
+add wave -noupdate -expand -group Dcache /system_tb/DUT/CPU/CM/DCACHE/miss_count
+add wave -noupdate -expand -group Dcache /system_tb/DUT/CPU/CM/DCACHE/next_miss_count
+add wave -noupdate -expand -group Dcache /system_tb/DUT/CPU/CM/DCACHE/miss_hit_flag
+add wave -noupdate -expand -group Dcache /system_tb/DUT/CPU/CM/DCACHE/next_miss_hit_flag
 add wave -noupdate -expand -group Dcache /system_tb/DUT/CPU/CM/DCACHE/state
 add wave -noupdate -expand -group Dcache /system_tb/DUT/CPU/CM/DCACHE/next_state
 add wave -noupdate -expand -group Dcache /system_tb/DUT/CPU/CM/DCACHE/req
@@ -330,7 +335,7 @@ add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP/dpif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1701958 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1311057618 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 132
@@ -346,4 +351,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {3751154 ps}
+WaveRestoreZoom {1310776404 ps} {1314527558 ps}

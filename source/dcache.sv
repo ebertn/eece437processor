@@ -4,7 +4,7 @@
 
 module dcache (
     input logic CLK, nRST,
-    datapath_cache_if.dcache dcif,
+    datapath_cache_if.cache dcif,
     caches_if.dcache cif
 );
 
@@ -42,22 +42,28 @@ module dcache (
     dcachef_t req;
     dcache_frame [1:0][7:0] frames, next_frames;
     logic lru, next_lru;
-    //logic found_set, next_found_set;
 	logic [4:0] index, next_index;
+    word_t hit_count, next_hit_count;
+    word_t miss_count, next_miss_count;
+    logic miss_hit_flag, next_miss_hit_flag;
 
     always_ff @(posedge CLK, negedge nRST) begin
         if (!nRST) begin
             frames <= '0;
             state <= COMPARE_TAG;
             lru <= 0;
-            //found_set <= 0;
-			index <= 0;
+			index <= '0;
+            hit_count <= '0;
+            miss_count <= '0;
+            miss_hit_flag <= 0;
         end else begin
             frames <= next_frames;
             state <= next_state;
             lru <= next_lru;
-            //found_set <= next_found_set;
 			index <= next_index;
+            hit_count <= next_hit_count;
+            miss_count <= next_miss_count;
+            miss_hit_flag <= next_miss_hit_flag;
         end
     end
 
@@ -74,7 +80,10 @@ module dcache (
         cif.daddr = '0;
         cif.dstore = '0;
 		next_index = index; 
-		dcif.flushed = 0; 
+		dcif.flushed = 0;
+        next_hit_count = hit_count;
+        next_miss_count = miss_count;
+        next_miss_hit_flag = miss_hit_flag;
 
         casez(state)
             COMPARE_TAG: begin
@@ -90,7 +99,12 @@ module dcache (
                     dcif.dhit = 1;
                     dcif.dmemload = frames[0][req.idx].data[req.blkoff];
 
-                    //next_found_set = 0;
+                    if (miss_hit_flag && dcif.ihit) begin
+                        // Not initial hit
+                        next_miss_hit_flag = 0;
+                    end else if (dcif.ihit) begin
+                        next_hit_count = hit_count + 1;
+                    end
 
                     if (dcif.dmemWEN) begin
                         dcif.dmemload = dcif.dmemstore;
@@ -102,7 +116,12 @@ module dcache (
                     dcif.dhit = 1;
                     dcif.dmemload = frames[1][req.idx].data[req.blkoff];
 
-                    //next_found_set = 1;
+                    if (miss_hit_flag && dcif.ihit) begin
+                        // Not initial hit
+                        next_miss_hit_flag = 0;
+                    end else if (dcif.ihit) begin
+                        next_hit_count = hit_count + 1;
+                    end
 
                     if (dcif.dmemWEN) begin
                         dcif.dmemload = dcif.dmemstore;
@@ -124,14 +143,11 @@ module dcache (
 
                 end else begin
                     // Read hit in memory
-                    // Update cache
-//                    next_frames[lru][req.idx].valid = 1;
-//                    next_frames[lru][req.idx].dirty = 0;
-//                    next_frames[lru][req.idx].tag = req.tag;
                     next_frames[lru][req.idx].data[0] = cif.dload;
                     cif.dREN = 1;
                     cif.daddr =  {req[31:3], 1'b0, req[1:0]};
-                 // Go to allocate second word
+
+                    // Go to allocate second word
                     next_state = ALLOCATE2;
                 end
             end
@@ -159,6 +175,10 @@ module dcache (
 
                     // Update replacement info
                     next_lru = !lru;
+
+                     // Count a miss
+                     next_miss_hit_flag = 1;
+                     next_miss_count = miss_count + 1;
 
                     // Since mem is ready, go to COMPARE_TAG
                     next_state = COMPARE_TAG;
@@ -272,7 +292,18 @@ module dcache (
 			end 
  	
 			FLUSH_FINISH: begin
-				dcif.flushed = 1; 
+                cif.dWEN = 1;
+                cif.daddr = 32'h00003100;
+                cif.dstore = hit_count;// - miss_count;
+                if(cif.dwait) begin
+
+
+                end else begin
+                    $display("Hit count = %h", hit_count);
+                    $display("Miss count = %h", miss_count);
+                    dcif.flushed = 1;
+                end
+
 			end 
 				
         endcase

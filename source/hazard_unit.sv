@@ -21,7 +21,6 @@ module hazard_unit
 		end else*/ if (hazif.mem_dmemREN) begin
 			// LW
             hazif.hazard = 1;
-			hazif.hazardifstatement = 1;
 		end else if (hazif.mem_dmemWEN) begin
 			// SW
 			hazif.hazard = 1;

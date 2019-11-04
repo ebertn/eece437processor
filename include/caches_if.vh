@@ -54,7 +54,7 @@ interface caches_if;
   // caches ports to controller
   modport caches(
     input   dwait, dload,
-            ccwait, ccinv, ccsnoopaddr,
+             
             iwait, iload,
     output  dREN, dWEN, daddr, dstore,
             ccwrite, cctrans,

@@ -1,12 +1,14 @@
 `include "cpu_types_pkg.vh"
 `include "caches_if.vh"
 `include "cache_control_if.vh"
+`include "bus_mem_if.vh"
 
 module bus_control
 (
 	input logic CLK, nRST, 
-	 cache_control_if.cc ccif,
-	 //caches_if.caches cif
+	cache_control_if.cc ccif, 
+	bus_mem_if.bus_con bmif
+	
 ); 
 
 	import cpu_types_pkg::*;
@@ -16,6 +18,8 @@ module bus_control
 	word_t [1:0] next_ccsnoopaddr, next_dload; 
 	word_t next_cif_daddr,	next_cif_dstore;  
  	word_t return_val, next_return_val; 
+	logic next_bus_dREN, next_bus_dWEN; 
+	word_t next_bus_daddr, next_bus_store ; 
 
 	always_ff @(posedge CLK, negedge nRST) begin
 		if(nRST == 0) begin
@@ -28,7 +32,11 @@ module bus_control
 			ccif.dwait <= 2'b11; 
 			ccif.ccinv <= '0; 
 			return_val <= '0; 
-			ccif.dload <= '0; 
+			bmif.dstore <= '0; 
+			bmif.dWEN <= 0; 
+			bmif.daddr = <= '0; 
+			bmif.dREN <= 0; 
+			
 		end else begin
 			state <= next_state; 
 			arbitraitor <= next_arbitraitor; 
@@ -39,7 +47,12 @@ module bus_control
 			ccif.dwait <= next_dwait; 
 			ccif.ccinv <= next_ccinv; 
 			return_val <= next_return_val; 
-			ccif.dload <= next_dload; 
+			bmif.dstore <= next_bus_store; 
+			bmif.dWEN <= next_bus_dWEN; 
+			bmif.daddr <= next_bus_daddr; 
+			bmif.dREN <= next_bus_dREN; 
+			
+			
 		end 
 	end
 
@@ -53,7 +66,11 @@ module bus_control
 		next_dwait = ccif.dwait; 
 		next_ccinv = ccif.ccinv; 
 		next_return_val = return_val;
-		next_dload = ccif.dload;  
+		
+		next_bus_store = bmif.dstore; 
+		next_bus_dWEN = bmif.dWEN; 
+		next_bus_daddr = bmif.daddr; 
+		next_bus_dREN = bmif.dREN; 
 
 		casez(state) begin
 			
@@ -94,8 +111,9 @@ module bus_control
 			end 
 			
 			MEMORY_WB: begin
-				next_cif_daddr = ccif.daddr[arbitraitor]; 
-				next_cif_dstore = ccif.dstore[arbitraitor]; 
+				next_bus_dWEN = 1;
+				next_bus_daddr = ccif.daddr[arbitraitor]; 
+				next_bus_store  = ccif.dstore[arbitraitor]; 
 				next_dwait = 0;
 				next_return_val = ccif.dload[arbitraitor]; 
 				next_state = COMPLETE; 
@@ -116,7 +134,8 @@ module bus_control
 			end 
 		
 			MEMORY_READ: begin
-				next_return_val = cif.dload; 
+				next_bus_dREN = 1
+				next_return_val = bmif.dload; 
 				if (ccif.dwait[arbitraitor] == 0) begin
 					next_state = MEMORY_READ; 
 				end else begin

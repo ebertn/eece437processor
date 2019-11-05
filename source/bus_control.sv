@@ -5,8 +5,8 @@
 module bus_control
 (
 	input logic CLK, nRST, 
-	 cache_control_if.cc ccif
-	 caches_if.caches cif
+	 cache_control_if.cc ccif,
+	 //caches_if.caches cif
 ); 
 
 	import cpu_types_pkg::*;
@@ -23,8 +23,8 @@ module bus_control
 			arbitraitor <= 0; 
 			ccif.ccwait <= '0; 
 			ccif.ccsnoopaddr <= '0; 
-			cif.dstore <= '0; 
-			cif.daddr <= '0; 
+			ccif.dstore <= '0; 
+			ccif.daddr <= '0; 
 			ccif.dwait <= 2'b11; 
 			ccif.ccinv <= '0; 
 			return_val <= '0; 
@@ -34,8 +34,8 @@ module bus_control
 			arbitraitor <= next_arbitraitor; 
 			ccif.ccwait <= next_ccwait; 
 			ccif.ccsnoopaddr <= next_ccsnoopaddr; 
-			cif.dstore <= next_cif_dstore
-			cif.daddr <= next_cif_daddr; 
+			ccif.dstore <= next_cif_dstore
+			ccif.daddr <= next_cif_daddr; 
 			ccif.dwait <= next_dwait; 
 			ccif.ccinv <= next_ccinv; 
 			return_val <= next_return_val; 
@@ -48,8 +48,8 @@ module bus_control
 		next_arbitraitor = arbitraitor;  
 		next_ccwait = ccif.ccwait; 
 		next_ccsnoopaddr = ccif.ccsnoopaddr; 
-		next_cif_dstore = cif.dstore; 
-		next_cif_daddr = cif.daddr; 
+		next_cif_dstore = ccif.dstore; 
+		next_cif_daddr = ccif.daddr; 
 		next_dwait = ccif.dwait; 
 		next_ccinv = ccif.ccinv; 
 		next_return_val = return_val;
@@ -97,7 +97,7 @@ module bus_control
 				next_cif_daddr = ccif.daddr[arbitraitor]; 
 				next_cif_dstore = ccif.dstore[arbitraitor]; 
 				next_dwait = 0;
-				next_return_val = cif.dload; 
+				next_return_val = ccif.dload[arbitraitor]; 
 				next_state = COMPLETE; 
 			end 
 			
@@ -117,7 +117,7 @@ module bus_control
 		
 			MEMORY_READ: begin
 				next_return_val = cif.dload; 
-				if (cif.dwait == 0) begin
+				if (ccif.dwait[arbitraitor] == 0) begin
 					next_state = MEMORY_READ; 
 				end else begin
 					next_state = COMPLETE; 
@@ -125,7 +125,7 @@ module bus_control
 			end 
 
 			COMPLETE: begin
-				next_dload [arbitraitor] = return_val; 
+				next_dload[arbitraitor] = return_val; 
 				next_state = REQUEST;
 			end 
 		

@@ -102,7 +102,9 @@ program test(
 
         @(negedge cif0.dwait);
         @(posedge CLK);
+        @(posedge CLK);
 
+        cif0.dWEN = 0;
 //        assert(CC.BC.state == CC.BC.REQUEST) print_passed(1);
 //        @(posedge CLK);
 //        @(negedge cif0.dwait);
@@ -116,14 +118,14 @@ program test(
         /*=======================================================
          ==                  Test Num 1
         ========================================================*/
-        test_num += 1;
-        test_name = "Test write to memory Cont";
-        $display("Test %d: %s", test_num, test_name);
-        cif0.dWEN = 1;
-        cif0.daddr = 32'h25;
-        cif0.dstore = 32'hDFDFDFDF;
-//        assert(BC.state == BC.A) print_passed(1);
-        @(posedge CLK);
+//        test_num += 1;
+//        test_name = "Test write to memory Cont";
+//        $display("Test %d: %s", test_num, test_name);
+//        cif0.dWEN = 1;
+//        cif0.daddr = 32'h25;
+//        cif0.dstore = 32'hDFDFDFDF;
+////        assert(BC.state == BC.A) print_passed(1);
+//        @(posedge CLK);
 
     end
 

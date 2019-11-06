@@ -29,14 +29,14 @@ module bus_control
 			ccif.ccsnoopaddr <= '0; 
 //			ccif.dstore <= '0;
 //			ccif.daddr <= '0;
-			ccif.dwait <= 2'b11; 
+			//ccif.dwait <= 2'b11;
 			ccif.ccinv <= '0; 
 			return_val <= '0; 
-			bmif.dstore <= '0; 
+			/*bmif.dstore <= '0;
 			bmif.dWEN <= 0; 
 			bmif.daddr <= '0;
 			bmif.dREN <= 0; 
-			
+			*/
 		end else begin
 			state <= next_state; 
 			arbitraitor <= next_arbitraitor; 
@@ -44,14 +44,14 @@ module bus_control
 			ccif.ccsnoopaddr <= next_ccsnoopaddr; 
 //			ccif.dstore <= next_cif_dstore;
 //			ccif.daddr <= next_cif_daddr; // Need to create new signal to latch, cant use ccif
-			ccif.dwait <= next_dwait; 
+			//ccif.dwait <= next_dwait;
 			ccif.ccinv <= next_ccinv; 
 			return_val <= next_return_val; 
-			bmif.dstore <= next_bus_store; 
+			/*bmif.dstore <= next_bus_store;
 			bmif.dWEN <= next_bus_dWEN; 
 			bmif.daddr <= next_bus_daddr; 
 			bmif.dREN <= next_bus_dREN; 
-			
+			*/
 			
 		end 
 	end
@@ -61,16 +61,21 @@ module bus_control
 		next_arbitraitor = arbitraitor;  
 		next_ccwait = ccif.ccwait; 
 		next_ccsnoopaddr = ccif.ccsnoopaddr; 
-		next_cif_dstore = ccif.dstore; 
-		next_cif_daddr = ccif.daddr; 
-		next_dwait = ccif.dwait; 
+		//next_cif_dstore = ccif.dstore;
+		//next_cif_daddr = ccif.daddr;
+		//next_dwait = ccif.dwait;
 		next_ccinv = ccif.ccinv; 
 		next_return_val = return_val;
 		
-		next_bus_store = bmif.dstore; 
-		next_bus_dWEN = bmif.dWEN; 
-		next_bus_daddr = bmif.daddr; 
-		next_bus_dREN = bmif.dREN; 
+//		next_bus_store = bmif.dstore;
+//		next_bus_dWEN = bmif.dWEN;
+//		next_bus_daddr = bmif.daddr;
+//		next_bus_dREN = bmif.dREN;
+		ccif.dwait = '1;
+		//bmif.dstore = '0;
+		//bmif.dWEN = '0;
+		bmif.daddr = '0;
+		//bmif.dREN = '0;
 
 		casez(state)
 			
@@ -89,8 +94,9 @@ module bus_control
 			end
 			
 			ARBITRATE: begin
-				next_ccwait[arbitraitor] = 0;
-				next_ccwait[1-arbitraitor] = 1;
+				bmif.daddr = '0;
+				//next_ccwait[arbitraitor] = 0;
+				//next_ccwait[1-arbitraitor] = 1;
 				if(ccif.dREN[arbitraitor] == 1 || ccif.ccwait[arbitraitor] == 1) begin
 					next_state = SNOOP; 
 				end else begin
@@ -111,12 +117,24 @@ module bus_control
 			end 
 			
 			MEMORY_WB: begin // Make this work
-				next_bus_dWEN = 1;
-				next_bus_daddr = ccif.daddr[arbitraitor]; 
-				next_bus_store  = ccif.dstore[arbitraitor]; 
-				next_dwait = 0;
-				next_return_val = ccif.dload[arbitraitor]; 
-				next_state = COMPLETE; 
+//				next_bus_dWEN = 1;
+//				next_bus_daddr = ccif.daddr[arbitraitor];
+//				next_bus_store  = ccif.dstore[arbitraitor];
+//				next_dwait = 0;
+//				next_return_val = ccif.dload[arbitraitor];
+//				next_state = COMPLETE;
+
+				bmif.dWEN = 1;
+				bmif.daddr = ccif.daddr[arbitraitor];
+				bmif.dstore = ccif.dstore[arbitraitor];
+				next_return_val = ccif.dload[arbitraitor];
+				if(!bmif.dwait) begin
+					ccif.dwait[arbitraitor] = 0;
+					next_state = COMPLETE;
+				end else begin
+					ccif.dwait[arbitraitor] = 1;
+					next_state = MEMORY_WB;
+				end
 			end 
 			
 			INVALIDATE: begin

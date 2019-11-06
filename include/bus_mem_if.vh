@@ -11,15 +11,11 @@ import cpu_types_pkg::*;
 
 parameter CPUS = 2;
 
-// arbitration
-logic   [CPUS-1:0]       dwait, dREN, dWEN;
-word_t  [CPUS-1:0]       dload, dstore;
-word_t  [CPUS-1:0]       daddr;
+// Needs this just to interact with data memory. Cache signals come from ccif
 
-modport mem_con (
-input   dREN, dWEN, dstore, daddr,
-output  dwait, dload
-);
+logic  dwait, dREN, dWEN;
+word_t dload, dstore;
+word_t daddr;
 
 modport bus_con (
 input    dwait, dload,

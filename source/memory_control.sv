@@ -38,15 +38,14 @@ module memory_control (
 			ccif.ramWEN = '0;
 
 			// Instruction read		
-            ccif.iwait[i] = ccif.ramstate != ACCESS;// || !ccif.iREN[i];
-            //$display("mem control ccif.ramstate = %0s", ccif.ramstate);
-            //$display("mem control ccif.iREN = %b", ccif.iREN[i]);
+            ccif.iwait[i] = ccif.ramstate != ACCESS;
+           
             ccif.iload[i] = ccif.ramload;
             ccif.ramaddr = ccif.iaddr[i];
             ccif.ramREN = ccif.iREN[i];
 
             if (ccif.dREN[i] || ccif.dWEN[i]) begin
-                //$display("IN DATA IF STATEMENT");
+               
                 {ccif.ramWEN, ccif.ramREN} = '0;
                 ccif.dwait[i] = ccif.ramstate != ACCESS;
                 ccif.iwait[i] = 1;

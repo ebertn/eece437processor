@@ -140,8 +140,7 @@ module dcache (
                		//Contacts the Bus Controller
                     cif.dREN = 1;
                     cif.daddr = {req[31:3], 1'b0, req[1:0]}; //req;
-                    next_state = ALLOCATE1;
-
+                    next_state = ALLOCATE1
                 end else begin
                     // Read hit in memory
                     next_frames[lru][req.idx].data[0] = cif.dload;

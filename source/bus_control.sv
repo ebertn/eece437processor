@@ -72,7 +72,7 @@ module bus_control
 //		next_bus_daddr = bmif.daddr;
 //		next_bus_dREN = bmif.dREN;
 		ccif.dwait = '1;
-		ccif.ccwait[arbitraitor] = 0;
+		ccif.ccwait[arbitraitor] = !(ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor]);//0;
 		ccif.ccwait[!arbitraitor] = 1;
 		//bmif.dstore = '0;
 		//bmif.dWEN = '0;

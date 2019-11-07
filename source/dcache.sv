@@ -107,31 +107,7 @@ module dcache (
                 if(dcif.halt) begin
                     next_state = FLUSH_INIT;
                     next_index = 0;
-                end else if (cif.ccwait) begin
-                    if(cif.ccinv) begin
-                        // Check if addr to be invalidated is in cache
-                        if(frames[0][snoop_req.idx].tag == snoop_req.tag) begin
-                            // See if it exists in set 0
-                            next_frames[0][snoop_req.idx].valid = 0;
-                            next_frames[0][snoop_req.idx].dirty = 0;
-                        end else if(frames[1][snoop_req.idx].tag == snoop_req.tag) begin
-                            // See if it exists in set 1
-                            next_frames[1][snoop_req.idx].valid = 0;
-                            next_frames[1][snoop_req.idx].dirty = 0;
-                        end
-                    end else begin // Not supposed to invalidate
-                        // Check if there is a hit, and its in M (v = 1, d = 1)
-                        if(frames[0][snoop_req.idx].tag == snoop_req.tag && frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1) begin
-                            cif.dstore = frames[0][snoop_req.idx].data;
-                            cif.ccwrite = 1; // Notify bus of hit
-                            next_frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
-                        end else if (frames[1][snoop_req.idx].tag == snoop_req.tag && frames[1][snoop_req.idx].valid == 1 && frames[1][snoop_req.idx].dirty == 1) begin
-                            cif.dstore = frames[1][snoop_req.idx].data;
-                            cif.ccwrite = 1; // Notify bus of hit
-                            next_frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
-                        end
-                    end
-				end else if (!dcif.dmemREN && !dcif.dmemWEN) begin
+                end else if (!dcif.dmemREN && !dcif.dmemWEN) begin
                     // No request
                     next_state = COMPARE_TAG;
                 end else if(frames[0][req.idx].tag == req.tag && frames[0][req.idx].valid) begin
@@ -346,6 +322,32 @@ module dcache (
 			end 
 				
         endcase
+
+        if (cif.ccwait) begin
+            if(cif.ccinv) begin
+                // Check if addr to be invalidated is in cache
+                if(frames[0][snoop_req.idx].tag == snoop_req.tag) begin
+                    // See if it exists in set 0
+                    next_frames[0][snoop_req.idx].valid = 0;
+                    next_frames[0][snoop_req.idx].dirty = 0;
+                end else if(frames[1][snoop_req.idx].tag == snoop_req.tag) begin
+                    // See if it exists in set 1
+                    next_frames[1][snoop_req.idx].valid = 0;
+                    next_frames[1][snoop_req.idx].dirty = 0;
+                end
+            end else begin // Not supposed to invalidate
+                // Check if there is a hit, and its in M (v = 1, d = 1)
+                if(frames[0][snoop_req.idx].tag == snoop_req.tag && frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1) begin
+                    cif.dstore = frames[0][snoop_req.idx].data;
+                    cif.ccwrite = 1; // Notify bus of hit
+                    next_frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
+                end else if (frames[1][snoop_req.idx].tag == snoop_req.tag && frames[1][snoop_req.idx].valid == 1 && frames[1][snoop_req.idx].dirty == 1) begin
+                    cif.dstore = frames[1][snoop_req.idx].data;
+                    cif.ccwrite = 1; // Notify bus of hit
+                    next_frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
+                end
+            end
+        end
     end
 
 endmodule

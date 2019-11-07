@@ -222,13 +222,13 @@ add wave -noupdate -color {Dark Orchid} -label funct /system_tb/DUT/CPU/DP0/rt_m
 add wave -noupdate -group {Instruction MEM} /system_tb/DUT/CPU/DP0/jt_mem
 add wave -noupdate -group {Instruction MEM} /system_tb/DUT/CPU/DP0/it_mem
 add wave -noupdate -group {Instruction MEM} -expand /system_tb/DUT/CPU/DP0/rt_mem
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP0/dpif/ihit
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP0/dpif/dhit
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemREN
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemWEN
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemload
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemstore
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemaddr
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/ihit
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dhit
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemREN
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemWEN
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemload
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemstore
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemaddr
 add wave -noupdate -divider {MEMWB Register}
 add wave -noupdate -group {MEMWB Register} /system_tb/DUT/CPU/DP0/memwbif/writeEN
 add wave -noupdate -group {MEMWB Register} /system_tb/DUT/CPU/DP0/memwbif/flush
@@ -322,12 +322,12 @@ add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramstate
 add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramaddr
 add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramstore
 add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramload
-add wave -noupdate /system_tb/DUT/CPU/CC/bmif/dwait
-add wave -noupdate /system_tb/DUT/CPU/CC/bmif/dREN
-add wave -noupdate /system_tb/DUT/CPU/CC/bmif/dWEN
-add wave -noupdate /system_tb/DUT/CPU/CC/bmif/dload
-add wave -noupdate /system_tb/DUT/CPU/CC/bmif/dstore
-add wave -noupdate /system_tb/DUT/CPU/CC/bmif/daddr
+add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dwait
+add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dREN
+add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dWEN
+add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dload
+add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dstore
+add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/daddr
 add wave -noupdate /system_tb/DUT/CPU/CC/last_instr_req
 TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
@@ -597,13 +597,13 @@ add wave -noupdate -color {Dark Orchid} -label funct /system_tb/DUT/CPU/DP1/rt_m
 add wave -noupdate -group {Instruction MEM} /system_tb/DUT/CPU/DP1/jt_mem
 add wave -noupdate -group {Instruction MEM} /system_tb/DUT/CPU/DP1/it_mem
 add wave -noupdate -group {Instruction MEM} /system_tb/DUT/CPU/DP1/rt_mem
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP1/dpif/ihit
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP1/dpif/dhit
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemREN
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemWEN
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemload
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemstore
-add wave -noupdate -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemaddr
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP1/dpif/ihit
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP1/dpif/dhit
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemREN
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemWEN
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemload
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemstore
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemaddr
 add wave -noupdate -divider {MEMWB Register}
 add wave -noupdate -group {MEMWB Register} /system_tb/DUT/CPU/DP1/memwbif/writeEN
 add wave -noupdate -group {MEMWB Register} /system_tb/DUT/CPU/DP1/memwbif/flush
@@ -636,7 +636,7 @@ add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP0/dpif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP0/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP0/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {51932 ps} 0}
+WaveRestoreCursors {{Cursor 1} {540000 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 132
@@ -652,4 +652,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {1050 ns}
+WaveRestoreZoom {0 ps} {1092 ns}

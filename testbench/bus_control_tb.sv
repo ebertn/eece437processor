@@ -102,30 +102,48 @@ program test(
 
         @(negedge cif0.dwait);
         @(posedge CLK);
-        @(posedge CLK);
 
         cif0.dWEN = 0;
-//        assert(CC.BC.state == CC.BC.REQUEST) print_passed(1);
-//        @(posedge CLK);
-//        @(negedge cif0.dwait);
-//        assert(CC.BC.state == CC.BC.ARBITRATE) print_passed(1);
-//        assert(cif0.ccwait == 0) print_passed(1);
-//        assert(cif0.ccwait == 1) print_passed(1);
-//        @(posedge CLK);
-//        assert(ccif.d== CC.BC.MEMORY_WB) print_passed(1);
-//        assert(CC.BC.state == CC.BC.MEMORY_WB) print_passed(1);
+
+        @(posedge CLK);
 
         /*=======================================================
-         ==                  Test Num 1
+        ==                  Test Num 1
         ========================================================*/
-//        test_num += 1;
-//        test_name = "Test write to memory Cont";
-//        $display("Test %d: %s", test_num, test_name);
-//        cif0.dWEN = 1;
-//        cif0.daddr = 32'h25;
-//        cif0.dstore = 32'hDFDFDFDF;
-////        assert(BC.state == BC.A) print_passed(1);
-//        @(posedge CLK);
+        test_num += 1;
+        test_name = "Test read from memory";
+        $display("Test %d: %s", test_num, test_name);
+        cif0.dREN = 1;
+        cif0.daddr = 32'h1;
+
+        @(negedge cif0.dwait);
+        // Complete stage
+        assert(cif0.dload == 32'h11111111) $display("passed");
+        @(posedge CLK);
+
+        cif0.dREN = 0;
+
+        @(posedge CLK);
+
+        /*=======================================================
+        ==                  Test Num 2
+        ========================================================*/
+        test_num += 1;
+        test_name = "Test read from other cache";
+        $display("Test %d: %s", test_num, test_name);
+        cif1.dREN = 1;
+        cif1.daddr = 32'h25;
+
+        //@(posedge );
+        @(negedge cif1.dwait);
+        // Complete stage
+        assert(cif1.dload == 32'hDFDFDFDF) $display("passed");
+        @(posedge CLK);
+
+        cif1.dREN = 0;
+
+        @(posedge CLK);
+
 
     end
 

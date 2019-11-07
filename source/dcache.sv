@@ -39,7 +39,7 @@ module dcache (
     parameter NUM_BLOCKS_PER_SET = 8;
     parameter NUM_SETS = 2;
 
-    dcachef_t req;
+    dcachef_t req, snoop_req;
     dcache_frame [1:0][7:0] frames, next_frames;
     logic lru, next_lru;
 	logic [4:0] index, next_index;
@@ -68,6 +68,7 @@ module dcache (
     end
 
     assign req = dcif.dmemaddr;
+    assign snoop_req = cif.snoopaddr;
 
     always_comb begin
         next_state = state;
@@ -81,18 +82,56 @@ module dcache (
         cif.dstore = '0;
 		next_index = index; 
 		dcif.flushed = 0;
+        cif.ccwrite = 0;
         next_hit_count = hit_count;
         next_miss_count = miss_count;
         next_miss_hit_flag = miss_hit_flag;
 
         casez(state)
+
+/*              if(cif.ccwait == 1) begin
+                    next_state == SNOOP;
+                    if(frames[0][cc.snoopaddr[31:6]].valid == 1 && frames[0][cc.snoopaddr[31:6]].dirty == 0) begin
+                        dstore = frames[0][cc.snoopaddr[31:6]].data;
+                    end else if (frames[1][cc.snoopaddr[31:6]].valid == 1 && frames[1][cc.snoopaddr[31:6]].dirty == 0) begin
+                        dstore = frames[1][cc.snoopaddr[31:6]].data;
+                    end
+                end else if (ccinv == 0) begin
+                    next_state = COMPARE_TAG;
+                end else begin
+                    next_state = ALLOCATE1;
+                end
+
+            */
             COMPARE_TAG: begin
-                if (cif.ccwait == 1) begin
-					next_state = SNOOP; 		
-				end else if(dcif.halt == 1) begin
+                if(dcif.halt) begin
                     next_state = FLUSH_INIT;
                     next_index = 0;
-                end else if (!dcif.dmemREN && !dcif.dmemWEN) begin
+                end else if (cif.ccwait) begin
+                    if(cif.ccinv) begin
+                        // Check if addr to be invalidated is in cache
+                        if(frames[0][snoop_req.idx].tag == snoop_req.tag) begin
+                            // See if it exists in set 0
+                            next_frames[0][snoop_req.idx].valid = 0;
+                            next_frames[0][snoop_req.idx].dirty = 0;
+                        end else if(frames[1][snoop_req.idx].tag == snoop_req.tag) begin
+                            // See if it exists in set 1
+                            next_frames[1][snoop_req.idx].valid = 0;
+                            next_frames[1][snoop_req.idx].dirty = 0;
+                        end
+                    end else begin // Not supposed to invalidate
+                        // Check if there is a hit, and its in M (v = 1, d = 1)
+                        if(frames[0][snoop_req.idx].tag == snoop_req.tag && frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1) begin
+                            cif.dstore = frames[0][snoop_req.idx].data;
+                            cif.ccwrite = 1; // Notify bus of hit
+                            frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
+                        end else if (frames[1][snoop_req.idx].tag == snoop_req.tag && frames[1][snoop_req.idx].valid == 1 && frames[1][snoop_req.idx].dirty == 1) begin
+                            cif.dstore = frames[1][snoop_req.idx].data;
+                            cif.ccwrite = 1; // Notify bus of hit
+                            frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
+                        end
+                    end
+				end else if (!dcif.dmemREN && !dcif.dmemWEN) begin
                     // No request
                     next_state = COMPARE_TAG;
                 end else if(frames[0][req.idx].tag == req.tag && frames[0][req.idx].valid) begin
@@ -111,6 +150,7 @@ module dcache (
                         dcif.dmemload = dcif.dmemstore;
                         next_frames[0][req.idx].data[req.blkoff] = dcif.dmemstore;
                         next_frames[0][req.idx].dirty = 1;
+                        cif.ccwrite = 1;
                     end
                 end else if (frames[1][req.idx].tag == req.tag && frames[1][req.idx].valid) begin
                     // Hit in set 1
@@ -128,6 +168,7 @@ module dcache (
                         dcif.dmemload = dcif.dmemstore;
                         next_frames[1][req.idx].data[req.blkoff] = dcif.dmemstore;
                         next_frames[1][req.idx].dirty = 1;
+                        cif.ccwrite = 1;
                     end
 				
                 end else begin
@@ -201,18 +242,18 @@ module dcache (
             end
 
 			SNOOP: begin
-					if(cif.ccwait == 1) begin
-						next_state == SNOOP; 
-						if(frames[0][cc.snoopaddr[31:6]].valid == 1 && frames[0][cc.snoopaddr[31:6]].dirty == 0) begin
-							dstore = frames[0][cc.snoopaddr[31:6]].data; 
-						end else if (frames[1][cc.snoopaddr[31:6]].valid == 1 && frames[1][cc.snoopaddr[31:6]].dirty == 0) begin
-							dstore = frames[1][cc.snoopaddr[31:6]].data;
-						end 
-					end else if (ccinv == 0) begin
-						next_state = COMPARE_TAG; 
-					end else begin
-						next_state = ALLOCATE1; 
-					end
+                if(cif.ccwait == 1) begin
+                    next_state == SNOOP;
+                    if(frames[0][cc.snoopaddr[31:6]].valid == 1 && frames[0][cc.snoopaddr[31:6]].dirty == 0) begin
+                        dstore = frames[0][cc.snoopaddr[31:6]].data;
+                    end else if (frames[1][cc.snoopaddr[31:6]].valid == 1 && frames[1][cc.snoopaddr[31:6]].dirty == 0) begin
+                        dstore = frames[1][cc.snoopaddr[31:6]].data;
+                    end
+                end else if (ccinv == 0) begin
+                    next_state = COMPARE_TAG;
+                end else begin
+                    next_state = ALLOCATE1;
+                end
 			end
 
 			FLUSH_INIT: begin

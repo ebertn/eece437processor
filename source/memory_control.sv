@@ -27,12 +27,15 @@ module memory_control (
     bus_control BC (CLK, nRST, ccif, bmif);
 
     logic last_instr_req, next_last_instr_req;
+    logic data_hit, next_data_hit;
 
     always_ff @(posedge CLK, negedge nRST) begin
         if (!nRST) begin
             last_instr_req <= 0;
+            data_hit <= 0;
         end else begin
             last_instr_req <= next_last_instr_req;
+            data_hit <= next_data_hit;
         end
     end
 
@@ -53,23 +56,35 @@ module memory_control (
         ccif.ramaddr = '0;
         ccif.ramREN = '0;
         ccif.ramWEN = '0;
-		 
+
+        next_last_instr_req = last_instr_req;
+        next_data_hit = data_hit;
 
         // Instruction read
-       //if (ccif.ramstate == ACCESS && !(bmif.dREN || bmif.dWEN)) begin
+       /*if (ccif.ramstate == ACCESS && !(bmif.dREN || bmif.dWEN)) begin
             // Toggle between processors on instruction read
        	 	next_last_instr_req = !last_instr_req;
-		//end 
+		end*/
 
-        ccif.iwait[last_instr_req] = ccif.ramstate != ACCESS;
-        ccif.iload[last_instr_req] = ccif.ramload;
-        ccif.ramaddr = ccif.iaddr[last_instr_req];
-        ccif.ramREN = ccif.iREN[last_instr_req];
+        //if(!ccif.dREN[0] & !ccif.dREN[1] & !ccif.dWEN[0] & !ccif.dWEN[1]) begin
+        //if(!ccif.dREN[0] &  !ccif.dWEN[0] & !ccif.dREN[1] & !ccif.dWEN[1]
+        //    | (ccif.dREN[last_instr_req] | ccif.dWEN[last_instr_req]) & ccif.ramstate == ACCESS) begin
+        if (!ccif.dREN[last_instr_req] & !ccif.dWEN[last_instr_req] | data_hit) begin
+            ccif.iwait[last_instr_req] = ccif.ramstate != ACCESS;
+            ccif.iload[last_instr_req] = ccif.ramload;
+            ccif.ramaddr = ccif.iaddr[last_instr_req];
+            ccif.ramREN = ccif.iREN[last_instr_req];
+
+            if(ccif.ramstate == ACCESS) begin
+                next_last_instr_req = !last_instr_req;
+                next_data_hit = 0;
+            end
+        end
 
         // Data Read / Write
-        if (bmif.dREN || bmif.dWEN) begin
+        if ((bmif.dREN || bmif.dWEN) & !data_hit) begin
             {ccif.ramWEN, ccif.ramREN} = '0;
-            bmif.dwait = ccif.ramstate != ACCESS;
+            bmif.dwait = ccif.ramstate != ACCESS | data_hit;
             ccif.iwait[0] = 1;
             ccif.iwait[1] = 1;
 
@@ -78,11 +93,16 @@ module memory_control (
             ccif.ramaddr = bmif.daddr;
             ccif.ramREN = bmif.dREN && !bmif.dWEN;
 
+            if (ccif.ramstate == ACCESS) begin
+                next_data_hit = 1;
+            end
+
             if (bmif.dWEN) begin
                 // Write
                 ccif.ramWEN = 1;
                 ccif.ramstore = bmif.dstore;
                 ccif.ramaddr = bmif.daddr;
+
             end
         end
     end

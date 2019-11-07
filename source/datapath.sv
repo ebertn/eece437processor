@@ -20,7 +20,7 @@ module datapath (
     import cpu_types_pkg::*;
 
     // pc init
-    parameter PC_INIT = 0;
+    parameter PC_INIT;// = 0;
 
     register_file_if rfif ();
     register_file rfDUT(CLK, nRST, rfif);
@@ -32,7 +32,7 @@ module datapath (
     control_unit cuDUT(cuif);
 
     program_counter_if pcif ();
-    program_counter pcDUT(CLK, nRST, pcif);
+    program_counter #(.PC_INIT(PC_INIT)) pcDUT(CLK, nRST, pcif);
 
     extender_if extif();
     extender extDUT(extif);

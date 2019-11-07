@@ -70,24 +70,51 @@ module memory_control (
         //if(!ccif.dREN[0] &  !ccif.dWEN[0] & !ccif.dREN[1] & !ccif.dWEN[1]
         //    | (ccif.dREN[last_instr_req] | ccif.dWEN[last_instr_req]) & ccif.ramstate == ACCESS) begin
         /*if (!ccif.dREN[last_instr_req] & !ccif.dWEN[last_instr_req]) begin
+            // Last instr req not waiting for data, get instr for this CPU
             ccif.iwait[last_instr_req] = ccif.ramstate != ACCESS;
             ccif.iload[last_instr_req] = ccif.ramload;
             ccif.ramaddr = ccif.iaddr[last_instr_req];
             ccif.ramREN = ccif.iREN[last_instr_req];
 
-            if(ccif.ramstate == ACCESS) begin
-                next_last_instr_req = !last_instr_req;
-                next_data_hit = 0;
-            end
+            //if(ccif.ramstate == ACCESS) begin
+                //next_last_instr_req = !last_instr_req;
+                //next_data_hit = 0;
+            //end
+        end else begin
+
+            ccif.iwait[!last_instr_req] = ccif.ramstate != ACCESS;
+            ccif.iload[!last_instr_req] = ccif.ramload;
+            ccif.ramaddr = ccif.iaddr[!last_instr_req];
+            ccif.ramREN = ccif.iREN[!last_instr_req];
         end*/
-		if (!(ccif.dREN[last_instr_req] || ccif.dWEN[last_instr_req])) begin
-			ccif.iwait[last_instr_req] = ccif.ramstate != ACCESS;
+
+        if (ccif.dREN[last_instr_req] | ccif.dWEN[last_instr_req]) begin
+            // Last instr req not waiting for data, get instr for other CPU
+
+            //ccif.iwait[!last_instr_req] = ccif.ramstate != ACCESS;
+            //ccif.iload[!last_instr_req] = ccif.ramload;
+            //ccif.ramaddr = ccif.iaddr[!last_instr_req];
+            //ccif.ramREN = ccif.iREN[!last_instr_req];
+
+
+            //if(ccif.ramstate == ACCESS) begin
+            //next_last_instr_req = !last_instr_req;
+            //next_data_hit = 0;
+            //end
+        end else begin
+            ccif.iwait[last_instr_req] = ccif.ramstate != ACCESS;
             ccif.iload[last_instr_req] = ccif.ramload;
             ccif.ramaddr = ccif.iaddr[last_instr_req];
             ccif.ramREN = ccif.iREN[last_instr_req];
-		end 
-		
-		next_last_instr_req = !last_instr_req;
+        end
+
+
+
+        if (ccif.iwait[0] == 0) begin
+            next_last_instr_req = 1;
+        end else if (ccif.iwait[1] == 0) begin
+            next_last_instr_req = 0;
+        end
 
         // Data Read / Write
         if ((bmif.dREN || bmif.dWEN)/* & !data_hit*/) begin

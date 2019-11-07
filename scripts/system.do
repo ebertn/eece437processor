@@ -317,22 +317,7 @@ add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/dwait
 add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/iREN
 add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/dREN
 add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/dWEN
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/iload
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/dload
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/dstore
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/iaddr
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/daddr
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ccwait
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ccinv
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ccwrite
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/cctrans
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ccsnoopaddr
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramWEN
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramREN
 add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramstate
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramaddr
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramstore
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramload
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dwait
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dREN
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dWEN
@@ -651,7 +636,7 @@ add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP0/dpif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP0/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP0/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1030396 ps} 0}
+WaveRestoreCursors {{Cursor 1} {520000 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 132
@@ -667,4 +652,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {3108 ns}
+WaveRestoreZoom {0 ps} {4036 ns}

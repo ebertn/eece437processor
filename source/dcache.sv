@@ -299,8 +299,6 @@ module dcache (
 
 
                 end else begin
-                    $display("Hit count = %h", hit_count);
-                    $display("Miss count = %h", miss_count);
                     dcif.flushed = 1;
                 end
 

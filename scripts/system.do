@@ -632,11 +632,11 @@ TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
 add wave -noupdate -label {flushed cpu 0} /system_tb/DUT/CPU/CM0/dcif/flushed
 add wave -noupdate -label {flushed cpu 1} /system_tb/DUT/CPU/CM1/dcif/flushed
-add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP0/dpif/halt
+add wave -noupdate -color Cyan -label system_halt /system_tb/PROG/syif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP0/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP0/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {520000 ps} 0}
+WaveRestoreCursors {{Cursor 1} {139922578 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 132
@@ -652,4 +652,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {4036 ns}
+WaveRestoreZoom {0 ps} {10896 ns}

@@ -43,7 +43,7 @@ module memory_control (
     always_comb begin
         // Defaults
         bmif.dload = '0;
-        bmif.dwait = ccif.ramstate != ACCESS;//'0;
+        bmif.dwait = '1; //ccif.ramstate != ACCESS;//'0;
 
         ccif.iload[0] = '0;
         ccif.iload[1] = '0;

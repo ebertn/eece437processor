@@ -95,8 +95,7 @@ module bus_control
 			
 			ARBITRATE: begin
 				bmif.daddr = '0;
-				//next_ccwait[arbitraitor] = 0;
-				//next_ccwait[1-arbitraitor] = 1;
+	
 				if(ccif.dREN[arbitraitor] == 1 || ccif.ccwait[arbitraitor] == 1) begin
 					next_state = SNOOP; 
 				end else begin
@@ -117,12 +116,6 @@ module bus_control
 			end 
 			
 			MEMORY_WB: begin // Make this work
-//				next_bus_dWEN = 1;
-//				next_bus_daddr = ccif.daddr[arbitraitor];
-//				next_bus_store  = ccif.dstore[arbitraitor];
-//				next_dwait = 0;
-//				next_return_val = ccif.dload[arbitraitor];
-//				next_state = COMPLETE;
 
 				bmif.dWEN = 1;
 				bmif.daddr = ccif.daddr[arbitraitor];

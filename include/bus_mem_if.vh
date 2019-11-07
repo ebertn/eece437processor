@@ -22,5 +22,5 @@ input    dwait, dload,
 output   dREN, dWEN, dstore, daddr
 );
 
-endinterface : bus_mem_if
+endinterface 
 `endif

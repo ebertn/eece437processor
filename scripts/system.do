@@ -284,10 +284,10 @@ add wave -noupdate -group {Instruction WB} /system_tb/DUT/CPU/DP0/it_wb
 add wave -noupdate -group {Instruction WB} -expand /system_tb/DUT/CPU/DP0/rt_wb
 add wave -noupdate /system_tb/DUT/CPU/DP0/wb_data_out
 add wave -noupdate -divider Caches
-add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iwait
-add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iREN
-add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iload
-add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iaddr
+add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iwait
+add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iREN
+add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iload
+add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iaddr
 add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/dwait
 add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/dREN
 add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/dWEN
@@ -299,6 +299,36 @@ add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/ccinv
 add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/ccwrite
 add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/cctrans
 add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/ccsnoopaddr
+TreeUpdate [SetDefaultTree]
+quietly WaveActivateNextPane
+add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/iwait
+add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/dwait
+add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/iREN
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/dREN
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/dWEN
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/iload
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/dload
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/dstore
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/iaddr
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/daddr
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ccwait
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ccinv
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ccwrite
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/cctrans
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ccsnoopaddr
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramWEN
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramREN
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramstate
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramaddr
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramstore
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramload
+add wave -noupdate /system_tb/DUT/CPU/CC/bmif/dwait
+add wave -noupdate /system_tb/DUT/CPU/CC/bmif/dREN
+add wave -noupdate /system_tb/DUT/CPU/CC/bmif/dWEN
+add wave -noupdate /system_tb/DUT/CPU/CC/bmif/dload
+add wave -noupdate /system_tb/DUT/CPU/CC/bmif/dstore
+add wave -noupdate /system_tb/DUT/CPU/CC/bmif/daddr
+add wave -noupdate /system_tb/DUT/CPU/CC/last_instr_req
 TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
 add wave -noupdate -divider {CPU 1}
@@ -606,7 +636,7 @@ add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP0/dpif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP0/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP0/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {23289809844 ps} 0}
+WaveRestoreCursors {{Cursor 1} {51932 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 132
@@ -622,4 +652,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {23289671600 ps} {23290143600 ps}
+WaveRestoreZoom {0 ps} {1050 ns}

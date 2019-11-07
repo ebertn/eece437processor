@@ -44,21 +44,22 @@ module memory_control (
 
         ccif.iload[0] = '0;
         ccif.iload[1] = '0;
-        ccif.iwait[0] = '0;
-        ccif.iwait[1] = '0;
-        ccif.iload[0] = '0;
-        ccif.iload[1] = '0;
+        ccif.iwait[0] = '1;
+        ccif.iwait[1] = '1;
+        //ccif.iload[0] = '0;
+        //ccif.iload[1] = '0;
 
         ccif.ramstore = '0;
         ccif.ramaddr = '0;
         ccif.ramREN = '0;
         ccif.ramWEN = '0;
+		 
 
         // Instruction read
-        if(ccif.ramstate == ACCESS && !(bmif.dREN || bmif.dWEN)) begin
+       //if (ccif.ramstate == ACCESS && !(bmif.dREN || bmif.dWEN)) begin
             // Toggle between processors on instruction read
-            next_last_instr_req = !last_instr_req;
-        end
+       	 	next_last_instr_req = !last_instr_req;
+		//end 
 
         ccif.iwait[last_instr_req] = ccif.ramstate != ACCESS;
         ccif.iload[last_instr_req] = ccif.ramload;
@@ -102,7 +103,7 @@ module memory_control (
 //            ccif.ramWEN = '0;
 //
 //            // Instruction read
-//            ccif.iwait[i] = ccif.ramstate != ACCESS;
+//            ccif. iwait[i] = ccif.ramstate != ACCESS;
 //            ccif.iload[i] = ccif.ramload;
 //            ccif.ramaddr = ccif.iaddr[i];
 //            ccif.ramREN = ccif.iREN[i];

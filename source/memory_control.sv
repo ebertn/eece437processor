@@ -69,7 +69,7 @@ module memory_control (
         //if(!ccif.dREN[0] & !ccif.dREN[1] & !ccif.dWEN[0] & !ccif.dWEN[1]) begin
         //if(!ccif.dREN[0] &  !ccif.dWEN[0] & !ccif.dREN[1] & !ccif.dWEN[1]
         //    | (ccif.dREN[last_instr_req] | ccif.dWEN[last_instr_req]) & ccif.ramstate == ACCESS) begin
-        if (!ccif.dREN[last_instr_req] & !ccif.dWEN[last_instr_req]/* | data_hit*/) begin
+        /*if (!ccif.dREN[last_instr_req] & !ccif.dWEN[last_instr_req]) begin
             ccif.iwait[last_instr_req] = ccif.ramstate != ACCESS;
             ccif.iload[last_instr_req] = ccif.ramload;
             ccif.ramaddr = ccif.iaddr[last_instr_req];
@@ -79,7 +79,15 @@ module memory_control (
                 next_last_instr_req = !last_instr_req;
                 next_data_hit = 0;
             end
-        end
+        end*/
+		if (!(ccif.dREN[last_instr_req] || ccif.dWEN[last_instr_req])) begin
+			ccif.iwait[last_instr_req] = ccif.ramstate != ACCESS;
+            ccif.iload[last_instr_req] = ccif.ramload;
+            ccif.ramaddr = ccif.iaddr[last_instr_req];
+            ccif.ramREN = ccif.iREN[last_instr_req];
+		end 
+		
+		next_last_instr_req = !last_instr_req;
 
         // Data Read / Write
         if ((bmif.dREN || bmif.dWEN)/* & !data_hit*/) begin

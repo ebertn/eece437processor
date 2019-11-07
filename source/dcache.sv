@@ -34,7 +34,7 @@ module dcache (
 //    } dcache_frame;
 
     enum { COMPARE_TAG, ALLOCATE1, ALLOCATE2, WRITE_BACK1, WRITE_BACK2, SNOOP, FLUSH_INIT, FLUSH_WRITE_DATA0, 
-		FLUSH_WRITE_DATA1, FLUSH_SECOND, FLUSH_WRITE2_DATA0, FLUSH_WRITE2_DATA1, FLUSH_FINISH } state, next_state;
+		FLUSH_WRITE_DATA1, FLUSH_SECOND, FLUSH_WRITE2_DATA0, FLUSH_WRITE2_DATA1,WRITE_HIT_COUNT,  FLUSH_FINISH } state, next_state;
 
     parameter NUM_BLOCKS_PER_SET = 8;
     parameter NUM_SETS = 2;
@@ -273,7 +273,8 @@ module dcache (
  		
 			FLUSH_SECOND:begin
 				if (index == 8) begin
-					next_state = FLUSH_FINISH;
+					next_state = WRITE_HIT_COUNT;
+
 					next_index = 0; 
 				end else if(frames[1][index[2:0]].dirty) begin
 					next_state = FLUSH_WRITE2_DATA0; 
@@ -306,21 +307,23 @@ module dcache (
 					next_index = index + 1; 
                     next_state =  FLUSH_SECOND; 
                 end
-			end 
- 	
-			FLUSH_FINISH: begin
+			end
+
+            WRITE_HIT_COUNT: begin
                 cif.dWEN = 1;
                 cif.daddr = 32'h00003100;
                 cif.dstore = hit_count;// - miss_count;
-                if(cif.dwait) begin
-
-
-                end else begin
-                    dcif.flushed = 1;
+                if(!cif.dwait) begin
+                    cif.dWEN = 0;
+                    cif.dREN = 0;
+                    next_state = FLUSH_FINISH;
                 end
+            end
 
-			end 
-				
+            FLUSH_FINISH: begin
+                dcif.flushed = 1;
+            end
+
         endcase
 
         if (cif.ccwait) begin

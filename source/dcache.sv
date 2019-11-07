@@ -68,7 +68,7 @@ module dcache (
     end
 
     assign req = dcif.dmemaddr;
-    assign snoop_req = cif.snoopaddr;
+    assign snoop_req = cif.ccsnoopaddr;
 
     always_comb begin
         next_state = state;
@@ -124,11 +124,11 @@ module dcache (
                         if(frames[0][snoop_req.idx].tag == snoop_req.tag && frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1) begin
                             cif.dstore = frames[0][snoop_req.idx].data;
                             cif.ccwrite = 1; // Notify bus of hit
-                            frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
+                            next_frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
                         end else if (frames[1][snoop_req.idx].tag == snoop_req.tag && frames[1][snoop_req.idx].valid == 1 && frames[1][snoop_req.idx].dirty == 1) begin
                             cif.dstore = frames[1][snoop_req.idx].data;
                             cif.ccwrite = 1; // Notify bus of hit
-                            frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
+                            next_frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
                         end
                     end
 				end else if (!dcif.dmemREN && !dcif.dmemWEN) begin
@@ -177,13 +177,13 @@ module dcache (
             end
 
             ALLOCATE1: begin
-			 if(cif.dwait) begin
-               		//Contacts the Bus Controller
-                    cif.dREN = 1;
-                    cif.daddr = {req[31:3], 1'b0, req[1:0]}; //req;
-                    next_state = ALLOCATE1;
+                cif.dREN = 1;
+                 cif.daddr = {req[31:3], 1'b0, req[1:0]}; //req;
+                 if(cif.dwait) begin
+                        //Contacts the Bus Controller
+                        next_state = ALLOCATE1;
 
-                end else begin
+                 end else begin
                     // Read hit in memory
                     next_frames[lru][req.idx].data[0] = cif.dload;
 
@@ -193,10 +193,11 @@ module dcache (
             end
 
             ALLOCATE2: begin
+                cif.dREN = 1;
+                cif.daddr = {req[31:3], 1'b1, req[1:0]}; //req + 32'd4;
 				 if(cif.dwait) begin
                     // Access memory
-                    cif.dREN = 1;
-                    cif.daddr = {req[31:3], 1'b1, req[1:0]}; //req + 32'd4;
+
                     next_state = ALLOCATE2;
 	
                 end else begin
@@ -222,9 +223,10 @@ module dcache (
             WRITE_BACK1: begin
 				// Write hit to the Bus
                 cif.dstore = frames[lru][req.idx].data[0];
+                cif.dWEN = 1;
+                cif.daddr = {frames[lru][req.idx].tag, req.idx, 1'b0, 2'b00}; // req
 				if(cif.dwait) begin
-                    cif.dWEN = 1;
-                    cif.daddr = {frames[lru][req.idx].tag, req.idx, 1'b0, 2'b00}; // req
+
                 end else begin
                     next_state = WRITE_BACK2;
                 end
@@ -233,28 +235,29 @@ module dcache (
             WRITE_BACK2: begin
      			// Write hit to the Bus
                 cif.dstore = frames[lru][req.idx].data[1];
-				if(cif.dwait) begin 
-                    cif.dWEN = 1;
-                    cif.daddr = {frames[lru][req.idx].tag, req.idx, 1'b1, 2'b00};                 
+                cif.dWEN = 1;
+                cif.daddr = {frames[lru][req.idx].tag, req.idx, 1'b1, 2'b00};
+                if(cif.dwait) begin
+
 				end else begin
                     next_state = ALLOCATE1;
                 end
             end
 
-			SNOOP: begin
+			/*SNOOP: begin
                 if(cif.ccwait == 1) begin
-                    next_state == SNOOP;
+                    next_state = SNOOP;
                     if(frames[0][cc.snoopaddr[31:6]].valid == 1 && frames[0][cc.snoopaddr[31:6]].dirty == 0) begin
-                        dstore = frames[0][cc.snoopaddr[31:6]].data;
+                        cif.dstore = frames[0][cc.snoopaddr[31:6]].data;
                     end else if (frames[1][cc.snoopaddr[31:6]].valid == 1 && frames[1][cc.snoopaddr[31:6]].dirty == 0) begin
-                        dstore = frames[1][cc.snoopaddr[31:6]].data;
+                        cif.dstore = frames[1][cc.snoopaddr[31:6]].data;
                     end
-                end else if (ccinv == 0) begin
+                end else if (cif.ccinv == 0) begin
                     next_state = COMPARE_TAG;
                 end else begin
                     next_state = ALLOCATE1;
                 end
-			end
+			end*/
 
 			FLUSH_INIT: begin
 				if (index == 8) begin
@@ -337,8 +340,6 @@ module dcache (
 
 
                 end else begin
-                 	$display("Hit count = %h", hit_count);
-                    $display("Miss count = %h", miss_count);
                     dcif.flushed = 1;
                 end
 

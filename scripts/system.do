@@ -16,8 +16,8 @@ add wave -noupdate -group {Next PC Mux} -label {branch addr} -radix unsigned /sy
 add wave -noupdate -group {Next PC Mux} -label {JR jump addr (rfif.rdat1)} -radix unsigned /system_tb/DUT/CPU/DP0/rfif/rdat1
 add wave -noupdate -group {Next PC Mux} -label {J/JAL jump addr} -radix unsigned /system_tb/DUT/CPU/DP0/if_ext_ls
 add wave -noupdate -group {Next PC Mux} -radix unsigned /system_tb/DUT/CPU/DP0/pcif/next_count
-add wave -noupdate -group {DP0 Fetch} /system_tb/DUT/CPU/DP0/dpif/ihit
-add wave -noupdate -group {DP0 Fetch} /system_tb/DUT/CPU/DP0/dpif/dhit
+add wave -noupdate -expand -group {DP0 Fetch} /system_tb/DUT/CPU/DP0/dpif/ihit
+add wave -noupdate -expand -group {DP0 Fetch} /system_tb/DUT/CPU/DP0/dpif/dhit
 add wave -noupdate -divider {IFID Register}
 add wave -noupdate -group {IFID Register} /system_tb/DUT/CPU/DP0/ifidif/writeEN
 add wave -noupdate -group {IFID Register} /system_tb/DUT/CPU/DP0/ifidif/flush
@@ -224,6 +224,7 @@ add wave -noupdate -group {Instruction MEM} /system_tb/DUT/CPU/DP0/it_mem
 add wave -noupdate -group {Instruction MEM} -expand /system_tb/DUT/CPU/DP0/rt_mem
 add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/ihit
 add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dhit
+add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/dcif1/imemREN
 add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemREN
 add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemWEN
 add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemload
@@ -288,24 +289,34 @@ add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iw
 add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iREN
 add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iload
 add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iaddr
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/dwait
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/dREN
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/dWEN
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/dload
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/dstore
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/daddr
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/ccwait
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/ccinv
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/ccwrite
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/cctrans
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif0/ccsnoopaddr
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM0/DCACHE/state
+add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/dwait
+add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/dREN
+add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/dWEN
+add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/dload
+add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/dstore
+add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/daddr
+add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/ccwait
+add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/ccinv
+add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/ccwrite
+add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/cctrans
+add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/ccsnoopaddr
+add wave -noupdate -expand -group {Data Cache} -expand -group dcif /system_tb/DUT/CPU/CM0/dcif/halt
+add wave -noupdate -expand -group {Data Cache} -expand -group dcif /system_tb/DUT/CPU/CM0/dcif/dhit
+add wave -noupdate -expand -group {Data Cache} -expand -group dcif /system_tb/DUT/CPU/CM0/dcif/datomic
+add wave -noupdate -expand -group {Data Cache} -expand -group dcif /system_tb/DUT/CPU/CM0/dcif/dmemREN
+add wave -noupdate -expand -group {Data Cache} -expand -group dcif /system_tb/DUT/CPU/CM0/dcif/dmemWEN
+add wave -noupdate -expand -group {Data Cache} -expand -group dcif /system_tb/DUT/CPU/CM0/dcif/flushed
+add wave -noupdate -expand -group {Data Cache} -expand -group dcif /system_tb/DUT/CPU/CM0/dcif/dmemload
+add wave -noupdate -expand -group {Data Cache} -expand -group dcif /system_tb/DUT/CPU/CM0/dcif/dmemstore
+add wave -noupdate -expand -group {Data Cache} -expand -group dcif /system_tb/DUT/CPU/CM0/dcif/dmemaddr
 TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
 add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/iwait
 add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/dwait
 add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/iREN
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/dREN
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/dWEN
+add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/dREN
+add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/dWEN
 add wave -noupdate /system_tb/DUT/CPU/CC/ccif/iload
 add wave -noupdate /system_tb/DUT/CPU/CC/ccif/dload
 add wave -noupdate /system_tb/DUT/CPU/CC/ccif/dstore
@@ -328,6 +339,7 @@ add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dWEN
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dload
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dstore
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/daddr
+add wave -noupdate /system_tb/DUT/CPU/CC/BC/state
 add wave -noupdate /system_tb/DUT/CPU/CC/last_instr_req
 TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
@@ -619,24 +631,27 @@ add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif1/iwait
 add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif1/iREN
 add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif1/iload
 add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif1/iaddr
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif1/dwait
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif1/dREN
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif1/dWEN
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif1/dload
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif1/dstore
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif1/daddr
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif1/ccwait
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif1/ccinv
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif1/ccwrite
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif1/cctrans
-add wave -noupdate -group {Data Cache} /system_tb/DUT/CPU/cif1/ccsnoopaddr
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM1/DCACHE/state
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/dwait
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/dREN
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/dWEN
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/dload
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/dstore
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/daddr
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/ccwait
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/ccinv
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/ccwrite
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/cctrans
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/ccsnoopaddr
 TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
+add wave -noupdate -label {flushed cpu 0} /system_tb/DUT/CPU/CM0/dcif/flushed
+add wave -noupdate -label {flushed cpu 1} /system_tb/DUT/CPU/CM1/dcif/flushed
 add wave -noupdate -color Cyan /system_tb/DUT/CPU/DP0/dpif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP0/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP0/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {540000 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1030396 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 132
@@ -652,4 +667,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {1092 ns}
+WaveRestoreZoom {0 ps} {3108 ns}

@@ -135,6 +135,11 @@ module bus_control
 				next_return_val = ccif.dload[arbitraitor];
 				if(!bmif.dwait) begin
 					ccif.dwait[arbitraitor] = 0;
+					/*if(ccif.dWEN[arbitraitor] == 1 || ccif.dREN[arbitraitor] == 1) begin
+						next_state = MEMORY_WB;
+					end else begin
+						next_state = REQUEST;
+					end*/
 					next_state = REQUEST;
 				end else begin
 					ccif.dwait[arbitraitor] = 1;
@@ -174,6 +179,8 @@ module bus_control
 				//next_bus_dREN = 1;
 				next_return_val = bmif.dload;
 
+				ccif.dwait = '1;
+
 				bmif.dWEN = 0;
 				bmif.dREN = 1;
 				bmif.daddr = ccif.daddr[arbitraitor];
@@ -188,6 +195,13 @@ module bus_control
 			COMPLETE: begin
 				ccif.dwait[arbitraitor] = 0;
 				ccif.dload[arbitraitor] = return_val;
+				bmif.dREN = 0;
+				bmif.dWEN = 0;
+				/*if(ccif.dWEN[arbitraitor] == 1 || ccif.dREN[arbitraitor] == 1) begin
+					next_state = COMPLETE;
+				end else begin
+					next_state = REQUEST;
+				end*/
 				next_state = REQUEST;
 			end 
 		

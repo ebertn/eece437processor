@@ -13,13 +13,19 @@ module dcache_tb;
 
     always #(PERIOD/2) CLK++;
 
-    datapath_cache_if dcif ();
-    caches_if cif ();
+    datapath_cache_if dcif1 ();
+    caches_if cif1 ();
+
+    datapath_cache_if dcif2 ();
+    caches_if cif2 ();
+//	
 //	cpu_ram_if ramif ();
 
-    test PROG (CLK, nRST, dcif, cif);
+    test PROG (CLK, nRST, dcif1, cif1, dcif2, cif2);
 
-    dcache DUT (CLK, nRST, dcif, cif);
+    dcache DUT1 (CLK, nRST, dcif1, cif1);
+	dcache DUT1 (CLK, nRST, dcif2, cif2);
+	
 //	ram RAM_TEST(CLK, nRST, ramif);
 
 endmodule
@@ -433,6 +439,24 @@ program test(
         ========================================================*/
         test_num += 1;
         test_name = "Test read hit dirty";
+        $display("Test %d: %s", test_num, test_name);
+        req.tag = 26'h25;
+        req.idx = 3'h4;
+        req.blkoff = 1'b0;
+        req.bytoff = 2'b00;
+        ram_data[0] = store_val;
+        ram_data[1] = 32'hBCBCBCBC;
+        test_read(0, test_num, test_name, req, ram_data, 1, hit);
+        $display("Hit = %b", hit);
+        print_passed(1);
+
+        @(posedge CLK);
+
+  /*=======================================================
+        ==                  Test Num 6
+        ========================================================*/
+        test_num += 1;
+        test_name = "Test read Coherence";
         $display("Test %d: %s", test_num, test_name);
         req.tag = 26'h25;
         req.idx = 3'h4;

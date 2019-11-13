@@ -325,6 +325,7 @@ add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dload
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dstore
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/daddr
 add wave -noupdate /system_tb/DUT/CPU/CC/BC/state
+add wave -noupdate /system_tb/DUT/CPU/CC/BC/arbitraitor
 add wave -noupdate /system_tb/DUT/CPU/CC/last_instr_req
 TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
@@ -636,7 +637,7 @@ add wave -noupdate -color Cyan -label system_halt /system_tb/PROG/syif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP0/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP0/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {139922578 ps} 0}
+WaveRestoreCursors {{Cursor 1} {3470618 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 132
@@ -652,4 +653,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {10896 ns}
+WaveRestoreZoom {2799300 ps} {4605300 ps}

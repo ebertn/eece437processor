@@ -127,6 +127,11 @@ module dcache (
                         next_frames[0][req.idx].data[req.blkoff] = dcif.dmemstore;
                         next_frames[0][req.idx].dirty = 1;
                         cif.ccwrite = 1;
+                        cif.daddr = req;
+
+//                        if(!cif.ccinv) begin
+//                            dcif.dhit = 0;
+//                        end
                     end
                 end else if (frames[1][req.idx].tag == req.tag && frames[1][req.idx].valid) begin
                     // Hit in set 1
@@ -145,6 +150,11 @@ module dcache (
                         next_frames[1][req.idx].data[req.blkoff] = dcif.dmemstore;
                         next_frames[1][req.idx].dirty = 1;
                         cif.ccwrite = 1;
+                        cif.daddr = req;
+
+//                        if(!cif.ccinv) begin
+//                            dcif.dhit = 0;
+//                        end
                     end
 				
                 end else begin
@@ -273,7 +283,7 @@ module dcache (
  		
 			FLUSH_SECOND:begin
 				if (index == 8) begin
-					next_state = WRITE_HIT_COUNT;
+					next_state = FLUSH_FINISH;
 
 					next_index = 0; 
 				end else if(frames[1][index[2:0]].dirty) begin

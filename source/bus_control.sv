@@ -74,6 +74,7 @@ module bus_control
 		ccif.dwait = '1;
 		ccif.ccwait[arbitraitor] = !(ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor]);//0;
 		ccif.ccwait[!arbitraitor] = 1;
+		//ccif.ccinv = '0;
 		//bmif.dstore = '0;
 		//bmif.dWEN = '0;
 		//bmif.daddr = '0;
@@ -120,6 +121,8 @@ module bus_control
 				ccif.ccsnoopaddr[1] = ccif.daddr[arbitraitor];
 				if (ccif.dREN[arbitraitor] == 0 && ccif.ccwrite[arbitraitor]) begin
 					ccif.ccinv[arbitraitor] = 1;
+					//ccif.ccinv[0] = 1;
+					//ccif.ccinv[0] = 1;
 					next_state = REQUEST;
 				end else if (ccif.dREN[arbitraitor] == 1 && ccif.ccwrite[1-arbitraitor] == 1) begin
 					next_state = MODIFIED_WB;

@@ -17,7 +17,8 @@ module bus_control
 	word_t [1:0] next_ccsnoopaddr, next_dload; 
 	word_t next_cif_daddr;
 	word_t next_cif_dstore;
- 	word_t return_val, next_return_val; 
+ 	word_t return_val, next_return_val;
+	word_t return_addr, next_return_addr;
 	logic next_bus_dREN, next_bus_dWEN; 
 	word_t next_bus_daddr, next_bus_store;
 
@@ -31,7 +32,8 @@ module bus_control
 //			ccif.daddr <= '0;
 			//ccif.dwait <= 2'b11;
 			//ccif.ccinv <= '0;
-			return_val <= '0; 
+			return_val <= '0;
+			return_addr <= '0;
 			/*bmif.dstore <= '0;
 			bmif.dWEN <= 0; 
 			bmif.daddr <= '0;
@@ -46,7 +48,8 @@ module bus_control
 //			ccif.daddr <= next_cif_daddr; // Need to create new signal to latch, cant use ccif
 			//ccif.dwait <= next_dwait;
 			//ccif.ccinv <= next_ccinv;
-			return_val <= next_return_val; 
+			return_val <= next_return_val;
+			return_addr <= next_return_addr;
 			/*bmif.dstore <= next_bus_store;
 			bmif.dWEN <= next_bus_dWEN; 
 			bmif.daddr <= next_bus_daddr; 
@@ -66,7 +69,8 @@ module bus_control
 		//next_dwait = ccif.dwait;
 		//next_ccinv = ccif.ccinv;
 		next_return_val = return_val;
-		
+		next_return_addr = return_addr;
+
 //		next_bus_store = bmif.dstore;
 //		next_bus_dWEN = bmif.dWEN;
 //		next_bus_daddr = bmif.daddr;
@@ -74,8 +78,8 @@ module bus_control
 		ccif.dwait = '1;
 		ccif.ccinv[0] = 0;
 		ccif.ccinv[1] = 0;
-		ccif.ccwait[arbitraitor] = 0;//!(ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor]);//0;
-		ccif.ccwait[!arbitraitor] = 1;
+		ccif.ccwait[arbitraitor] = 0; //!(ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor]);//0;
+		ccif.ccwait[!arbitraitor] = ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor];// | ccif.ccwrite[arbitraitor];
 		//ccif.ccinv = '0;
 		//bmif.dstore = '0;
 		//bmif.dWEN = '0;
@@ -90,8 +94,8 @@ module bus_control
 				bmif.daddr = '0;
 				bmif.dREN = '0;
 				ccif.dload = '0;
-				ccif.ccwait[0] = 0;
-				ccif.ccwait[1] = 0;
+				//ccif.ccwait[0] = 0;
+				//ccif.ccwait[1] = 0;
 
 				if(ccif.dREN[0] == 1 || ccif.dWEN[0] == 1 
 					|| ccif.ccwrite[0] == 1) begin
@@ -107,8 +111,8 @@ module bus_control
 			ARBITRATE: begin
 				bmif.daddr = '0;
 
-				ccif.ccwait[0] = 0;
-				ccif.ccwait[1] = 0;
+				//ccif.ccwait[0] = 0;
+				//ccif.ccwait[1] = 0;
 
 				if(ccif.dREN[0] == 1 || ccif.dWEN[0] == 1
 					|| ccif.ccwrite[0] == 1) begin
@@ -130,7 +134,7 @@ module bus_control
 				if (ccif.dREN[arbitraitor] == 0 && ccif.ccwrite[arbitraitor]) begin
 					// BusWB
 					ccif.ccinv[!arbitraitor] = 1;
-					ccif.ccwait[!arbitraitor] = 1;
+					//ccif.ccwait[!arbitraitor] = 1;
 					ccif.dwait[arbitraitor] = 0;
 
 					next_state = REQUEST;
@@ -152,6 +156,7 @@ module bus_control
 				bmif.daddr = ccif.daddr[arbitraitor];
 				bmif.dstore = ccif.dstore[arbitraitor];
 				next_return_val = ccif.dload[arbitraitor];
+				next_return_addr = ccif.daddr[arbitraitor];
 				if(!bmif.dwait) begin
 					ccif.dwait[arbitraitor] = 0;
 					/*if(ccif.dWEN[arbitraitor] == 1 || ccif.dREN[arbitraitor] == 1) begin
@@ -211,6 +216,7 @@ module bus_control
 			MEMORY_READ: begin
 				//next_bus_dREN = 1;
 				next_return_val = bmif.dload;
+				next_return_addr = ccif.daddr[arbitraitor];
 
 				ccif.dwait = '1;
 
@@ -227,6 +233,7 @@ module bus_control
 
 			COMPLETE: begin
 				ccif.dwait[arbitraitor] = 0;
+				bmif.daddr = return_addr;
 				ccif.dload[arbitraitor] = return_val;
 				bmif.dREN = 0;
 				bmif.dWEN = 0;

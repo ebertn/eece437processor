@@ -116,6 +116,10 @@ module dcache (
                         cif.ccwrite = 1; // Notify bus of hit
                         next_frames[1][snoop_req.idx].valid = !cif.ccinv; // Set to I if ccinv
                         next_frames[1][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
+                    end else if(frames[0][snoop_req.idx].tag == snoop_req.tag && frames[0][snoop_req.idx].valid == 1) begin
+                        next_frames[0][snoop_req.idx].valid = !cif.ccinv; // Set to I if ccinv
+                    end else if (frames[1][snoop_req.idx].tag == snoop_req.tag && frames[1][snoop_req.idx].valid == 1) begin
+                        next_frames[1][snoop_req.idx].valid = !cif.ccinv; // Set to I if ccinv
                     end
                 end else if(dcif.halt) begin
                     next_state = FLUSH_INIT;

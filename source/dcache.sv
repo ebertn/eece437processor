@@ -71,6 +71,7 @@ module dcache (
     assign snoop_req = cif.ccsnoopaddr;
 
     assign cif.halt = dcif.halt;
+    assign cif.flushed = dcif.flushed;
 
     always_comb begin
         next_state = state;
@@ -252,6 +253,7 @@ module dcache (
             SNOOP_WB1: begin
                 // Write hit to the Bus
                 cif.ccwrite = 1; // Notify bus of hit
+                cif.dWEN = 1;
                 cif.daddr = {snoop_req.tag, snoop_req.idx, 1'b0, 2'b00};
                 if(frames[0][snoop_req.idx].tag == snoop_req.tag /*&& frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1*/) begin
                     cif.dstore = frames[0][snoop_req.idx].data[0];
@@ -267,6 +269,7 @@ module dcache (
             SNOOP_WB2: begin
                 // Write hit to the Bus
                 cif.ccwrite = 1; // Notify bus of hit
+                cif.dWEN = 1;
                 cif.daddr = {snoop_req.tag, snoop_req.idx, 1'b1, 2'b00};
                 if(frames[0][snoop_req.idx].tag == snoop_req.tag /*&& frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1*/) begin
                     cif.dstore = frames[0][snoop_req.idx].data[1];

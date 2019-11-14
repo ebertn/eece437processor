@@ -81,16 +81,15 @@ module bus_control
 		ccif.ccwait[arbitraitor] = 0; //!(ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor]);//0;
 		ccif.ccwait[!arbitraitor] = ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor];// | ccif.ccwrite[arbitraitor];
 
-		if(ccif.halt[0] & ccif.halt[1]) begin
-			ccif.ccwait[0] = 0;
-			ccif.ccwait[1] = 0;
-		end else if(ccif.halt[0]) begin
-			ccif.ccwait[0] = 1;
-			ccif.ccwait[1] = 0;
-		end else if(ccif.halt[1]) begin
+		/*if(ccif.halt[0] & !ccif.flushed[0]) begin
+			// cpu 0 is flushing
 			ccif.ccwait[0] = 0;
 			ccif.ccwait[1] = 1;
-		end
+		end else if(ccif.halt[1] & !ccif.flushed[1]) begin
+			// cpu 1 is flushing
+			ccif.ccwait[0] = 1;
+			ccif.ccwait[1] = 0;
+		end*/
 		//ccif.ccinv = '0;
 		//bmif.dstore = '0;
 		//bmif.dWEN = '0;
@@ -150,7 +149,6 @@ module bus_control
 					next_state = REQUEST;
 					if(ccif.ccwrite[!arbitraitor] == 1) begin
 						next_state = MODIFIED_WB1;
-						ccif.dwait[arbitraitor] = 1;
 					end
 
 				end else if (ccif.dREN[arbitraitor] == 1 && ccif.ccwrite[!arbitraitor] == 1) begin
@@ -256,8 +254,6 @@ module bus_control
 				end*/
 				next_state = REQUEST;
 			end 
-		
-
 		endcase
 	end
 				

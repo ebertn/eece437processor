@@ -283,6 +283,7 @@ add wave -noupdate -color {Dark Orchid} -label funct /system_tb/DUT/CPU/DP0/rt_w
 add wave -noupdate -group {Instruction WB} /system_tb/DUT/CPU/DP0/jt_wb
 add wave -noupdate -group {Instruction WB} /system_tb/DUT/CPU/DP0/it_wb
 add wave -noupdate -group {Instruction WB} -expand /system_tb/DUT/CPU/DP0/rt_wb
+add wave -noupdate /system_tb/DUT/CPU/DP0/dpif/halt
 add wave -noupdate /system_tb/DUT/CPU/DP0/wb_data_out
 add wave -noupdate -divider Caches
 add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iwait
@@ -291,7 +292,7 @@ add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/il
 add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iaddr
 add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif0/daddr
 add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM0/DCACHE/req
-add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM0/DCACHE/frames
+add wave -noupdate -expand -group {Data Cache} -expand -subitemconfig {{/system_tb/DUT/CPU/CM0/DCACHE/frames[1]} -expand {/system_tb/DUT/CPU/CM0/DCACHE/frames[1][0]} -expand {/system_tb/DUT/CPU/CM0/DCACHE/frames[0]} -expand {/system_tb/DUT/CPU/CM0/DCACHE/frames[0][0]} -expand} /system_tb/DUT/CPU/CM0/DCACHE/frames
 add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM0/DCACHE/state
 add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/dwait
 add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/dREN
@@ -647,7 +648,7 @@ add wave -noupdate -color Cyan -label system_halt /system_tb/PROG/syif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP0/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP0/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {3647795 ps} 0}
+WaveRestoreCursors {{Cursor 1} {3040000 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 169
@@ -663,4 +664,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {9086434 ps}
+WaveRestoreZoom {0 ps} {10501002 ps}

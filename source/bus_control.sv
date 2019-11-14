@@ -80,6 +80,17 @@ module bus_control
 		ccif.ccinv[1] = 0;
 		ccif.ccwait[arbitraitor] = 0; //!(ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor]);//0;
 		ccif.ccwait[!arbitraitor] = ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor];// | ccif.ccwrite[arbitraitor];
+
+		if(ccif.halt[0] & ccif.halt[1]) begin
+			ccif.ccwait[0] = 0;
+			ccif.ccwait[1] = 0;
+		end else if(ccif.halt[0]) begin
+			ccif.ccwait[0] = 1;
+			ccif.ccwait[1] = 0;
+		end else if(ccif.halt[1]) begin
+			ccif.ccwait[0] = 0;
+			ccif.ccwait[1] = 1;
+		end
 		//ccif.ccinv = '0;
 		//bmif.dstore = '0;
 		//bmif.dWEN = '0;
@@ -87,7 +98,6 @@ module bus_control
 		//bmif.dREN = '0;
 
 		casez(state)
-			
 			REQUEST: begin
 				bmif.dWEN = '0;
 				bmif.dstore = '0;
@@ -205,6 +215,8 @@ module bus_control
 				bmif.dstore = ccif.dstore[!arbitraitor];
 				if (!bmif.dwait) begin
 					ccif.dwait[!arbitraitor] = 0;
+
+					ccif.ccinv[!arbitraitor] = 1;
 					if(ccif.dREN) begin
 						next_state = MEMORY_READ;
 					end else begin

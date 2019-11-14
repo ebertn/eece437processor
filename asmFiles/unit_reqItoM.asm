@@ -11,21 +11,21 @@ org 0x0000
   sw    $2, 0($1) # CPU0 will go I -> M
 
   # Wait some time (aka count to 0x500)
+  ori $1, $zero, 0x10
 loop0:
-  ori $1, $zero, 0x500
   addi $1, $1, -1
-  beq $1, $zero, loop0
+  bne $1, $zero, loop0
 
   halt
 
 #CORE 1
 org 0x0200
 
-  # Wait some time (aka count to 0x200)
+# Wait some time (aka count to 0x200)
+  ori $1, $zero, 0x5
 loop1:
-  ori $1, $zero, 0x200
   addi $1, $1, -1
-  beq $1, $zero, loop1
+  bne $1, $zero, loop1
 
   ori   $1, $zero, 0xF0
   ori   $2, $zero, 0xBDBD

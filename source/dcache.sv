@@ -70,6 +70,8 @@ module dcache (
     assign req = dcif.dmemaddr;
     assign snoop_req = cif.ccsnoopaddr;
 
+    assign cif.halt = dcif.halt;
+
     always_comb begin
         next_state = state;
         next_frames = frames;
@@ -268,8 +270,12 @@ module dcache (
                 cif.daddr = {snoop_req.tag, snoop_req.idx, 1'b1, 2'b00};
                 if(frames[0][snoop_req.idx].tag == snoop_req.tag /*&& frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1*/) begin
                     cif.dstore = frames[0][snoop_req.idx].data[1];
+                    next_frames[0][snoop_req.idx].valid = !cif.ccinv; // Set to I if ccinv
+                    next_frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
                 end else if (frames[1][snoop_req.idx].tag == snoop_req.tag /*&& frames[1][snoop_req.idx].valid == 1 && frames[1][snoop_req.idx].dirty == 1*/) begin
                     cif.dstore = frames[1][snoop_req.idx].data[1];
+                    next_frames[1][snoop_req.idx].valid = !cif.ccinv; // Set to I if ccinv
+                    next_frames[1][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
                 end
 
                 if(!cif.dwait) begin

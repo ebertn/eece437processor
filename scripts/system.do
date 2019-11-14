@@ -289,6 +289,9 @@ add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iw
 add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iREN
 add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iload
 add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iaddr
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif0/daddr
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM0/DCACHE/req
+add wave -noupdate -expand -group {Data Cache} -subitemconfig {{/system_tb/DUT/CPU/CM0/DCACHE/frames[0]} -expand {/system_tb/DUT/CPU/CM0/DCACHE/frames[0][0]} -expand {/system_tb/DUT/CPU/CM0/DCACHE/frames[0][0].data} -expand} /system_tb/DUT/CPU/CM0/DCACHE/frames
 add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM0/DCACHE/state
 add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/dwait
 add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/dREN
@@ -312,11 +315,14 @@ add wave -noupdate -expand -group {Data Cache} -expand -group dcif /system_tb/DU
 add wave -noupdate -expand -group {Data Cache} -expand -group dcif /system_tb/DUT/CPU/CM0/dcif/dmemaddr
 TreeUpdate [SetDefaultTree]
 quietly WaveActivateNextPane
-add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/iwait
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/iwait
 add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/dwait
-add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/iREN
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/iREN
 add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/dREN
 add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/dWEN
+add wave -noupdate -expand /system_tb/DUT/CPU/ccif/ccwrite
+add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/ccwait
+add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ccinv
 add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramstate
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dwait
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dREN
@@ -345,8 +351,8 @@ add wave -noupdate -group {Next PC Mux} -radix unsigned /system_tb/DUT/CPU/DP1/i
 add wave -noupdate -group {Next PC Mux} -radix unsigned /system_tb/DUT/CPU/DP1/rfif/rdat1
 add wave -noupdate -group {Next PC Mux} -radix unsigned /system_tb/DUT/CPU/DP1/if_ext_ls
 add wave -noupdate -group {Next PC Mux} -radix unsigned /system_tb/DUT/CPU/DP1/pcif/next_count
-add wave -noupdate -group {DP1 Fetch} /system_tb/DUT/CPU/DP1/dpif/ihit
-add wave -noupdate -group {DP1 Fetch} /system_tb/DUT/CPU/DP1/dpif/dhit
+add wave -noupdate -expand -group {DP1 Fetch} /system_tb/DUT/CPU/DP1/dpif/ihit
+add wave -noupdate -expand -group {DP1 Fetch} /system_tb/DUT/CPU/DP1/dpif/dhit
 add wave -noupdate -divider {IFID Register}
 add wave -noupdate -group {IFID Register} /system_tb/DUT/CPU/DP1/ifidif/writeEN
 add wave -noupdate -group {IFID Register} /system_tb/DUT/CPU/DP1/ifidif/flush
@@ -617,6 +623,9 @@ add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif1/iwait
 add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif1/iREN
 add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif1/iload
 add wave -noupdate -group {Instruction Cache} /system_tb/DUT/CPU/cif1/iaddr
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM1/DCACHE/cif/daddr
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM1/DCACHE/req
+add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM1/DCACHE/frames
 add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM1/DCACHE/state
 add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/dwait
 add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif1/dREN
@@ -637,10 +646,10 @@ add wave -noupdate -color Cyan -label system_halt /system_tb/PROG/syif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP0/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP0/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {3470618 ps} 0}
+WaveRestoreCursors {{Cursor 1} {285335 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
-configure wave -valuecolwidth 132
+configure wave -valuecolwidth 169
 configure wave -justifyvalue left
 configure wave -signalnamewidth 1
 configure wave -snapdistance 10
@@ -653,4 +662,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {2799300 ps} {4605300 ps}
+WaveRestoreZoom {0 ps} {2618 ns}

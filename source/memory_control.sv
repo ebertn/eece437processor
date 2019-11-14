@@ -101,6 +101,16 @@ module memory_control (
             //next_last_instr_req = !last_instr_req;
             //next_data_hit = 0;
             //end
+        end else if (ccif.iREN[0] == 0 && ccif.iREN[1] == 1) begin
+            ccif.iwait[1] = ccif.ramstate != ACCESS;
+            ccif.iload[1] = ccif.ramload;
+            ccif.ramaddr = ccif.iaddr[1];
+            ccif.ramREN = ccif.iREN[1];
+        end else if (ccif.iREN[1] == 0 && ccif.iREN[0] == 1) begin
+            ccif.iwait[0] = ccif.ramstate != ACCESS;
+            ccif.iload[0] = ccif.ramload;
+            ccif.ramaddr = ccif.iaddr[0];
+            ccif.ramREN = ccif.iREN[0];
         end else begin
             ccif.iwait[last_instr_req] = ccif.ramstate != ACCESS;
             ccif.iload[last_instr_req] = ccif.ramload;

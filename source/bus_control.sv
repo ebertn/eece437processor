@@ -11,7 +11,7 @@ module bus_control
 ); 
 
 	import cpu_types_pkg::*;
-	enum {REQUEST, ARBITRATE, SNOOP, MEMORY_WB, REPLY, MEMORY_READ, COMPLETE, MODIFIED_WB} state, next_state;
+	enum {REQUEST, ARBITRATE, SNOOP, MEMORY_WB, REPLY, MEMORY_READ, COMPLETE, MODIFIED_WB1, MODIFIED_WB2} state, next_state;
 	logic next_arbitraitor, arbitraitor; 
 	logic [1:0] next_ccwait, next_dwait, next_ccinv;  
 	word_t [1:0] next_ccsnoopaddr, next_dload; 
@@ -72,7 +72,9 @@ module bus_control
 //		next_bus_daddr = bmif.daddr;
 //		next_bus_dREN = bmif.dREN;
 		ccif.dwait = '1;
-		ccif.ccwait[arbitraitor] = !(ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor]);//0;
+		ccif.ccinv[0] = 0;
+		ccif.ccinv[1] = 0;
+		ccif.ccwait[arbitraitor] = 0;//!(ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor]);//0;
 		ccif.ccwait[!arbitraitor] = 1;
 		//ccif.ccinv = '0;
 		//bmif.dstore = '0;
@@ -88,6 +90,9 @@ module bus_control
 				bmif.daddr = '0;
 				bmif.dREN = '0;
 				ccif.dload = '0;
+				ccif.ccwait[0] = 0;
+				ccif.ccwait[1] = 0;
+
 				if(ccif.dREN[0] == 1 || ccif.dWEN[0] == 1 
 					|| ccif.ccwrite[0] == 1) begin
 					next_state = ARBITRATE;
@@ -101,6 +106,9 @@ module bus_control
 			
 			ARBITRATE: begin
 				bmif.daddr = '0;
+
+				ccif.ccwait[0] = 0;
+				ccif.ccwait[1] = 0;
 
 				if(ccif.dREN[0] == 1 || ccif.dWEN[0] == 1
 					|| ccif.ccwrite[0] == 1) begin
@@ -120,12 +128,20 @@ module bus_control
 				ccif.ccsnoopaddr[0] = ccif.daddr[arbitraitor];
 				ccif.ccsnoopaddr[1] = ccif.daddr[arbitraitor];
 				if (ccif.dREN[arbitraitor] == 0 && ccif.ccwrite[arbitraitor]) begin
-					ccif.ccinv[arbitraitor] = 1;
-					//ccif.ccinv[0] = 1;
-					//ccif.ccinv[0] = 1;
+					// BusWB
+					ccif.ccinv[!arbitraitor] = 1;
+					ccif.ccwait[!arbitraitor] = 1;
+					ccif.dwait[arbitraitor] = 0;
+
 					next_state = REQUEST;
-				end else if (ccif.dREN[arbitraitor] == 1 && ccif.ccwrite[1-arbitraitor] == 1) begin
-					next_state = MODIFIED_WB;
+					if(ccif.ccwrite[!arbitraitor] == 1) begin
+						next_state = MODIFIED_WB1;
+						ccif.dwait[arbitraitor] = 1;
+					end
+
+				end else if (ccif.dREN[arbitraitor] == 1 && ccif.ccwrite[!arbitraitor] == 1) begin
+					// BusRd
+					next_state = MODIFIED_WB1;
 				end else begin
 					next_state = MEMORY_READ;
 				end
@@ -166,15 +182,29 @@ module bus_control
 				end
 			end*/
 
-			MODIFIED_WB: begin
+			MODIFIED_WB1: begin
 				bmif.dWEN = 1;
 				bmif.dREN = 0;
-				bmif.daddr = ccif.daddr[arbitraitor];
-				bmif.dstore = ccif.dstore[1-arbitraitor];
+				bmif.daddr = ccif.daddr[!arbitraitor];
+				bmif.dstore = ccif.dstore[!arbitraitor];
 				if (!bmif.dwait) begin
-					next_state = MEMORY_READ;
-				end else begin
-					next_state = MODIFIED_WB;
+					ccif.dwait[!arbitraitor] = 0;
+                    next_state = MODIFIED_WB2;
+				end
+			end
+
+			MODIFIED_WB2: begin
+				bmif.dWEN = 1;
+				bmif.dREN = 0;
+				bmif.daddr = ccif.daddr[!arbitraitor];
+				bmif.dstore = ccif.dstore[!arbitraitor];
+				if (!bmif.dwait) begin
+					ccif.dwait[!arbitraitor] = 0;
+					if(ccif.dREN) begin
+						next_state = MEMORY_READ;
+					end else begin
+						next_state = REQUEST;
+					end
 				end
 			end
 		

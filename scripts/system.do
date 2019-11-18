@@ -230,6 +230,7 @@ add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemWEN
 add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemload
 add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemstore
 add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP0/dpif/dmemaddr
+add wave -noupdate /system_tb/DUT/CPU/DP0/dpif/datomic
 add wave -noupdate -divider {MEMWB Register}
 add wave -noupdate -group {MEMWB Register} /system_tb/DUT/CPU/DP0/memwbif/writeEN
 add wave -noupdate -group {MEMWB Register} /system_tb/DUT/CPU/DP0/memwbif/flush
@@ -292,7 +293,7 @@ add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/il
 add wave -noupdate -expand -group {Instruction Cache} /system_tb/DUT/CPU/cif0/iaddr
 add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/cif0/daddr
 add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM0/DCACHE/req
-add wave -noupdate -expand -group {Data Cache} -expand -subitemconfig {{/system_tb/DUT/CPU/CM0/DCACHE/frames[1]} -expand {/system_tb/DUT/CPU/CM0/DCACHE/frames[1][0]} -expand {/system_tb/DUT/CPU/CM0/DCACHE/frames[0]} -expand {/system_tb/DUT/CPU/CM0/DCACHE/frames[0][0]} -expand} /system_tb/DUT/CPU/CM0/DCACHE/frames
+add wave -noupdate -expand -group {Data Cache} -expand -subitemconfig {{/system_tb/DUT/CPU/CM0/DCACHE/frames[1]} -expand {/system_tb/DUT/CPU/CM0/DCACHE/frames[0]} -expand} /system_tb/DUT/CPU/CM0/DCACHE/frames
 add wave -noupdate -expand -group {Data Cache} /system_tb/DUT/CPU/CM0/DCACHE/state
 add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/dwait
 add wave -noupdate -expand -group {Data Cache} -expand -group ccif /system_tb/DUT/CPU/cif0/dREN
@@ -609,6 +610,7 @@ add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemWEN
 add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemload
 add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemstore
 add wave -noupdate -expand -group dpif /system_tb/DUT/CPU/DP1/dpif/dmemaddr
+add wave -noupdate /system_tb/DUT/CPU/DP1/dpif/datomic
 add wave -noupdate -divider {MEMWB Register}
 add wave -noupdate -group {MEMWB Register} /system_tb/DUT/CPU/DP1/memwbif/writeEN
 add wave -noupdate -group {MEMWB Register} /system_tb/DUT/CPU/DP1/memwbif/flush
@@ -648,7 +650,7 @@ add wave -noupdate -color Cyan -label system_halt /system_tb/PROG/syif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP0/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP0/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {3040000 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1287533 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 169
@@ -664,4 +666,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {10501002 ps}
+WaveRestoreZoom {0 ps} {15574 ns}

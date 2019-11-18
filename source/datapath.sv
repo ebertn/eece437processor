@@ -247,6 +247,7 @@ module datapath (
     assign dpif.imemaddr = pcif.count;
     assign dpif.dmemstore = exmemif.rdat2_out;
     assign dpif.dmemaddr = exmemif.aluOutport_out;
+    assign dpif.datomic = exmemif.Atomic_out;
 
     // Register File Inputs
     assign rfif.rsel2 = rt.rt;
@@ -268,7 +269,7 @@ module datapath (
     assign ifidif.next_pc_in = if_next_pc;  
   
     //ID/EX Inputs
-    assign idexif.pcplus4_in = ifidif.pcplus4_out; 
+    assign idexif.pcplus4_in = ifidif.pcplus4_out;
     assign idexif.rdat1_in = rfif.rdat1; 
     assign idexif.rdat2_in = rfif.rdat2; 
     assign idexif.immext_in = extif.out;
@@ -279,7 +280,8 @@ module datapath (
     assign idexif.rsel1_in = rfif.rsel1;
     assign idexif.rsel2_in = rfif.rsel2;
 
-    assign idexif.MemToReg_in = cuif.MemToReg; 
+    assign idexif.Atomic_in = cuif.Atomic;
+    assign idexif.MemToReg_in = cuif.MemToReg;
     assign idexif.AluOp_in = cuif.AluOp; 
     assign idexif.AluSrc_in = cuif.AluSrc; 
     assign idexif.JType_in = cuif.JType; 
@@ -314,6 +316,7 @@ module datapath (
     assign exmemif.rt_in = idexif.rt_out;
     assign exmemif.rd_in = idexif.rd_out;
 
+    assign exmemif.Atomic_in = idexif.Atomic_out;
     assign exmemif.MemToReg_in = idexif.MemToReg_out;
     assign exmemif.JType_in = idexif.JType_out; 
     assign exmemif.RegDst_in = idexif.RegDst_out; 

@@ -12,7 +12,7 @@ module exmem
 	// Outputs
 	word_t next_pcplus4_out, next_branchaddr_out, next_aluOutport_out, next_rdat2_out;
 	regbits_t next_rt_out, next_rd_out;
-	logic next_MemToReg_out, next_JType_out, next_RegDst_out, next_regWEN_out, next_PcSrc_out, next_JReg_out, next_Halt_out, next_dMemWEN_out, next_dMemREN_out;
+	logic next_Atomic_out, next_MemToReg_out, next_JType_out, next_RegDst_out, next_regWEN_out, next_PcSrc_out, next_JReg_out, next_Halt_out, next_dMemWEN_out, next_dMemREN_out;
 
 	//DEBUG BULLSHIT
 	opcode_t next_InstrOp_out;
@@ -35,6 +35,7 @@ module exmem
 			exmem.rt_out <= '0;
 			exmem.rd_out <= '0;
 
+			exmem.Atomic_out <= 0;
 			exmem.MemToReg_out <= 0; 
  			exmem.JType_out <= 0; 
 			exmem.RegDst_out <= 0; 
@@ -67,6 +68,7 @@ module exmem
 			exmem.rt_out <= next_rt_out;
 			exmem.rd_out <= next_rd_out;
 
+			exmem.Atomic_out <= next_Atomic_out;
 			exmem.MemToReg_out <= next_MemToReg_out;
 			exmem.JType_out <= next_JType_out;
 			exmem.RegDst_out <= next_RegDst_out;
@@ -102,6 +104,7 @@ module exmem
 			next_rt_out = '0;
 			next_rd_out = '0;
 
+			next_Atomic_out = '0;
 			next_MemToReg_out = 0;
 			next_JType_out = 0;
 			next_RegDst_out = 0;
@@ -134,6 +137,7 @@ module exmem
 			next_rt_out = exmem.rt_out;
 			next_rd_out = exmem.rd_out;
 
+			next_Atomic_out = exmem.Atomic_out;
 			next_MemToReg_out = exmem.MemToReg_out;
 			next_JType_out = exmem.JType_out;
 			next_RegDst_out = exmem.RegDst_out;
@@ -166,6 +170,7 @@ module exmem
 				next_rt_out = exmem.rt_in;
 				next_rd_out = exmem.rd_in;
 
+				next_Atomic_out = exmem.Atomic_in;
 				next_MemToReg_out = exmem.MemToReg_in;
 				next_JType_out = exmem.JType_in;
 				next_RegDst_out = exmem.RegDst_in;

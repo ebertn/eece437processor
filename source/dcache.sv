@@ -86,6 +86,7 @@ module dcache (
 		next_index = index; 
 		dcif.flushed = 0;
         cif.ccwrite = 0;
+        cif.cctrans = 0;
         next_hit_count = hit_count;
         next_miss_count = miss_count;
         next_miss_hit_flag = miss_hit_flag;
@@ -111,12 +112,14 @@ module dcache (
                     // Check if there is a hit, and its in M (v = 1, d = 1)
                     if(frames[0][snoop_req.idx].tag == snoop_req.tag && frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1) begin
                         next_state = SNOOP_WB1;
-                        cif.ccwrite = 1; // Notify bus of hit
+//                        cif.ccwrite = 1; // Notify bus of hit
+                        cif.cctrans = 1; // Notify bus of hit
                         next_frames[0][snoop_req.idx].valid = !cif.ccinv; // Set to I if ccinv
                         next_frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
                     end else if (frames[1][snoop_req.idx].tag == snoop_req.tag && frames[1][snoop_req.idx].valid == 1 && frames[1][snoop_req.idx].dirty == 1) begin
                         next_state = SNOOP_WB1;
-                        cif.ccwrite = 1; // Notify bus of hit
+//                        cif.ccwrite = 1; // Notify bus of hit
+                        cif.cctrans = 1; // Notify bus of hit
                         next_frames[1][snoop_req.idx].valid = !cif.ccinv; // Set to I if ccinv
                         next_frames[1][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
                     end else if(frames[0][snoop_req.idx].tag == snoop_req.tag && frames[0][snoop_req.idx].valid == 1) begin
@@ -252,7 +255,8 @@ module dcache (
 
             SNOOP_WB1: begin
                 // Write hit to the Bus
-                cif.ccwrite = 1; // Notify bus of hit
+//                cif.ccwrite = 1; // Notify bus of hit
+                cif.cctrans = 1; // Notify bus of hit
                 cif.dWEN = 1;
                 cif.daddr = {snoop_req.tag, snoop_req.idx, 1'b0, 2'b00};
                 if(frames[0][snoop_req.idx].tag == snoop_req.tag /*&& frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1*/) begin
@@ -268,7 +272,8 @@ module dcache (
 
             SNOOP_WB2: begin
                 // Write hit to the Bus
-                cif.ccwrite = 1; // Notify bus of hit
+//                cif.ccwrite = 1; // Notify bus of hit
+                cif.cctrans = 1; // Notify bus of hit
                 cif.dWEN = 1;
                 cif.daddr = {snoop_req.tag, snoop_req.idx, 1'b1, 2'b00};
                 if(frames[0][snoop_req.idx].tag == snoop_req.tag /*&& frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1*/) begin

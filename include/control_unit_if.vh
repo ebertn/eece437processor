@@ -8,7 +8,7 @@ interface control_unit_if;
   // import types
   import cpu_types_pkg::*;
 
-	logic Equal, PcSrc, Halt, dMemREN, dMemWEN, RegDst, MemToReg, regWEN, UpperImm, AluSrc, ExtOp, JType, RegZero, JReg;
+	logic Atomic, Equal, PcSrc, Halt, dMemREN, dMemWEN, RegDst, MemToReg, regWEN, UpperImm, AluSrc, ExtOp, JType, RegZero, JReg;
 	opcode_t InstrOp;
 	funct_t InstrFunc;
  	aluop_t AluOp;
@@ -16,11 +16,11 @@ interface control_unit_if;
 	// control unit ports
 	modport cu (
 	input   Equal, InstrOp, InstrFunc,
-	output  PcSrc, RegDst, AluOp, dMemWEN, MemToReg, Halt, dMemREN, AluSrc, ExtOp, regWEN, UpperImm, RegZero, JType, JReg
+	output  Atomic, PcSrc, RegDst, AluOp, dMemWEN, MemToReg, Halt, dMemREN, AluSrc, ExtOp, regWEN, UpperImm, RegZero, JType, JReg
 	);
 	// control unit tb
 	modport tb (
-	input   PcSrc, RegDst, AluOp, dMemWEN, MemToReg, Halt, dMemREN, AluSrc, ExtOp, regWEN, UpperImm, RegZero, JType, JReg,
+	input   Atomic, PcSrc, RegDst, AluOp, dMemWEN, MemToReg, Halt, dMemREN, AluSrc, ExtOp, regWEN, UpperImm, RegZero, JType, JReg,
 	output  Equal, InstrOp, InstrFunc
 	);
 endinterface

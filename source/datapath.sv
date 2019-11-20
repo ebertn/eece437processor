@@ -229,8 +229,8 @@ module datapath (
         endcase
     end
 
-    assign branch_dep = (rt.opcode == BEQ || rt.opcode == BNE) && hazardif.hazard && !(dpif.dmemREN && !dpif.dhit);
-    assign load_hazard = idexif.dMemREN_out && (idexif.writeReg_out == rfif.rsel1 || idexif.writeReg_out == rfif.rsel2);
+    assign branch_dep = (rt.opcode == BEQ || rt.opcode == BNE) && hazardif.hazard && !((dpif.dmemREN || dpif.dmemWEN && dpif.datomic) && !dpif.dhit);
+    assign load_hazard = (idexif.dMemREN_out || idexif.dMemWEN_out && idexif.Atomic_out) && (idexif.writeReg_out == rfif.rsel1 || idexif.writeReg_out == rfif.rsel2);
 
     // PC Inputs
     assign pcif.next_count = if_next_pc;

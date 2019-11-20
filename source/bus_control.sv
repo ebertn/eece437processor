@@ -107,8 +107,8 @@ module bus_control
 				bmif.daddr = '0;
 				bmif.dREN = '0;
 				ccif.dload = '0;
-				//ccif.ccwait[0] = 0;
-				//ccif.ccwait[1] = 0;
+//				ccif.ccwait[0] = 0;
+//				ccif.ccwait[1] = 0;
 
 				if(ccif.dREN[0] == 1 || ccif.dWEN[0] == 1 
 					|| ccif.ccwrite[0] == 1) begin
@@ -124,8 +124,8 @@ module bus_control
 			ARBITRATE: begin
 				bmif.daddr = '0;
 
-				//ccif.ccwait[0] = 0;
-				//ccif.ccwait[1] = 0;
+//				ccif.ccwait[0] = 0;
+//				ccif.ccwait[1] = 0;
 
 				if(ccif.dREN[0] == 1 || ccif.dWEN[0] == 1
 					|| ccif.ccwrite[0] == 1) begin
@@ -150,20 +150,24 @@ module bus_control
 					//ccif.ccwait[!arbitraitor] = 1;
 					ccif.dwait[arbitraitor] = 0;
 
-					next_state = REQUEST;
+//					next_state = REQUEST;
+					next_state = SNOOP; // Stay in snoop until ccwrite goes low
 //					if(ccif.ccwrite[!arbitraitor] == 1) begin
 					if(ccif.cctrans[!arbitraitor] == 1) begin // Changed when transitioned from ccwrite -> cctrans
 						next_state = MODIFIED_WB1;
 					end
 
 //				end else if (ccif.dREN[arbitraitor] == 1 && ccif.ccwrite[!arbitraitor] == 1) begin
-				end else if (ccif.dREN[arbitraitor] == 1 && ccif.cctrans[!arbitraitor] == 1) begin// Changed when transitioned from ccwrite -> cctrans
-
+				/*end else if (ccif.dREN[arbitraitor] == 0 && ccif.ccwrite[arbitraitor] == 0) begin
+					next_state = REQUEST;
+				*/end else if (ccif.dREN[arbitraitor] == 1 && ccif.cctrans[!arbitraitor] == 1) begin// Changed when transitioned from ccwrite -> cctrans
 					// BusRd
 					next_state = MODIFIED_WB1;
-				end else begin
+				end else /*if (ccif.dREN[arbitraitor] == 1 && ccif.cctrans[!arbitraitor] == 0)*/ begin
 					next_state = MEMORY_READ;
-				end
+				end /*else begin
+					next_state = REQUEST;
+				end*/
 			end 
 			
 			MEMORY_WB: begin // Make this work

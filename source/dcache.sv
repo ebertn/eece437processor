@@ -47,6 +47,9 @@ module dcache (
     word_t miss_count, next_miss_count;
     logic miss_hit_flag, next_miss_hit_flag;
 
+    word_t link_reg, next_link_reg;
+    logic link_valid, next_link_valid;
+
     always_ff @(posedge CLK, negedge nRST) begin
         if (!nRST) begin
             frames <= '0;
@@ -56,6 +59,8 @@ module dcache (
             hit_count <= '0;
             miss_count <= '0;
             miss_hit_flag <= 0;
+            link_reg <= '0;
+            link_valid <= 0;
         end else begin
             frames <= next_frames;
             state <= next_state;
@@ -64,6 +69,8 @@ module dcache (
             hit_count <= next_hit_count;
             miss_count <= next_miss_count;
             miss_hit_flag <= next_miss_hit_flag;
+            link_reg <= next_link_reg;
+            link_valid <= next_link_valid;
         end
     end
 
@@ -90,6 +97,8 @@ module dcache (
         next_hit_count = hit_count;
         next_miss_count = miss_count;
         next_miss_hit_flag = miss_hit_flag;
+        next_link_reg = link_reg;
+        next_link_valid = link_valid;
 
         casez(state)
 
@@ -127,6 +136,10 @@ module dcache (
                     end else if (frames[1][snoop_req.idx].tag == snoop_req.tag && frames[1][snoop_req.idx].valid == 1) begin
                         next_frames[1][snoop_req.idx].valid = !cif.ccinv; // Set to I if ccinv
                     end
+
+                    if(cif.ccsnoopaddr /*(snoop_req)*/ == link_reg && cif.ccinv) begin
+                        next_link_valid = 0;
+                    end
                 end else if(dcif.halt) begin
                     next_state = FLUSH_INIT;
                     next_index = 0;
@@ -145,19 +158,47 @@ module dcache (
                         next_hit_count = hit_count + 1;
                     end
 
+                    if(dcif.dmemREN && dcif.datomic) begin
+                        // Handle LL (load linked)
+                        next_link_reg = dcif.dmemaddr;
+                        next_link_valid = 1;
+                    end
+
                     if (dcif.dmemWEN) begin
+                        cif.daddr = req;
                         dcif.dmemload = dcif.dmemstore;
                         next_frames[0][req.idx].data[req.blkoff] = dcif.dmemstore;
-                        next_frames[0][req.idx].dirty = 1;
-                        cif.daddr = req;
+//                        next_frames[0][req.idx].dirty = 1;
+                        next_frames[0][req.idx].dirty = !cif.dwait;
+
+
+                        if(link_reg == dcif.dmemaddr && !cif.dwait) begin
+                            // Store address matches link register
+                            next_link_valid = 0;
+                        end
+
+                        if(dcif.datomic) begin
+                            if(link_reg == dcif.dmemaddr & link_valid) begin
+                                // SC success
+                                // Complete store (above), and return 1 to datapath
+                                dcif.dmemload = 1;
+                            end else begin
+                                // SC failed
+                                // No store is completed (undo next above), and return 0 to datapath
+                                dcif.dmemload = 0;
+                                next_frames[0][req.idx].data[req.blkoff] = frames[0][req.idx].data[req.blkoff];
+                                next_frames[0][req.idx].dirty = frames[0][req.idx].dirty;
+                            end
+                        end
 
                         if (cif.ccwait == 0) begin
                             cif.ccwrite = 1; // PrWr
                             dcif.dhit = !cif.dwait;
+//                            next_link_valid = link_reg == dcif.dmemaddr && cif.dwait;
                         end
                     end
                 end else if (frames[1][req.idx].tag == req.tag && frames[1][req.idx].valid) begin
-                    // Hit in set 1
+                    // Hit in set 0
                     dcif.dhit = 1;
                     dcif.dmemload = frames[1][req.idx].data[req.blkoff];
 
@@ -168,18 +209,52 @@ module dcache (
                         next_hit_count = hit_count + 1;
                     end
 
+                    if(dcif.dmemREN && dcif.datomic) begin
+                        // Handle LL (load linked)
+                        next_link_reg = dcif.dmemaddr;
+                        next_link_valid = 1;
+                    end
+
                     if (dcif.dmemWEN) begin
+                        cif.daddr = req;
                         dcif.dmemload = dcif.dmemstore;
                         next_frames[1][req.idx].data[req.blkoff] = dcif.dmemstore;
-                        next_frames[1][req.idx].dirty = 1;
-                        cif.ccwrite = 1;
-                        cif.daddr = req;
+//                        next_frames[0][req.idx].dirty = 1;
+                        next_frames[1][req.idx].dirty = !cif.dwait;
 
-                        dcif.dhit = !cif.dwait;
+
+                        if(link_reg == dcif.dmemaddr && !cif.dwait) begin
+                            // Store address matches link register
+                            next_link_valid = 0;
+                        end
+
+                        if(dcif.datomic) begin
+                            if(link_reg == dcif.dmemaddr & link_valid) begin
+                                // SC success
+                                // Complete store (above), and return 1 to datapath
+                                dcif.dmemload = 1;
+                            end else begin
+                                // SC failed
+                                // No store is completed (undo next above), and return 0 to datapath
+                                dcif.dmemload = 0;
+                                next_frames[1][req.idx].data[req.blkoff] = frames[1][req.idx].data[req.blkoff];
+                                next_frames[1][req.idx].dirty = frames[1][req.idx].dirty;
+                            end
+                        end
+
+                        if (cif.ccwait == 0) begin
+                            cif.ccwrite = 1; // PrWr
+                            dcif.dhit = !cif.dwait;
+//                            next_link_valid = link_reg == dcif.dmemaddr && cif.dwait;
+                        end
                     end
 				
                 end else begin
                     next_state = frames[lru][req.idx].dirty ? WRITE_BACK1 : ALLOCATE1;
+
+                    // May or may not need to invalidate link register here
+                    // might work to just invalidate it when we come back to
+                    // COMPARE_TAG and hit
                 end
             end
 
@@ -268,6 +343,10 @@ module dcache (
                 if(!cif.dwait) begin
                     next_state = SNOOP_WB2;
                 end
+
+                if(cif.ccsnoopaddr /*(snoop_req)*/ == link_reg && cif.ccinv) begin
+                    next_link_valid = 0;
+                end
             end
 
             SNOOP_WB2: begin
@@ -288,6 +367,10 @@ module dcache (
 
                 if(!cif.dwait) begin
                     next_state = COMPARE_TAG;
+                end
+
+                if(cif.ccsnoopaddr /*(snoop_req)*/ == link_reg && cif.ccinv) begin
+                    next_link_valid = 0;
                 end
             end
 

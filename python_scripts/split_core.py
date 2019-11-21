@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import subprocess
 
 def print_offset(input_str, offset):

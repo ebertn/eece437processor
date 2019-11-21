@@ -237,7 +237,7 @@ module datapath (
     assign pcif.countEn = (dpif.ihit | hazardif.branch | hazardif.jump) && !exmemif.Halt_out && (hazardif.jump || !hazardif.hazard || dpif.dhit) && !branch_dep && !load_hazard;
 
     logic pipeline_reg_writeEN;
-    assign pipeline_reg_writeEN = dpif.ihit && dpif.dhit || !hazardif.hazard && (dpif.ihit | hazardif.branch | hazardif.jump) || branch_dep && dpif.ihit || load_hazard && dpif.ihit;
+    assign pipeline_reg_writeEN = dpif.ihit && dpif.dhit || !hazardif.hazard && (dpif.ihit | hazardif.branch | hazardif.jump) || branch_dep && dpif.ihit || load_hazard && dpif.ihit && dpif.dhit;
 
     // Datapath Outputs
     assign dpif.halt = memwbif.Halt_out;

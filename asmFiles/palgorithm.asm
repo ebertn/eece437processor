@@ -48,18 +48,18 @@ producer:
     addi $s4, $s4, 1
  	addi $a0,$a0,4
     bne $s4, $s3, part2
-    
+
 	ori $s4, $0, 0
     ori $a0, $0, 0
     ori $a0, $0, buffer
   part2:
     ori $a1, $0, buffer_index
     jal lock2
-    
+
     bne $s1, $s2,loop
-  ori $s4, $0, 1	
+  ori $s4, $0, 1
   ori $a1, $0, buffer_full
-  jal lock2 
+  jal lock2
   pop   $ra                 # get return address
   jr    $ra                 # return to caller
 
@@ -91,7 +91,7 @@ l2:
 #----------------------------------------------------------
   org   0x200               # second processor p1
   ori   $sp, $zero, 0x7ffc  # stack
-  
+
 halt
 jal   consumer           # go to program
   halt
@@ -165,50 +165,47 @@ divrtn:
 
 lock3:
 aquire3:
-  ll    $t0, 0($s3)  
-halt       
-  beq   $t0, $0, aquire3     
-  
+  ll    $t0, 0($s3)
+  beq   $t0, $0, aquire3
+
   ori $t1, $0, 0
   ori $t2, $0, 1
- 
- 
+
+
   beq $s4, $t1, first
   beq $s4, $t2, second
-  
+
   first:
     or $s5, $t1, $0
 	ori $t0, $0, 0
     sc $t0, 0($s3)
     beq   $t0, $0, first
-    jr    $ra  
-  
+    jr    $ra
+
   second:
     or $s6, $t2, $0
 	ori $t0, $0, 0
     sc $t0, 0($s3)
     beq   $t0, $0, second
-    jr    $ra  
-        
+    jr    $ra
+
 consumer:
-  push  $ra    
-  halt           
+  push  $ra
   ori $s0, $0, buffer_full
   ori $s1, $0, buffer_index2
   ori $s2, $0, 0
   ori $s4, $0, 0
-  
+
   loop2:
-  	ori $t0,$0, 1  
-    lw $t1, 0($s0)	
-    beq $t0, $1, end 
+  	ori $t0,$0, 1
+    lw $t1, 0($s0)
+    beq $t0, $1, end
     addi $s3, $s2, buffer
- 	
-    jal lock3 
-	halt
-	ori $t0,$0, 2   
-    bne $s4, $t0, next  
-    
+
+    jal lock3
+	ori $t0,$0, 2
+    bne $s4, $t0, next
+
 	#Max
     ori $s7, $0, max_val
     lw $t1, 0($s7)
@@ -237,7 +234,7 @@ consumer:
     add $t2, $t1, $s5
 	add $t3, $t2, $s6
     sw $t3, 0($t0)
-   	
+
 	ori $s4, $0, 0
 	ori $s5, $0, 0
 	ori $s6, $0, 0
@@ -287,7 +284,7 @@ buffer_size:
 num_of_entries:
   cfw 0x00FF
 mini_buffer:
-  cfw 0x00000000          
+  cfw 0x00000000
 min_val:
   cfw 0xFFFFFFF0
 max_val:

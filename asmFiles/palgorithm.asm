@@ -11,14 +11,16 @@ lock:
 aquire:
   push $ra
   ll    $t0, 0($a0)         # load lock location
-  bne $t0, $0, aquire
+
+
   or $s6, $0, $a0
   or $a0, $s2, $0
   jal crc32
+
   or $a0, $s6, $0
-  sc    $v0, 0($a0)
-  beq   $v0, $0, lock       # if sc failed retry
-  pop $ra
+  sc    $v0, 0($a0)      # if sc failed retry
+
+pop $ra
   jr    $ra
 
 lock2:
@@ -35,7 +37,7 @@ unlock1:
 
 producer:
   push  $ra                 # save return address
-  ori $s1, $0, 10     #loop control variables
+  ori $s1, $0,256  #loop control variables
   ori $s2, $0, 0
   ori $t0, $0, buffer_size
   lw $s3,0($t0)
@@ -52,11 +54,13 @@ producer:
 	ori $s4, $0, 0
     ori $a0, $0, 0
     ori $a0, $0, buffer
+	
   part2:
     ori $a1, $0, buffer_index
     jal lock2
 
     bne $s1, $s2,loop
+  
   ori $s4, $0, 1
   ori $a1, $0, buffer_full
   jal lock2
@@ -92,7 +96,7 @@ l2:
   org   0x200               # second processor p1
   ori   $sp, $zero, 0x7ffc  # stack
 
-halt
+
 jal   consumer           # go to program
   halt
 #-max (a0=a,a1=b) returns v0=max(a,b)--------------
@@ -161,52 +165,67 @@ divrtn:
   pop $a0
   pop $ra
   jr  $ra
-#-divide--------------------------------------------
+#-divide--------------------------------------------#
+check:
+	ori $t0,$0, 1
+	lw $t1, 0($s0)
+    beq $t0, $t1, end
+    bne $t0, $t1, aquire3
 
 lock3:
 aquire3:
-  ll    $t0, 0($s3)
-  beq   $t0, $0, aquire3
-
+  push $ra
+  ll    $t0, 0($a0)
+  
   ori $t1, $0, 0
   ori $t2, $0, 1
-
-
   beq $s4, $t1, first
   beq $s4, $t2, second
 
+  pop $ra
+  jr    $ra
+  
   first:
-    or $s5, $t1, $0
-	ori $t0, $0, 0
-    sc $t0, 0($s3)
+	or $s4, $t2, $0
+    or $s5, $t0, $0
+    ori $t0, $0, 0
+    sc $t0, 0($a0)
     beq   $t0, $0, first
+    pop $ra
     jr    $ra
 
   second:
-    or $s6, $t2, $0
-	ori $t0, $0, 0
-    sc $t0, 0($s3)
+	ori $t2, $0, 2
+	or $s4, $t2, $0
+    or $s6, $t0, $0
+    ori $t0, $0, 0
+    sc $t0, 0($a0)
     beq   $t0, $0, second
+    pop $ra
     jr    $ra
 
 consumer:
   push  $ra
-  ori $s0, $0, buffer_full
-  ori $s1, $0, buffer_index2
+  ori $s1, $0,256  #loop control variables
   ori $s2, $0, 0
-  ori $s4, $0, 0
+  ori $t0, $0, buffer_size
+  lw $s3,0($t0)
+  ori $a0, $0, buffer       #address of the start of the buffer
+  ori $a1, $0, 0
+  ori $t0, $0, 4
+  add $a0, $a0, $t0
 
-  loop2:
-  	ori $t0,$0, 1
-    lw $t1, 0($s0)
-    beq $t0, $1, end
-    addi $s3, $s2, buffer
+  
+loop2:
 
-    jal lock3
+	jal lock3
+	addi $s2, $s2, 1
 	ori $t0,$0, 2
     bne $s4, $t0, next
-
-	#Max
+    or $a2, $a0, $0
+    or $a3, $a1, $0
+	
+    #Max
     ori $s7, $0, max_val
     lw $t1, 0($s7)
     or $a0, $s5, $0
@@ -218,17 +237,19 @@ consumer:
     sw $v0, 0($s7)
 
 	#Min
-    ori $s7, $0, min_val
     lw $t1, 0($s7)
     or $a0, $s5, $0
 	or $a1, $s5, $0
 	jal min
     or $a0, $v0, $0
 	or $a1, $t1, $0
-    sw $v0, 0($s7)
 	jal min
+	
+	or $a0, $a2, $0
+    or $a1, $a3, $0
+	
 
-	#Add to total
+    #Add to total
     ori $t0, $0, total
     lw $t1, 0($t0)
     add $t2, $t1, $s5
@@ -238,17 +259,19 @@ consumer:
 	ori $s4, $0, 0
 	ori $s5, $0, 0
 	ori $s6, $0, 0
-
+	
    next:
-	addi $s3, $s3, 4
-    ori $t0, $0, 40
-   	bne $s3, $t0, stuff
-    ori $s3, $0, 0
-	stuff:
-  	  ori $t0, $0, 0
-      beq $t0, $0, loop
+	addi $a1, $a1, 1
+ 	addi $a0,$a0,4
+	bne $a1, $s3, stuff
 
-  end:
+	ori $a1, $0, 0
+    ori $a0, $0, 0
+    ori $a0, $0, buffer
+	stuff:
+  	 bne $s1, $s2,loop2
+  
+end:
 	ori $t0, $0, total
     lw $t1, 0($t0)
     ori $a0, $t1, 0
@@ -286,7 +309,7 @@ num_of_entries:
 mini_buffer:
   cfw 0x00000000
 min_val:
-  cfw 0xFFFFFFF0
+  cfw 0xDDDDDDDD
 max_val:
   cfw 0x00000000
 total:

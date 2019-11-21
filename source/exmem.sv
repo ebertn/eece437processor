@@ -28,7 +28,7 @@ module exmem
 	always_ff @(posedge CLK, negedge nRST) begin
 		if (!nRST) begin
 			exmem.pcplus4_out <= '0;
-			exmem.branchaddr_out <= '0;
+			//exmem.branchaddr_out <= '0;
 			exmem.aluOutport_out <= '0;
 			exmem.rdat2_out <= '0;
 
@@ -61,7 +61,7 @@ module exmem
 
 		end else begin
 			exmem.pcplus4_out <= next_pcplus4_out;
-			exmem.branchaddr_out <= next_branchaddr_out;
+			//exmem.branchaddr_out <= next_branchaddr_out;
 			exmem.aluOutport_out <= next_aluOutport_out;
 			exmem.rdat2_out <= next_rdat2_out;
 
@@ -97,7 +97,7 @@ module exmem
 	always_comb begin
 		if (exmem.flush) begin
 			next_pcplus4_out = '0;
-			next_branchaddr_out = '0;
+			//next_branchaddr_out = '0;
 			next_aluOutport_out = '0;
 			next_rdat2_out = '0;
 
@@ -130,7 +130,7 @@ module exmem
 
 		end else begin
 			next_pcplus4_out = exmem.pcplus4_out;
-			next_branchaddr_out = exmem.branchaddr_out;
+			//next_branchaddr_out = exmem.branchaddr_out;
 			next_aluOutport_out = exmem.aluOutport_out;
 			next_rdat2_out = exmem.rdat2_out;
 
@@ -163,7 +163,7 @@ module exmem
 
 			if(exmem.writeEN) begin
 				next_pcplus4_out = exmem.pcplus4_in;
-				next_branchaddr_out = exmem.branchaddr_in;
+				//next_branchaddr_out = exmem.branchaddr_in;
 				next_aluOutport_out = exmem.aluOutport_in;
 				next_rdat2_out = exmem.rdat2_in;
 

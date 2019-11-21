@@ -8,6 +8,7 @@
 
 // interface include
 `include "cache_control_if.vh"
+`include "bus_mem_if.vh"
 
 // memory types
 `include "cpu_types_pkg.vh"
@@ -20,11 +21,11 @@ module memory_control (
     import cpu_types_pkg::*;
 
     // number of cpus for cc
-    parameter CPUS = 1;
+    parameter CPUS = 2;
 
     bus_mem_if bmif();
 
-    bus_control BC (CLK, nRST, ccif, bmif);
+    bus_control BC (CLK, nRST, /*ccif,*/ bmif);
 
     logic last_instr_req, next_last_instr_req;
     logic data_hit, next_data_hit;
@@ -38,6 +39,23 @@ module memory_control (
             data_hit <= next_data_hit;
         end
     end
+
+    // Outputs
+    assign bmif.ccif_dREN = ccif.dREN;
+    assign bmif.ccif_dWEN = ccif.dWEN;
+    assign bmif.ccif_halt = ccif.halt;
+    assign bmif.ccif_flushed = ccif.flushed;
+    assign bmif.ccif_dstore = ccif.dstore;
+    assign bmif.ccif_daddr = ccif.daddr;
+    assign bmif.ccif_ccwrite = ccif.ccwrite;
+    assign bmif.ccif_cctrans = ccif.cctrans;
+
+    // Inputs
+    assign ccif.dwait = bmif.ccif_dwait;
+    assign ccif.dload = bmif.ccif_dload;
+    assign ccif.ccwait = bmif.ccif_ccwait;
+    assign ccif.ccinv = bmif.ccif_ccinv;
+    assign ccif.ccsnoopaddr = bmif.ccif_ccsnoopaddr;
 
     // Arbitrate
     always_comb begin
@@ -60,47 +78,8 @@ module memory_control (
         next_last_instr_req = last_instr_req;
         next_data_hit = data_hit;
 
-        // Instruction read
-       /*if (ccif.ramstate == ACCESS && !(bmif.dREN || bmif.dWEN)) begin
-            // Toggle between processors on instruction read
-       	 	next_last_instr_req = !last_instr_req;
-		end*/
-
-        //if(!ccif.dREN[0] & !ccif.dREN[1] & !ccif.dWEN[0] & !ccif.dWEN[1]) begin
-        //if(!ccif.dREN[0] &  !ccif.dWEN[0] & !ccif.dREN[1] & !ccif.dWEN[1]
-        //    | (ccif.dREN[last_instr_req] | ccif.dWEN[last_instr_req]) & ccif.ramstate == ACCESS) begin
-        /*if (!ccif.dREN[last_instr_req] & !ccif.dWEN[last_instr_req]) begin
-            // Last instr req not waiting for data, get instr for this CPU
-            ccif.iwait[last_instr_req] = ccif.ramstate != ACCESS;
-            ccif.iload[last_instr_req] = ccif.ramload;
-            ccif.ramaddr = ccif.iaddr[last_instr_req];
-            ccif.ramREN = ccif.iREN[last_instr_req];
-
-            //if(ccif.ramstate == ACCESS) begin
-                //next_last_instr_req = !last_instr_req;
-                //next_data_hit = 0;
-            //end
-        end else begin
-
-            ccif.iwait[!last_instr_req] = ccif.ramstate != ACCESS;
-            ccif.iload[!last_instr_req] = ccif.ramload;
-            ccif.ramaddr = ccif.iaddr[!last_instr_req];
-            ccif.ramREN = ccif.iREN[!last_instr_req];
-        end*/
-
         if (ccif.dREN[last_instr_req] | ccif.dWEN[last_instr_req]) begin
-            // Last instr req not waiting for data, get instr for other CPU
 
-            //ccif.iwait[!last_instr_req] = ccif.ramstate != ACCESS;
-            //ccif.iload[!last_instr_req] = ccif.ramload;
-            //ccif.ramaddr = ccif.iaddr[!last_instr_req];
-            //ccif.ramREN = ccif.iREN[!last_instr_req];
-
-
-            //if(ccif.ramstate == ACCESS) begin
-            //next_last_instr_req = !last_instr_req;
-            //next_data_hit = 0;
-            //end
         end else if (ccif.iREN[0] == 0 && ccif.iREN[1] == 1) begin
             ccif.iwait[1] = ccif.ramstate != ACCESS;
             ccif.iload[1] = ccif.ramload;

@@ -373,7 +373,7 @@ module datapath (
     assign memwbif.next_pc_in = exmemif.next_pc_out; 
     assign memwbif.imm_in =  exmemif.imm_out;  
     assign memwbif.imm_16_in = exmemif.imm_16_out; 
-    assign memwbif.branchaddr_in = exmemif.branchaddr_out; 
+    //assign memwbif.branchaddr_in = exmemif.branchaddr_out;
     assign memwbif.shamt_in = memwbif.shamt_out; 
 
     // ALU Connection Inputs

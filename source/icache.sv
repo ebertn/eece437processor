@@ -5,7 +5,7 @@
 
 module icache (
 	input logic CLK, nRST, 
-	datapath_cache_if dcif,
+	datapath_cache_if.icache dcif,
 	caches_if.icache cif
 ); 
 

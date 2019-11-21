@@ -45,20 +45,20 @@ interface caches_if;
 
   // dcache ports to controller
   modport dcache (
-    input   dwait, dload, halt, flushed,
+    input   dwait, dload,
             ccwait, ccinv, ccsnoopaddr,
     output  dREN, dWEN, daddr, dstore,
-            ccwrite, cctrans
+            ccwrite, cctrans, halt, flushed
   );
 
   // caches ports to controller
   modport caches(
-    input   dwait, dload, halt, flushed,
+    input   dwait, dload,
              
             iwait, iload,
     output  dREN, dWEN, daddr, dstore,
             ccwrite, cctrans,
-            iREN, iaddr
+            iREN, iaddr, halt, flushed
   );
 
 

@@ -51,7 +51,7 @@ module memwb
 			memwb.next_pc_out <= 0; 
 			memwb.imm_out <= 0;
 			memwb.imm_16_out <= 0; 
-			memwb.branchaddr_out <= 0; 
+			//memwb.branchaddr_out <= 0;
 			memwb.shamt_out <= 0;
 
 			//HAZARD BULLSHIT
@@ -82,7 +82,7 @@ module memwb
 			memwb.next_pc_out <= next_next_pc_out;
 			memwb.imm_out <= next_imm_out;
 			memwb.imm_16_out <= next_imm_16_out;
-			memwb.branchaddr_out <= next_branchaddr_out;
+			//memwb.branchaddr_out <= next_branchaddr_out;
 			memwb.shamt_out <= next_shamt_out;
 
 			//HAZARD BULLSHIT
@@ -115,7 +115,7 @@ module memwb
 			next_next_pc_out = 0;
 			next_imm_out = 0;
 			next_imm_16_out = 0;
-			next_branchaddr_out = 0;
+			//next_branchaddr_out = 0;
 			next_shamt_out = 0;
 			
 			// HAZARD BULLSHIT
@@ -146,7 +146,7 @@ module memwb
 			next_next_pc_out = memwb.next_pc_out;
 			next_imm_out = memwb.imm_out;
 			next_imm_16_out = memwb.imm_16_out;
-			next_branchaddr_out = memwb.branchaddr_out;
+			//next_branchaddr_out = memwb.branchaddr_out;
 			next_shamt_out = memwb.shamt_out;
 
 			// HAZARD BULLSHIT
@@ -176,7 +176,7 @@ module memwb
 				next_next_pc_out = memwb.next_pc_in;
 				next_imm_out = memwb.imm_in;
 				next_imm_16_out = memwb.imm_16_in;
-				next_branchaddr_out = memwb.branchaddr_in;
+				//next_branchaddr_out = memwb.branchaddr_in;
 				next_shamt_out = memwb.shamt_in;
 
 				// HAZARD BULLSHIT

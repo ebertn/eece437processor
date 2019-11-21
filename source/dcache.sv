@@ -4,7 +4,7 @@
 
 module dcache (
     input logic CLK, nRST,
-    datapath_cache_if.cache dcif,
+    datapath_cache_if.dcache dcif,
     caches_if.dcache cif
 );
 
@@ -151,10 +151,10 @@ module dcache (
                     dcif.dhit = 1;
                     dcif.dmemload = frames[0][req.idx].data[req.blkoff];
 
-                    if (miss_hit_flag && dcif.ihit) begin
+                    if (miss_hit_flag && dcif.dhit) begin
                         // Not initial hit
                         next_miss_hit_flag = 0;
-                    end else if (dcif.ihit) begin
+                    end else if (dcif.dhit) begin
                         next_hit_count = hit_count + 1;
                     end
 
@@ -202,10 +202,10 @@ module dcache (
                     dcif.dhit = 1;
                     dcif.dmemload = frames[1][req.idx].data[req.blkoff];
 
-                    if (miss_hit_flag && dcif.ihit) begin
+                    if (miss_hit_flag && dcif.dhit) begin
                         // Not initial hit
                         next_miss_hit_flag = 0;
-                    end else if (dcif.ihit) begin
+                    end else if (dcif.dhit) begin
                         next_hit_count = hit_count + 1;
                     end
 

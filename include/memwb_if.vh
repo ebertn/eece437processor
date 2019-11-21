@@ -27,7 +27,7 @@ opcode_t InstrOp_out;
 funct_t InstrFunc_out;
 regbits_t rs_in; 
 regbits_t rs_out; 
-word_t instr_in, instr_out, next_pc_in, next_pc_out, imm_in, imm_out, branchaddr_in, branchaddr_out; 
+word_t instr_in, instr_out, next_pc_in, next_pc_out, imm_in, imm_out/*, branchaddr_in, branchaddr_out*/;
 logic [15:0] imm_16_in, imm_16_out; 
 logic [4:0] shamt_in, shamt_out; 
 
@@ -36,13 +36,13 @@ regbits_t writeReg_in, writeReg_out;
 
 // memwb ports
 modport memwb (
-input   pcplus4_in, aluOutport_in, dmemload_in, rt_in, rd_in, MemToReg_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in, writeEN, flush, InstrOp_in, InstrFunc_in, rs_in, instr_in, next_pc_in, imm_in,imm_16_in, branchaddr_in, shamt_in, Halt_in,writeReg_in, 
-output  pcplus4_out, aluOutport_out, dmemload_out, rt_out, rd_out, MemToReg_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out, InstrOp_out, InstrFunc_out, rs_out, instr_out, next_pc_out, imm_out, imm_16_out, branchaddr_out, shamt_out, Halt_out, writeReg_out 
+input   pcplus4_in, aluOutport_in, dmemload_in, rt_in, rd_in, MemToReg_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in, writeEN, flush, InstrOp_in, InstrFunc_in, rs_in, instr_in, next_pc_in, imm_in,imm_16_in, /*branchaddr_in,*/ shamt_in, Halt_in,writeReg_in,
+output  pcplus4_out, aluOutport_out, dmemload_out, rt_out, rd_out, MemToReg_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out, InstrOp_out, InstrFunc_out, rs_out, instr_out, next_pc_out, imm_out, imm_16_out, /*branchaddr_out,*/ shamt_out, Halt_out, writeReg_out
 );
 // memwb tb
 modport tb (
-input   pcplus4_out, aluOutport_out, dmemload_out, rt_out, rd_out, MemToReg_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out,InstrOp_out,InstrFunc_out, rs_out, instr_out, next_pc_out, imm_out, imm_16_out,branchaddr_out, shamt_out, Halt_out,writeReg_out, 
-output  pcplus4_in, aluOutport_in, dmemload_in, rt_in, rd_in, MemToReg_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in, writeEN, flush, InstrOp_in, InstrFunc_in,rs_in,instr_in,next_pc_in, imm_in, imm_16_in, branchaddr_in, shamt_in, Halt_in, writeReg_in
+input   pcplus4_out, aluOutport_out, dmemload_out, rt_out, rd_out, MemToReg_out, JType_out, RegDst_out, regWEN_out, PcSrc_out, JReg_out,InstrOp_out,InstrFunc_out, rs_out, instr_out, next_pc_out, imm_out, imm_16_out, /*branchaddr_out,*/ shamt_out, Halt_out,writeReg_out,
+output  pcplus4_in, aluOutport_in, dmemload_in, rt_in, rd_in, MemToReg_in, JType_in, RegDst_in, regWEN_in, PcSrc_in, JReg_in, writeEN, flush, InstrOp_in, InstrFunc_in,rs_in,instr_in,next_pc_in, imm_in, imm_16_in, /*branchaddr_in,*/ shamt_in, Halt_in, writeReg_in
 );
 endinterface : memwb_if
 

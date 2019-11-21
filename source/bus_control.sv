@@ -33,19 +33,17 @@ module bus_control
 			arbitraitor <= next_arbitraitor;
 			return_val <= next_return_val;
 			return_addr <= next_return_addr;
-			
 		end 
 	end
 
 	always_comb begin
-		next_state = state; 
+		next_state = state;
 		next_arbitraitor = arbitraitor;
 		next_return_val = return_val;
 		next_return_addr = return_addr;
 
 //		bmif.dstore = '0;
 //		bmif.dWEN = '0;
-//		//bmif.ccif_ccwait = '0;
 //		bmif.daddr = '0;
 //		bmif.dREN = '0;
 //		bmif.ccif_dload = '0;
@@ -54,22 +52,22 @@ module bus_control
 		bmif.ccif_dwait = '1;
 		bmif.ccif_ccinv[0] = 0;
 		bmif.ccif_ccinv[1] = 0;
-		bmif.ccif_ccwait[arbitraitor] = 0; //!(bmif.ccif_dREN[arbitraitor] | bmif.ccif_dWEN[arbitraitor]);//0;
-		bmif.ccif_ccwait[!arbitraitor] = bmif.ccif_dREN[arbitraitor] | bmif.ccif_dWEN[arbitraitor] | bmif.ccif_ccwrite[arbitraitor];
-
-		if(bmif.ccif_halt[0] && bmif.ccif_halt[1]) begin
-			// Both are flushing
-			bmif.ccif_ccwait[0] = 0;
-			bmif.ccif_ccwait[1] = 0;
-		end else if(bmif.ccif_halt[0] & !bmif.ccif_flushed[0]) begin
-			// cpu 0 is flushing
-			bmif.ccif_ccwait[0] = 1;
-			bmif.ccif_ccwait[1] = 0;
-		end else if(bmif.ccif_halt[1] & !bmif.ccif_flushed[1]) begin
-			// cpu 1 is flushing
-			bmif.ccif_ccwait[0] = 0;
-			bmif.ccif_ccwait[1] = 1;
-		end
+//		bmif.ccif_ccwait[arbitraitor] = 0; //!(bmif.ccif_dREN[arbitraitor] | bmif.ccif_dWEN[arbitraitor]);//0;
+//		bmif.ccif_ccwait[!arbitraitor] = bmif.ccif_dREN[arbitraitor] | bmif.ccif_dWEN[arbitraitor] | bmif.ccif_ccwrite[arbitraitor];
+//
+//		if(bmif.ccif_halt[0] && bmif.ccif_halt[1]) begin
+//			// Both are flushing
+//			bmif.ccif_ccwait[0] = 0;
+//			bmif.ccif_ccwait[1] = 0;
+//		end else if(bmif.ccif_halt[0] & !bmif.ccif_flushed[0]) begin
+//			// cpu 0 is flushing
+//			bmif.ccif_ccwait[0] = 1;
+//			bmif.ccif_ccwait[1] = 0;
+//		end else if(bmif.ccif_halt[1] & !bmif.ccif_flushed[1]) begin
+//			// cpu 1 is flushing
+//			bmif.ccif_ccwait[0] = 0;
+//			bmif.ccif_ccwait[1] = 1;
+//		end
 
 		casez(state)
 			REQUEST: begin
@@ -88,10 +86,10 @@ module bus_control
 					|| bmif.ccif_ccwrite[1] == 1) begin
 					next_state = ARBITRATE;
 				end else begin
-					next_state = REQUEST; 
+					next_state = REQUEST;
 				end
 			end
-			
+
 			ARBITRATE: begin
 				bmif.daddr = '0;
 
@@ -104,14 +102,14 @@ module bus_control
 				end else begin
 					next_arbitraitor = 1;
 				end
-	
+
 				if(bmif.ccif_dREN[next_arbitraitor] == 1 || bmif.ccif_ccwrite[next_arbitraitor] == 1) begin
-					next_state = SNOOP; 
+					next_state = SNOOP;
 				end else begin
-					next_state = MEMORY_WB; 
-				end 
-			end 
-	
+					next_state = MEMORY_WB;
+				end
+			end
+
 			SNOOP: begin
 				bmif.ccif_ccsnoopaddr[0] = bmif.ccif_daddr[arbitraitor];
 				bmif.ccif_ccsnoopaddr[1] = bmif.ccif_daddr[arbitraitor];
@@ -139,8 +137,8 @@ module bus_control
 				end /*else begin
 					next_state = REQUEST;
 				end*/
-			end 
-			
+			end
+
 			MEMORY_WB: begin // Make this work
 				bmif.dWEN = 1;
 				bmif.daddr = bmif.ccif_daddr[arbitraitor];
@@ -183,13 +181,13 @@ module bus_control
 					end
 				end
 			end
-		
+
 			MEMORY_READ: begin
 				//next_bus_dREN = 1;
 				next_return_val = bmif.dload;
 				next_return_addr = bmif.ccif_daddr[arbitraitor];
 
-				bmif.ccif_dwait = '1;
+				//bmif.ccif_dwait = '1;
 
 				bmif.dWEN = 0;
 				bmif.dREN = 1;
@@ -199,8 +197,8 @@ module bus_control
 					next_state = COMPLETE;
 				end else begin
 					next_state = MEMORY_READ;
-				end 
-			end 
+				end
+			end
 
 			COMPLETE: begin
 				bmif.ccif_dwait[arbitraitor] = 0;
@@ -216,7 +214,27 @@ module bus_control
 			end
 		endcase
 	end
+
+	always_comb begin
+		bmif.ccif_ccwait = '0;
+		bmif.ccif_ccwait[arbitraitor] = 0; //!(bmif.ccif_dREN[arbitraitor] | bmif.ccif_dWEN[arbitraitor]);//0;
+		bmif.ccif_ccwait[!arbitraitor] = bmif.ccif_dREN[arbitraitor] | bmif.ccif_dWEN[arbitraitor] | bmif.ccif_ccwrite[arbitraitor];
+
+		if(bmif.ccif_halt[0] && bmif.ccif_halt[1]) begin
+			// Both are flushing
+			bmif.ccif_ccwait[0] = 0;
+			bmif.ccif_ccwait[1] = 0;
+		end else if(bmif.ccif_halt[0] & !bmif.ccif_flushed[0]) begin
+			// cpu 0 is flushing
+			bmif.ccif_ccwait[0] = 1;
+			bmif.ccif_ccwait[1] = 0;
+		end else if(bmif.ccif_halt[1] & !bmif.ccif_flushed[1]) begin
+			// cpu 1 is flushing
+			bmif.ccif_ccwait[0] = 0;
+			bmif.ccif_ccwait[1] = 1;
+		end
+	end
 				
 
 
-endmodule 
+endmodule : bus_control

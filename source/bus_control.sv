@@ -79,17 +79,21 @@ module bus_control
 		ccif.ccinv[0] = 0;
 		ccif.ccinv[1] = 0;
 		ccif.ccwait[arbitraitor] = 0; //!(ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor]);//0;
-		ccif.ccwait[!arbitraitor] = ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor];// | ccif.ccwrite[arbitraitor];
+		ccif.ccwait[!arbitraitor] = ccif.dREN[arbitraitor] | ccif.dWEN[arbitraitor] | ccif.ccwrite[arbitraitor];
 
-		/*if(ccif.halt[0] & !ccif.flushed[0]) begin
-			// cpu 0 is flushing
+		if(ccif.halt[0] && ccif.halt[1]) begin
+			// Both are flushing
 			ccif.ccwait[0] = 0;
-			ccif.ccwait[1] = 1;
-		end else if(ccif.halt[1] & !ccif.flushed[1]) begin
-			// cpu 1 is flushing
+			ccif.ccwait[1] = 0;
+		end else if(ccif.halt[0] & !ccif.flushed[0]) begin
+			// cpu 0 is flushing
 			ccif.ccwait[0] = 1;
 			ccif.ccwait[1] = 0;
-		end*/
+		end else if(ccif.halt[1] & !ccif.flushed[1]) begin
+			// cpu 1 is flushing
+			ccif.ccwait[0] = 0;
+			ccif.ccwait[1] = 1;
+		end
 		//ccif.ccinv = '0;
 		//bmif.dstore = '0;
 		//bmif.dWEN = '0;
@@ -103,8 +107,8 @@ module bus_control
 				bmif.daddr = '0;
 				bmif.dREN = '0;
 				ccif.dload = '0;
-				//ccif.ccwait[0] = 0;
-				//ccif.ccwait[1] = 0;
+//				ccif.ccwait[0] = 0;
+//				ccif.ccwait[1] = 0;
 
 				if(ccif.dREN[0] == 1 || ccif.dWEN[0] == 1 
 					|| ccif.ccwrite[0] == 1) begin
@@ -120,8 +124,8 @@ module bus_control
 			ARBITRATE: begin
 				bmif.daddr = '0;
 
-				//ccif.ccwait[0] = 0;
-				//ccif.ccwait[1] = 0;
+//				ccif.ccwait[0] = 0;
+//				ccif.ccwait[1] = 0;
 
 				if(ccif.dREN[0] == 1 || ccif.dWEN[0] == 1
 					|| ccif.ccwrite[0] == 1) begin
@@ -146,17 +150,24 @@ module bus_control
 					//ccif.ccwait[!arbitraitor] = 1;
 					ccif.dwait[arbitraitor] = 0;
 
-					next_state = REQUEST;
-					if(ccif.ccwrite[!arbitraitor] == 1) begin
+//					next_state = REQUEST;
+					next_state = SNOOP; // Stay in snoop until ccwrite goes low
+//					if(ccif.ccwrite[!arbitraitor] == 1) begin
+					if(ccif.cctrans[!arbitraitor] == 1) begin // Changed when transitioned from ccwrite -> cctrans
 						next_state = MODIFIED_WB1;
 					end
 
-				end else if (ccif.dREN[arbitraitor] == 1 && ccif.ccwrite[!arbitraitor] == 1) begin
+//				end else if (ccif.dREN[arbitraitor] == 1 && ccif.ccwrite[!arbitraitor] == 1) begin
+				/*end else if (ccif.dREN[arbitraitor] == 0 && ccif.ccwrite[arbitraitor] == 0) begin
+					next_state = REQUEST;
+				*/end else if (ccif.dREN[arbitraitor] == 1 && ccif.cctrans[!arbitraitor] == 1) begin// Changed when transitioned from ccwrite -> cctrans
 					// BusRd
 					next_state = MODIFIED_WB1;
-				end else begin
+				end else /*if (ccif.dREN[arbitraitor] == 1 && ccif.cctrans[!arbitraitor] == 0)*/ begin
 					next_state = MEMORY_READ;
-				end
+				end /*else begin
+					next_state = REQUEST;
+				end*/
 			end 
 			
 			MEMORY_WB: begin // Make this work

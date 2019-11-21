@@ -16,7 +16,7 @@ module idex
 	word_t next_pcplus4_out, next_rdat1_out, next_rdat2_out, next_immext_out;
 	regbits_t next_rt_out, next_rd_out, next_rsel1_out, next_rsel2_out;
 	aluop_t next_AluOp_out;
-	logic next_MemToReg_out, next_AluSrc_out, next_JType_out, next_RegDst_out, next_regWEN_out, next_PcSrc_out, next_JReg_out, next_Halt_out, next_dMemWEN_out, next_dMemREN_out;
+	logic next_Atomic_out, next_MemToReg_out, next_AluSrc_out, next_JType_out, next_RegDst_out, next_regWEN_out, next_PcSrc_out, next_JReg_out, next_Halt_out, next_dMemWEN_out, next_dMemREN_out;
 
 	//DEBUG BULLSHIT
 	opcode_t next_InstrOp_out;
@@ -42,6 +42,7 @@ module idex
 			idex.rsel1_out <= '0;
 			idex.rsel2_out <= '0;
 
+			idex.Atomic_out <= '0;
  			idex.MemToReg_out <= '0;
  			idex.AluOp_out <= ALU_SLL;
 			idex.AluSrc_out <= '0;
@@ -75,6 +76,8 @@ module idex
 			idex.rd_out <= next_rd_out;
 			idex.rsel1_out <= next_rsel1_out;
 			idex.rsel2_out <= next_rsel2_out;
+
+			idex.Atomic_out <= next_Atomic_out;
 			idex.MemToReg_out <= next_MemToReg_out;
 			idex.AluOp_out <= next_AluOp_out;
 			idex.AluSrc_out <= next_AluSrc_out;
@@ -110,6 +113,7 @@ module idex
 		next_rsel1_out = idex.rsel1_out;
 		next_rsel2_out = idex.rsel2_out;
 
+		next_Atomic_out = idex.Atomic_out;
 		next_MemToReg_out = idex.MemToReg_out;
 		next_AluOp_out = idex.AluOp_out;
 		next_AluSrc_out = idex.AluSrc_out;
@@ -147,6 +151,7 @@ module idex
 			next_rsel1_out = '0;
 			next_rsel2_out = '0;
 
+			next_Atomic_out = '0;
 			next_MemToReg_out = '0;
 			next_AluOp_out = ALU_SLL;
 			next_AluSrc_out = '0;
@@ -181,6 +186,8 @@ module idex
 				next_rd_out = idex.rd_in;
 				next_rsel1_out = idex.rsel1_in;
 				next_rsel2_out = idex.rsel2_in;
+
+				next_Atomic_out = idex.Atomic_in;
 				next_MemToReg_out = idex.MemToReg_in;
 				next_AluOp_out = idex.AluOp_in;
 				next_AluSrc_out = idex.AluSrc_in;

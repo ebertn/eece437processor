@@ -34,6 +34,8 @@ module control_unit (
 		cuif.ExtOp = 1; // Default is sign ext
 		cuif.UpperImm = 0;
 
+		cuif.Atomic = 0;
+
 		if (cuif.InstrOp != RTYPE) begin
 			//cuif.RegDst = 0; // Rt
 
@@ -132,6 +134,35 @@ module control_unit (
 
 					// Memory
 					cuif.dMemWEN = 1;
+				end
+
+				LL: begin
+					cuif.AluOp = ALU_ADD;
+					cuif.AluSrc = 1;
+					cuif.regWEN = 1;
+
+					// Memory
+					cuif.dMemREN = 1;
+					cuif.MemToReg = 1;
+
+					// Atomic
+					cuif.Atomic = 1;
+				end
+
+				SC: begin
+					cuif.AluOp = ALU_ADD;
+					cuif.AluSrc = 1;
+
+					// Memory
+					cuif.dMemWEN = 1;
+
+					// Atomic
+					cuif.Atomic = 1;
+
+					// Write to reg from cache output
+					cuif.regWEN = 1;
+					cuif.MemToReg = 1;
+
 				end
 
 				HALT: begin

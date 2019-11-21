@@ -3,6 +3,23 @@
 # a1 = b
 # v0 = result
 
+org 0x0000
+	
+	ori $s4, $0, 0x00000001
+	ori $s5, $0, 0x00000010
+	ori $t0, $0, min_val
+    lw $s7, 0($t0)
+    or $a0, $s5, $0
+	or $a1, $s6, $0
+	jal min
+    or $a0, $s7, $0
+	or $a1, $v0, $0
+	jal min
+	ori $t0, $0, min_val
+	sw $v0, 0($t0)
+	or $a0, $a2, $0
+    or $a1, $a3, $0
+	halt
 #-max (a0=a,a1=b) returns v0=max(a,b)--------------
 max:
   push  $ra
@@ -35,3 +52,7 @@ minrtn:
   jr    $ra
 #--------------------------------------------------
 
+
+org 0x0FF0
+min_val:
+	cfw 0xFFF0FFFF

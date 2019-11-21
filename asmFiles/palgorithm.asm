@@ -11,12 +11,15 @@ lock:
 aquire:
   push $ra
   ll    $t0, 0($a0)         # load lock location
-
-
   or $s6, $0, $a0
-  or $a0, $s2, $0
+  ori $t0, $0, seed
+  lw $t1, 0($t0)
+  or $a0, $t1, $0
+
   jal crc32
 
+  ori $t0, $0, seed
+  sw $v0, 0($t0)
   or $a0, $s6, $0
   sc    $v0, 0($a0)      # if sc failed retry
 
@@ -89,7 +92,7 @@ l3:
 l2:
   or $v0, $a0, $0
   jr $ra
-
+ 
 #----------------------------------------------------------
 # Second Processor
 #----------------------------------------------------------
@@ -98,10 +101,12 @@ l2:
 
 
 jal   consumer           # go to program
+
   halt
 #-max (a0=a,a1=b) returns v0=max(a,b)--------------
 max:
   push  $ra
+ 
   push  $a0
   push  $a1
   or    $v0, $0, $a0
@@ -176,7 +181,7 @@ lock3:
 aquire3:
   push $ra
   ll    $t0, 0($a0)
-  
+  beq $t0, $0, lock3
   ori $t1, $0, 0
   ori $t2, $0, 1
   beq $s4, $t1, first
@@ -225,41 +230,63 @@ loop2:
     or $a2, $a0, $0
     or $a3, $a1, $0
 	
-    #Max
-    ori $s7, $0, max_val
-    lw $t1, 0($s7)
+
+	#Max
+    ori $t0, $0, max_val
+    lw $s7, 0($t0)
+	ori $t0, $0, 0x0000FFFF
+    and $s5, $s5, $t0
+ 	and $s6, $s6, $t0
+	
     or $a0, $s5, $0
-	or $a1, $s5, $0
+	or $a1, $s6, $0
 	jal max
     or $a0, $v0, $0
-	or $a1, $t1, $0
-	jal max
-    sw $v0, 0($s7)
+	or $a1, $s7, $0
+	jal max	
+	ori $t0, $0, max_val
+    sw $v0, 0($t0)
 
 	#Min
-    lw $t1, 0($s7)
-    or $a0, $s5, $0
-	or $a1, $s5, $0
-	jal min
-    or $a0, $v0, $0
-	or $a1, $t1, $0
-	jal min
+	ori $t0, $0, min_val
+    lw $s7, 0($t0)
+    ori $t0, $0, 0x0000FFFF
+    and $s5, $s5, $t0
+ 	and $s6, $s6, $t0
 	
+	or $a0, $s5, $0
+	or $a1, $s6, $0
+ 
+	jal min
+	ori $t0, $0, 0x0000FFFF
+ 	and $s7, $s7, $t0
+    or $a0, $s7, $0
+	or $a1, $v0, $0
+	jal min
+
+	ori $t0, $0, min_val
+	sc $v0, 0($t0)
 	or $a0, $a2, $0
     or $a1, $a3, $0
 	
 
+
     #Add to total
-    ori $t0, $0, total
-    lw $t1, 0($t0)
-    add $t2, $t1, $s5
-	add $t3, $t2, $s6
-    sw $t3, 0($t0)
+	ori $t0, $0, 0x0000FFFF
+    ori $t1, $0, total
+    lw $t2, 0($t1)
+    and $t3, $s5, $t0
+  	and $t4, $s6, $t0
+	add $t0, $t3, $t4
+	add $t1, $t0, $t2
+ 	ori $t3, $0, total
+	sw $t1, 0($t3)
 
 	ori $s4, $0, 0
 	ori $s5, $0, 0
 	ori $s6, $0, 0
-	
+	ori $v0, $0, 0
+
    next:
 	addi $a1, $a1, 1
  	addi $a0,$a0,4
@@ -274,19 +301,25 @@ loop2:
 end:
 	ori $t0, $0, total
     lw $t1, 0($t0)
-    ori $a0, $t1, 0
-    ori $a1, $0, 255
-    jal divide
-    ori $t0, $0, average
-    sw $v0, 0($t0)
+    ori $t2, $0, 8
+	srlv $t1, $t2, $t1
 
+	sw $t1, 0($t0)
+	
+	#ori $a0, $t1, 0
+    #ori $a1, $0, 0xFF
+	#jal divide
+    #ori $t0, $0, average
+	
     pop   $ra                 # get return address
     jr    $ra                 # return to caller
 
 
-org 0xFF00
+org 0xF000
 buffer_full:
   cfw 0x00000000
+seed:
+  cfw 0x0000ABCD
 buffer:
   cfw 0x00000000
   cfw 0x00000000
@@ -300,16 +333,12 @@ buffer:
   cfw 0x00000000
 buffer_index:
   cfw 0x0
-buffer_index2:
-  cfw 0x0
 buffer_size:
   cfw 0xA
 num_of_entries:
   cfw 0x00FF
-mini_buffer:
-  cfw 0x00000000
 min_val:
-  cfw 0xDDDDDDDD
+  cfw 0x00000FFF
 max_val:
   cfw 0x00000000
 total:

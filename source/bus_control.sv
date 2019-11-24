@@ -7,7 +7,7 @@ module bus_control
 (
 	input logic CLK, nRST,
 	//cache_control_if.cc ccif,
-	bus_mem_if.bus_con bmif
+	bus_mem_if bmif
 ); 
 
 	import cpu_types_pkg::*;
@@ -192,7 +192,7 @@ module bus_control
 				bmif.dWEN = 0;
 				bmif.dREN = 1;
 				bmif.daddr = bmif.ccif_daddr[arbitraitor];
-				bmif.dstore = '0; //bmif.ccif_dstore[arbitraitor];
+				//bmif.dstore = '0; //bmif.ccif_dstore[arbitraitor];
 				if (!bmif.dwait) begin
 					next_state = COMPLETE;
 				end else begin

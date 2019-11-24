@@ -330,7 +330,6 @@ add wave -noupdate -expand /system_tb/DUT/CPU/ccif/ccwrite
 add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/cctrans
 add wave -noupdate -expand /system_tb/DUT/CPU/CC/ccif/ccwait
 add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ccinv
-add wave -noupdate /system_tb/DUT/CPU/CC/ccif/ramstate
 add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramREN
 add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramWEN
 add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramaddr
@@ -683,7 +682,7 @@ add wave -noupdate -color Cyan -label system_halt /system_tb/PROG/syif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP0/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP0/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1074624 ps} 0}
+WaveRestoreCursors {{Cursor 1} {1407222 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 169
@@ -699,4 +698,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {1030595 ps} {1125516 ps}
+WaveRestoreZoom {0 ps} {5499127 ps}

@@ -14,7 +14,7 @@
 `include "cpu_types_pkg.vh"
 
 module memory_control (
-    input CLK, nRST,
+    input logic CLK, nRST,
     cache_control_if.cc ccif
 );
     // type import
@@ -25,7 +25,7 @@ module memory_control (
 
     bus_mem_if bmif();
 
-    bus_control BC (CLK, nRST, /*ccif,*/ bmif);
+    bus_control BC (CLK, nRST, bmif);
 
     logic last_instr_req, next_last_instr_req;
     logic data_hit, next_data_hit;

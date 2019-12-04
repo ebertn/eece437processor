@@ -150,8 +150,8 @@ module bus_control
 					// FF
 					next_bmif_dWEN = 1;
 					next_bmif_dREN = 0;
-					next_bmif_daddr = bmif.ccif_daddr[arbitraitor];
-					next_bmif_dstore = bmif.ccif_dstore[arbitraitor];
+					next_bmif_daddr = bmif.ccif_daddr[next_arbitraitor];
+					next_bmif_dstore = bmif.ccif_dstore[next_arbitraitor];
 					// FF
 				end
 			end
@@ -197,7 +197,7 @@ module bus_control
 					next_bmif_daddr = bmif.ccif_daddr[!arbitraitor];
 					next_bmif_dstore = bmif.ccif_dstore[!arbitraitor];
 					// FF
-				end else /*if (bmif.ccif_dREN[arbitraitor] == 1 && bmif.ccif_cctrans[!arbitraitor] == 0)*/ begin
+				end else if (bmif.ccif_dREN[arbitraitor] == 1 && bmif.ccif_cctrans[!arbitraitor] == 0) begin
 					next_state = MEMORY_READ;
 
 					// FF
@@ -206,9 +206,9 @@ module bus_control
 					next_bmif_daddr = bmif.ccif_daddr[arbitraitor];
 					next_bmif_dstore = '0;
 					// FF
-				end /*else begin
+				end else begin
 					next_state = REQUEST;
-				end*/
+				end
 			end
 
 			MEMORY_WB: begin // Make this work

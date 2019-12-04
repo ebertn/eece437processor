@@ -22,17 +22,36 @@ module bus_control
 	logic next_bus_dREN, next_bus_dWEN; 
 	word_t next_bus_daddr, next_bus_store;
 
+	// FF
+	word_t next_bmif_dstore, next_bmif_daddr;
+	logic next_bmif_dREN, next_bmif_dWEN;
+	// FF
+
 	always_ff @(posedge CLK, negedge nRST) begin
 		if(nRST == 0) begin
 			state <= REQUEST;
 			arbitraitor <= 0;
 			return_val <= '0;
 			return_addr <= '0;
+
+			// FF
+			bmif.dstore <= '0;
+			bmif.dWEN <= '0;
+			bmif.daddr <= '0;
+			bmif.dREN <= '0;
+			// FF
 		end else begin
 			state <= next_state; 
 			arbitraitor <= next_arbitraitor;
 			return_val <= next_return_val;
 			return_addr <= next_return_addr;
+
+			// FF
+			bmif.dstore <= next_bmif_dstore;
+			bmif.dWEN <= next_bmif_dWEN;
+			bmif.daddr <= next_bmif_daddr;
+			bmif.dREN <= next_bmif_dREN;
+			// FF
 		end 
 	end
 
@@ -42,12 +61,19 @@ module bus_control
 		next_return_val = return_val;
 		next_return_addr = return_addr;
 
+		// FF
 //		bmif.dstore = '0;
 //		bmif.dWEN = '0;
 //		bmif.daddr = '0;
 //		bmif.dREN = '0;
-//		bmif.ccif_dload = '0;
-//		bmif.ccif_ccsnoopaddr = '0;
+		next_bmif_daddr = '0;
+		next_bmif_dREN = '0;
+		next_bmif_dWEN = '0;
+		next_bmif_dstore = '0;
+		// FF
+
+		bmif.ccif_dload = '0; // Leave in. Latch otherwise
+		bmif.ccif_ccsnoopaddr = '0;
 
 		bmif.ccif_dwait = '1;
 		bmif.ccif_ccinv[0] = 0;
@@ -71,11 +97,19 @@ module bus_control
 
 		casez(state)
 			REQUEST: begin
-				bmif.dWEN = '0;
-				bmif.dstore = '0;
-				bmif.daddr = '0;
-				bmif.dREN = '0;
+				// FF
+//				bmif.dWEN = '0;
+//				bmif.dstore = '0;
+//				bmif.daddr = '0;
+//				bmif.dREN = '0;
+				next_bmif_dWEN = '0;
+				next_bmif_dREN = '0;
+				next_bmif_daddr = '0;
+				next_bmif_dstore = '0;
+				// FF
 				bmif.ccif_dload = '0;
+
+
 //				bmif.ccif_ccwait[0] = 0;
 //				bmif.ccif_ccwait[1] = 0;
 
@@ -91,7 +125,13 @@ module bus_control
 			end
 
 			ARBITRATE: begin
-				bmif.daddr = '0;
+				// FF
+//				bmif.daddr = '0;
+				next_bmif_dWEN = '0;
+				next_bmif_dREN = '0;
+				next_bmif_daddr = '0;
+				next_bmif_dstore = '0;
+				// FF
 
 //				bmif.ccif_ccwait[0] = 0;
 //				bmif.ccif_ccwait[1] = 0;
@@ -107,6 +147,12 @@ module bus_control
 					next_state = SNOOP;
 				end else begin
 					next_state = MEMORY_WB;
+					// FF
+					next_bmif_dWEN = 1;
+					next_bmif_dREN = 0;
+					next_bmif_daddr = bmif.ccif_daddr[arbitraitor];
+					next_bmif_dstore = bmif.ccif_dstore[arbitraitor];
+					// FF
 				end
 			end
 
@@ -121,9 +167,22 @@ module bus_control
 
 //					next_state = REQUEST;
 					next_state = SNOOP; // Stay in snoop until ccwrite goes low
+					// FF
+					next_bmif_dWEN = '0;
+					next_bmif_dREN = '0;
+					next_bmif_daddr = '0;
+					next_bmif_dstore = '0;
+					// FF
 //					if(bmif.ccif_ccwrite[!arbitraitor] == 1) begin
 					if(bmif.ccif_cctrans[!arbitraitor] == 1) begin // Changed when transitioned from ccwrite -> cctrans
 						next_state = MODIFIED_WB1;
+
+						// FF
+						next_bmif_dWEN = 1;
+						next_bmif_dREN = 0;
+						next_bmif_daddr = bmif.ccif_daddr[!arbitraitor];
+						next_bmif_dstore = bmif.ccif_dstore[!arbitraitor];
+						// FF
 					end
 
 //				end else if (bmif.ccif_dREN[arbitraitor] == 1 && bmif.ccif_ccwrite[!arbitraitor] == 1) begin
@@ -132,22 +191,50 @@ module bus_control
 				*/end else if (bmif.ccif_dREN[arbitraitor] == 1 && bmif.ccif_cctrans[!arbitraitor] == 1) begin// Changed when transitioned from ccwrite -> cctrans
 					// BusRd
 					next_state = MODIFIED_WB1;
+					// FF
+					next_bmif_dWEN = 1;
+					next_bmif_dREN = 0;
+					next_bmif_daddr = bmif.ccif_daddr[!arbitraitor];
+					next_bmif_dstore = bmif.ccif_dstore[!arbitraitor];
+					// FF
 				end else /*if (bmif.ccif_dREN[arbitraitor] == 1 && bmif.ccif_cctrans[!arbitraitor] == 0)*/ begin
 					next_state = MEMORY_READ;
+
+					// FF
+					next_bmif_dWEN = 0;
+					next_bmif_dREN = 1;
+					next_bmif_daddr = bmif.ccif_daddr[arbitraitor];
+					next_bmif_dstore = '0;
+					// FF
 				end /*else begin
 					next_state = REQUEST;
 				end*/
 			end
 
 			MEMORY_WB: begin // Make this work
-				bmif.dWEN = 1;
-				bmif.daddr = bmif.ccif_daddr[arbitraitor];
-				bmif.dstore = bmif.ccif_dstore[arbitraitor];
+				// FF
+//				bmif.dWEN = 1;
+//				bmif.daddr = bmif.ccif_daddr[arbitraitor];
+//				bmif.dstore = bmif.ccif_dstore[arbitraitor];
+				next_bmif_dWEN = 1;
+				next_bmif_dREN = 0;
+				next_bmif_daddr = bmif.ccif_daddr[arbitraitor];
+				next_bmif_dstore = bmif.ccif_dstore[arbitraitor];
+				// FF
+
 				next_return_val = bmif.ccif_dload[arbitraitor];
 				next_return_addr = bmif.ccif_daddr[arbitraitor];
 				if(!bmif.dwait) begin
 					bmif.ccif_dwait[arbitraitor] = 0;
 					next_state = REQUEST;
+
+					// FF
+					next_bmif_dWEN = '0;
+					next_bmif_dREN = '0;
+					next_bmif_daddr = '0;
+					next_bmif_dstore = '0;
+					// FF
+
 				end else begin
 					bmif.ccif_dwait[arbitraitor] = 1;
 					next_state = MEMORY_WB;
@@ -155,29 +242,68 @@ module bus_control
 			end
 
 			MODIFIED_WB1: begin
-				bmif.dWEN = 1;
-				bmif.dREN = 0;
-				bmif.daddr = bmif.ccif_daddr[!arbitraitor];
-				bmif.dstore = bmif.ccif_dstore[!arbitraitor];
+				// FF
+//				bmif.dWEN = 1;
+//				bmif.dREN = 0;
+//				bmif.daddr = bmif.ccif_daddr[!arbitraitor];
+//				bmif.dstore = bmif.ccif_dstore[!arbitraitor];
+
+				bmif.ccif_ccsnoopaddr[0] = bmif.ccif_daddr[arbitraitor];
+				bmif.ccif_ccsnoopaddr[1] = bmif.ccif_daddr[arbitraitor];
+
+				next_bmif_dWEN = 1;
+				next_bmif_dREN = 0;
+				next_bmif_daddr = bmif.ccif_daddr[!arbitraitor];
+				next_bmif_dstore = bmif.ccif_dstore[!arbitraitor];
+				// FF
 				if (!bmif.dwait) begin
 					bmif.ccif_dwait[!arbitraitor] = 0;
                     next_state = MODIFIED_WB2;
+
+					next_bmif_dWEN = 0;
+					next_bmif_dREN = 0;
+					next_bmif_daddr = bmif.ccif_daddr[!arbitraitor];
+					next_bmif_dstore = bmif.ccif_dstore[!arbitraitor];
 				end
 			end
 
 			MODIFIED_WB2: begin
-				bmif.dWEN = 1;
-				bmif.dREN = 0;
-				bmif.daddr = bmif.ccif_daddr[!arbitraitor];
-				bmif.dstore = bmif.ccif_dstore[!arbitraitor];
+				// FF
+//				bmif.dWEN = 1;
+//				bmif.dREN = 0;
+//				bmif.daddr = bmif.ccif_daddr[!arbitraitor];
+//				bmif.dstore = bmif.ccif_dstore[!arbitraitor];
+
+				bmif.ccif_ccsnoopaddr[0] = bmif.ccif_daddr[arbitraitor];
+				bmif.ccif_ccsnoopaddr[1] = bmif.ccif_daddr[arbitraitor];
+
+				next_bmif_dWEN = 1;
+				next_bmif_dREN = 0;
+				next_bmif_daddr = bmif.ccif_daddr[!arbitraitor];
+				next_bmif_dstore = bmif.ccif_dstore[!arbitraitor];
+				// FF
 				if (!bmif.dwait) begin
 					bmif.ccif_dwait[!arbitraitor] = 0;
 
 					bmif.ccif_ccinv[!arbitraitor] = 1;
 					if(bmif.ccif_dREN) begin
 						next_state = MEMORY_READ;
+
+						// FF
+						next_bmif_dWEN = 0;
+						next_bmif_dREN = 1;
+						next_bmif_daddr = bmif.ccif_daddr[arbitraitor];
+						next_bmif_dstore = '0;
+						// FF
 					end else begin
 						next_state = REQUEST;
+
+						// FF
+						next_bmif_dWEN = '0;
+						next_bmif_dREN = '0;
+						next_bmif_daddr = '0;
+						next_bmif_dstore = '0;
+						// FF
 					end
 				end
 			end
@@ -189,12 +315,26 @@ module bus_control
 
 				//bmif.ccif_dwait = '1;
 
-				bmif.dWEN = 0;
-				bmif.dREN = 1;
-				bmif.daddr = bmif.ccif_daddr[arbitraitor];
-				//bmif.dstore = '0; //bmif.ccif_dstore[arbitraitor];
+				// FF
+//				bmif.dWEN = 0;
+//				bmif.dREN = 1;
+//				bmif.daddr = bmif.ccif_daddr[arbitraitor];
+				//bmif.dstore = '0; //bmif.ccif_dstore[arbitraitor]; FF commented before, leave out
+
+				next_bmif_dWEN = 0;
+				next_bmif_dREN = 1;
+				next_bmif_daddr = bmif.ccif_daddr[arbitraitor];
+				next_bmif_dstore = '0;
+				// FF
 				if (!bmif.dwait) begin
 					next_state = COMPLETE;
+
+					// FF
+					next_bmif_dstore = '0;
+					next_bmif_daddr = return_addr;
+					next_bmif_dREN = 0;
+					next_bmif_dWEN = 0;
+					// FF
 				end else begin
 					next_state = MEMORY_READ;
 				end
@@ -202,15 +342,29 @@ module bus_control
 
 			COMPLETE: begin
 				bmif.ccif_dwait[arbitraitor] = 0;
-				bmif.daddr = return_addr;
 				bmif.ccif_dload[arbitraitor] = return_val;
-				bmif.dREN = 0;
-				bmif.dWEN = 0;
+
+				// FF
+//				bmif.daddr = return_addr;
+//				bmif.dREN = 0;
+//				bmif.dWEN = 0;
+				next_bmif_dWEN = '0;
+				next_bmif_dREN = '0;
+				next_bmif_daddr = '0;
+				next_bmif_dstore = '0;
+				// FF
 				next_state = REQUEST;
 			end
 
 			default: begin
 				next_state = REQUEST;
+
+				// FF
+				next_bmif_dWEN = '0;
+				next_bmif_dREN = '0;
+				next_bmif_daddr = '0;
+				next_bmif_dstore = '0;
+				// FF
 			end
 		endcase
 	end
@@ -233,6 +387,10 @@ module bus_control
 			bmif.ccif_ccwait[0] = 0;
 			bmif.ccif_ccwait[1] = 1;
 		end
+
+//		if (state == REQUEST /*|| state == ARBITRATE*/) begin
+//			bmif.ccif_ccwait = '0;
+//		end
 	end
 				
 

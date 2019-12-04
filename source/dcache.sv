@@ -123,12 +123,32 @@ module dcache (
                         next_state = SNOOP_WB1;
 //                        cif.ccwrite = 1; // Notify bus of hit
                         cif.cctrans = 1; // Notify bus of hit
+
+                        // FF
+                        cif.daddr = {snoop_req.tag, snoop_req.idx, 1'b0, 2'b00};
+                        if(frames[0][snoop_req.idx].tag == snoop_req.tag /*&& frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1*/) begin
+                            cif.dstore = frames[0][snoop_req.idx].data[0];
+                        end else if (frames[1][snoop_req.idx].tag == snoop_req.tag /*&& frames[1][snoop_req.idx].valid == 1 && frames[1][snoop_req.idx].dirty == 1*/) begin
+                            cif.dstore = frames[1][snoop_req.idx].data[0];
+                        end
+                        // FF
+
                         next_frames[0][snoop_req.idx].valid = !cif.ccinv; // Set to I if ccinv
                         next_frames[0][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
                     end else if (frames[1][snoop_req.idx].tag == snoop_req.tag && frames[1][snoop_req.idx].valid == 1 && frames[1][snoop_req.idx].dirty == 1) begin
                         next_state = SNOOP_WB1;
 //                        cif.ccwrite = 1; // Notify bus of hit
                         cif.cctrans = 1; // Notify bus of hit
+
+                        // FF
+                        cif.daddr = {snoop_req.tag, snoop_req.idx, 1'b0, 2'b00};
+                        if(frames[0][snoop_req.idx].tag == snoop_req.tag /*&& frames[0][snoop_req.idx].valid == 1 && frames[0][snoop_req.idx].dirty == 1*/) begin
+                            cif.dstore = frames[0][snoop_req.idx].data[0];
+                        end else if (frames[1][snoop_req.idx].tag == snoop_req.tag /*&& frames[1][snoop_req.idx].valid == 1 && frames[1][snoop_req.idx].dirty == 1*/) begin
+                            cif.dstore = frames[1][snoop_req.idx].data[0];
+                        end
+                        // FF
+
                         next_frames[1][snoop_req.idx].valid = !cif.ccinv; // Set to I if ccinv
                         next_frames[1][snoop_req.idx].dirty = 0; // Set to S (WB in bus)
                     end else if(frames[0][snoop_req.idx].tag == snoop_req.tag && frames[0][snoop_req.idx].valid == 1) begin

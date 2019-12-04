@@ -336,14 +336,18 @@ add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramaddr
 add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramstore
 add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramload
 add wave -noupdate -expand -group ram /system_tb/DUT/RAM/ramif/ramstate
-add wave -noupdate /system_tb/DUT/CPU/CC/BC/state
 add wave -noupdate /system_tb/DUT/CPU/CC/BC/next_state
+add wave -noupdate /system_tb/DUT/CPU/CC/BC/state
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dwait
-add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dREN
-add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dWEN
+add wave -noupdate -expand -group bmif -color Magenta /system_tb/DUT/CPU/CC/bmif/dREN
+add wave -noupdate -expand -group bmif -color Yellow /system_tb/DUT/CPU/CC/bmif/dWEN
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dload
-add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/dstore
-add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/daddr
+add wave -noupdate -expand -group bmif -color Cyan /system_tb/DUT/CPU/CC/bmif/dstore
+add wave -noupdate -expand -group bmif -color Orange /system_tb/DUT/CPU/CC/bmif/daddr
+add wave -noupdate -expand -group bmif -color Magenta /system_tb/DUT/CPU/CC/BC/next_bmif_dREN
+add wave -noupdate -expand -group bmif -color Yellow /system_tb/DUT/CPU/CC/BC/next_bmif_dWEN
+add wave -noupdate -expand -group bmif -color Cyan /system_tb/DUT/CPU/CC/BC/next_bmif_dstore
+add wave -noupdate -expand -group bmif -color Orange /system_tb/DUT/CPU/CC/BC/next_bmif_daddr
 add wave -noupdate -expand -group bmif -expand /system_tb/DUT/CPU/CC/bmif/ccif_dwait
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/ccif_dREN
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/ccif_dWEN
@@ -351,7 +355,7 @@ add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/ccif_halt
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/ccif_flushed
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/ccif_dload
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/ccif_dstore
-add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/ccif_daddr
+add wave -noupdate -expand -group bmif -expand /system_tb/DUT/CPU/CC/bmif/ccif_daddr
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/ccif_ccwait
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/ccif_ccinv
 add wave -noupdate -expand -group bmif /system_tb/DUT/CPU/CC/bmif/ccif_ccwrite
@@ -682,7 +686,7 @@ add wave -noupdate -color Cyan -label system_halt /system_tb/PROG/syif/halt
 add wave -noupdate -color White /system_tb/DUT/CPU/DP0/CLK
 add wave -noupdate -color Red /system_tb/DUT/CPU/DP0/nRST
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {1407222 ps} 0}
+WaveRestoreCursors {{Cursor 1} {4540000 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 195
 configure wave -valuecolwidth 169
@@ -698,4 +702,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ns
 update
-WaveRestoreZoom {0 ps} {5499127 ps}
+WaveRestoreZoom {3621345 ps} {5454045 ps}

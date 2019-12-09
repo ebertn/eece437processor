@@ -1,0 +1,1 @@
+/home/ecegrid/a/mg234/.vim/vimrc

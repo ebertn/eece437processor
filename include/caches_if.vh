@@ -21,7 +21,7 @@ interface caches_if;
   import cpu_types_pkg::*;
 
   // arbitration
-  logic          iwait, dwait, iREN, dREN, dWEN;
+  logic          iwait, dwait, iREN, dREN, dWEN, halt, flushed;
   word_t         iload, dload, dstore;
   word_t         iaddr, daddr;
 
@@ -48,17 +48,17 @@ interface caches_if;
     input   dwait, dload,
             ccwait, ccinv, ccsnoopaddr,
     output  dREN, dWEN, daddr, dstore,
-            ccwrite, cctrans
+            ccwrite, cctrans, halt, flushed
   );
 
   // caches ports to controller
   modport caches(
     input   dwait, dload,
-            ccwait, ccinv, ccsnoopaddr,
+             
             iwait, iload,
     output  dREN, dWEN, daddr, dstore,
             ccwrite, cctrans,
-            iREN, iaddr
+            iREN, iaddr, halt, flushed
   );
 
 

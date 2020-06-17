@@ -33,7 +33,7 @@ interface cache_control_if(
   parameter CPUS = 2;
 
   // arbitration
-  logic   [CPUS-1:0]       iwait, dwait, iREN, dREN, dWEN;
+  logic   [CPUS-1:0]       iwait, dwait, iREN, dREN, dWEN, halt, flushed;
   word_t  [CPUS-1:0]       iload, dload, dstore;
   word_t  [CPUS-1:0]       iaddr, daddr;
 
@@ -68,6 +68,12 @@ interface cache_control_if(
   */
   always_comb begin
     if (CPUS == 2) begin
+      halt[0] = cif0.halt;
+      halt[1] = cif1.halt;
+
+      flushed[0] = cif0.flushed;
+      flushed[1] = cif1.flushed;
+
       iREN[0] = cif0.iREN;
       dREN[0] = cif0.dREN;
       dWEN[0] = cif0.dWEN;
@@ -123,7 +129,7 @@ interface cache_control_if(
   // controller ports to ram and caches
   modport cc (
             // cache inputs
-    input   iREN, dREN, dWEN, dstore, iaddr, daddr,
+    input   iREN, dREN, dWEN, dstore, iaddr, daddr, halt, flushed,
             // ram inputs
             ramload, ramstate,
             // coherence inputs from cache

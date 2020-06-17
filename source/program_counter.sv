@@ -11,11 +11,13 @@ module program_counter (
     // import types
     import cpu_types_pkg::*;
 
+    parameter PC_INIT;
+
     word_t next_pc;
 
     always_ff @(posedge CLK, negedge nRST) begin
         if (!nRST) begin
-            pcif.count <= '0;
+            pcif.count <= PC_INIT;
         end else begin
             pcif.count <= next_pc;
         end

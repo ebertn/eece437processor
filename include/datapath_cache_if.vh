@@ -46,7 +46,7 @@ interface datapath_cache_if;
 
   // icache ports
   modport icache (
-    input   imemREN, imemaddr,
+    input   imemREN, imemaddr, halt,
     output  ihit, imemload
   );
 

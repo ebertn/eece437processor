@@ -39,10 +39,48 @@ module system_tb;
   // dut
 `ifndef MAPPED
   system                              DUT (CLK,nRST,syif);
-
-  // CPU Tracker. Uncomment and change signal names to enable.
-
-
+  
+  // NOTE: All of these signals MUST be passed all the way through
+  // to the write back stage and sampled in the WRITEBACK stage.
+  // This means more signals that would normally be necessary
+  // for correct execution must be passed along to help with debugging.
+  /*cpu_tracker                         cpu_track0 (
+    // No need to change this
+    .CLK(DUT.CPU.DP.CLK),
+    // This is the enable signal for the write back stage
+    .wb_enable(DUT.CPU.DP.memwbif.writeEN),
+    // The 'funct' portion of an instruction. Must be of funct_t type
+    .funct(DUT.CPU.DP.memwbif.InstrFunc_out),
+    // The 'opcode' portion of an instruction. Must be of opcode_t type
+    .opcode(DUT.CPU.DP.memwbif.InstrOp_out),
+    // The 'rs' portion of an instruction
+    .rs(DUT.CPU.DP.memwbif.rs_out),
+    // The 'rt' portion of an instruction
+    .rt(DUT.CPU.DP.memwbif.rt_out),
+    // The final wsel
+    .wsel(DUT.CPU.DP.rfif.wsel),
+    // The 32 bit instruction
+    .instr(DUT.CPU.DP.memwbif.instr_out),
+    // Connect the PC to this
+    .pc(DUT.CPU.DP.memwbif.pcplus4_out),
+    // Connect the next PC value (the next registered value) here
+    .next_pc_val(DUT.CPU.DP.memwbif.next_pc_out),
+    // The final imm/shamt signals
+    // This means it should already be extended 
+    .imm(DUT.CPU.DP.memwbif.imm_out),
+    .shamt(DUT.CPU.DP.memwbif.shamt_out),
+    // the value for lui BEFORE being being shifted
+     .lui_pre_shift(DUT.CPU.DP.memwbif.imm_16_out),
+    // The branch target (aka offset added to npc)
+    .branch_addr(DUT.CPU.DP.memwbif.branchaddr_out),
+    // Port O of the ALU from the M/W register
+    .dat_addr(DUT.CPU.DP.memwbif.aluOutport_out),
+    // The value that was stored in memory during MEM stage
+    .store_dat(DUT.CPU.DP.memwbif.dmemload_out),
+    // The value selected to be written into register during WB stage
+    .reg_dat(DUT.CPU.DP.rfif.wdat)
+  );*/
+  
 `else
   system                              DUT (,,,,//for altera debug ports
     CLK,
@@ -82,6 +120,8 @@ program test(input logic CLK, output logic nRST, system_if.tb syif);
       @(posedge CLK);
       cycles++;
     end
+    @(posedge CLK);
+    @(posedge CLK);
     $display("Halted at %g time and ran for %d cycles.",$time, cycles);
     nRST = 0;
     dump_memory();

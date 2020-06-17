@@ -13,3 +13,11 @@ README
 *.hex
 *.ver
 .nfs*
+.vimrc
+.idea/
+.idea/*
+testasm.diff
+*.bak
+covhtmlreport
+wave.do
+!source/dcache.sv.bak
